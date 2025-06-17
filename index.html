@@ -20,7 +20,7 @@
   <style>
     /* Fondo de pantalla */
     body {
-      background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
+      background-image: url('https://wallpapers.com/images/hd/old-silver-fm-broadcasting-radios-286cen291yddzdbo.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -138,6 +138,7 @@
       text-align: center;
       transition: transform 0.18s, box-shadow 0.18s;
       padding: 4px;
+      position: relative;
     }
 
     .radio-item img {
@@ -164,6 +165,15 @@
       margin-top: 4px;
       text-shadow: 0 2px 8px #fff8;
       word-break: break-word;
+      position: absolute;
+      bottom: -18px;  /* Ajusta según sea necesario */
+      left: 0;
+      width: 100%;
+      text-align: center;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.6);  /* Fondo semi-transparente */
+      color: white;
+      border-radius: 5px;  /* Redondeo de los bordes */
     }
 
     /* Estilo para el botón play (más delgado) */
@@ -203,6 +213,13 @@
       display: flex;
       justify-content: center;
     }
+    .radio-grid-background {
+  background-color: rgba(0, 0, 0, 0.45); /* fondo oscuro semi-transparente */
+  padding: 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px); /* efecto de desenfoque opcional */
+}
+
   </style>
 </head>
 <body>
@@ -231,6 +248,12 @@
     <li><a href="#">Programas</a></li>
     <li><a href="#">Contacto</a></li>
   </ul>
+  .radio-grid-background {
+  background-color: rgba(0, 0, 0, 0.45); /* Fondo negro con 45% de opacidad */
+  padding: 12px;
+  border-radius: 12px;
+}
+
 
   <!-- PLAYER Y PARRILLA -->
   <div class="player-app-container">
@@ -269,44 +292,46 @@
     </div>
 
     <!-- PARRILLA DE RADIOS -->
-    <div class="radio-grid-scroll">
-      <div class="radio-grid">
-        <div class="radio-item selected" data-logo="https://via.placeholder.com/120" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
-          <img src="https://via.placeholder.com/60" alt="Radio 1" />
-          <div class="radio-name">Radio 1</div>
-        </div>
-        <div class="radio-item" data-logo="https://via.placeholder.com/120/ff9800/fff?text=R2" data-radio="https://some-radio-2.mp3">
-          <img src="https://via.placeholder.com/60/ff9800/fff?text=R2" alt="Radio 2" />
-          <div class="radio-name">Radio 2</div>
-        </div>
-        <div class="radio-item" data-logo="https://via.placeholder.com/120/4caf50/fff?text=R3" data-radio="https://some-radio-3.mp3">
-          <img src="https://via.placeholder.com/60/4caf50/fff?text=R3" alt="Radio 3" />
-          <div class="radio-name">Radio 3</div>
-        </div>
-        <div class="radio-item" data-logo="https://via.placeholder.com/120/e91e63/fff?text=R4" data-radio="https://some-radio-4.mp3">
-          <img src="https://via.placeholder.com/60/e91e63/fff?text=R4" alt="Radio 4" />
-          <div class="radio-name">Radio 4</div>
-        </div>
-        <!-- Agrega más radios aquí -->
-        <div class="radio-item" data-logo="https://via.placeholder.com/120/607d8b/fff?text=R5" data-radio="https://some-radio-5.mp3">
-          <img src="https://via.placeholder.com/60/607d8b/fff?text=R5" alt="Radio 5" />
-          <div class="radio-name">Radio 5</div>
-        </div>
-        <div class="radio-item" data-logo="https://via.placeholder.com/120/8bc34a/fff?text=R6" data-radio="https://some-radio-6.mp3">
-          <img src="https://via.placeholder.com/60/8bc34a/fff?text=R6" alt="Radio 6" />
-          <div class="radio-name">Radio 6</div>
-        </div>
-        <div class="radio-item" data-logo="https://via.placeholder.com/120/3f51b5/fff?text=R7" data-radio="https://some-radio-7.mp3">
-          <img src="https://via.placeholder.com/60/3f51b5/fff?text=R7" alt="Radio 7" />
-          <div class="radio-name">Radio 7</div>
-        </div>
-        <div class="radio-item" data-logo="https://via.placeholder.com/120/cddc39/333?text=R8" data-radio="https://some-radio-8.mp3">
-          <img src="https://via.placeholder.com/60/cddc39/333?text=R8" alt="Radio 8" />
-          <div class="radio-name">Radio 8</div>
-        </div>
+<div class="radio-grid-scroll">
+  <div class="radio-grid-background">
+    <div class="radio-grid">
+      <div class="radio-item selected" data-logo="https://via.placeholder.com/120" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
+        <img src="https://via.placeholder.com/60" alt="" />
+  <div class="radio.name">Zona Vida</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/ff9800/fff?text=R2" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+        <img src="https://via.placeholder.com/60/ff9800/fff?text=R2" alt="" />
+        <div class="radio.name">ZV Latino</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/4caf50/fff?text=R3" data-radio="https://some-radio-3.mp3">
+        <img src="https://via.placeholder.com/60/4caf50/fff?text=R3" alt="" />
+        <div class="radio.name">Radio 3</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/e91e63/fff?text=R4" data-radio="https://some-radio-4.mp3">
+        <img src="https://via.placeholder.com/60/e91e63/fff?text=R4" alt="" />
+        <div class="radio.name">Radio 4</div>
+      </div>
+      <!-- Agrega más radios aquí -->
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/607d8b/fff?text=R5" data-radio="https://some-radio-5.mp3">
+        <img src="https://via.placeholder.com/60/607d8b/fff?text=R5" alt="" />
+        <div class="radio.name">Radio 5</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/8bc34a/fff?text=R6" data-radio="https://some-radio-6.mp3">
+        <img src="https://via.placeholder.com/60/8bc34a/fff?text=R6" alt="" />
+        <div class="radio.name">Radio 6</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/3f51b5/fff?text=R7" data-radio="https://some-radio-7.mp3">
+        <img src="https://via.placeholder.com/60/3f51b5/fff?text=R7" alt="" />
+        <div class="radio.name">Radio 7</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/cddc39/333?text=R8" data-radio="https://some-radio-8.mp3">
+        <img src="https://via.placeholder.com/60/cddc39/333?text=R8" alt="" />
+        <div class="radio.name">Radio 8</div>
       </div>
     </div>
   </div>
+</div>
+
 
   <!-- Materialize y tu JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
