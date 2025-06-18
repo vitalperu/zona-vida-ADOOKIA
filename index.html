@@ -20,7 +20,7 @@
   <style>
     /* Fondo de pantalla */
     body {
-      background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
+      background-image: url('https://img.freepik.com/foto-gratis/notas-musicales-fondo-estilo-dibujos-animados_23-2151056773.jpg?semt=ais_hybrid&w=740');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -176,20 +176,48 @@
       border-radius: 5px;  /* Redondeo de los bordes */
     }
 
-    /* Estilo para el botón play (más delgado) */
+/* Botones estilo play y mute */
     .play-btn {
-      padding: 6px 12px;  /* Más delgado en altura */
       background: #00c6ff;
       border: none;
       border-radius: 30px;
-      font-size: 14px;  /* Tamaño de fuente reducido */
+      font-size: 14px;
       color: #fff;
       cursor: pointer;
+      padding: 6px 12px;
       transition: background 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .play-btn:hover {
       background: #ff00cc;
+    }
+
+    /* Icono volumen como botón mute */
+    #volIcon {
+      cursor: pointer;
+      user-select: none;
+      font-size: 24px;
+      color: #5e35b1;
+      transition: color 0.3s ease;
+    }
+
+    #volIcon:hover {
+      color: #a770ef;
+    }
+
+    #volumeBar {
+      vertical-align: middle;
+      width: 80px;
+      margin: 0 10px;
+    }
+
+    #volValue {
+      font-weight: 600;
+      margin-left: 8px;
+      color: #5e35b1;
     }
 
     /* Estilo para el botón instalar app (más delgado) */
@@ -213,13 +241,13 @@
       display: flex;
       justify-content: center;
     }
+    
     .radio-grid-background {
   background-color: rgba(0, 0, 0, 0.45); /* fondo oscuro semi-transparente */
   padding: 12px;
   border-radius: 12px;
   backdrop-filter: blur(4px); /* efecto de desenfoque opcional */
 }
-
   </style>
 </head>
 <body>
@@ -248,6 +276,7 @@
     <li><a href="#">Programas</a></li>
     <li><a href="#">Contacto</a></li>
   </ul>
+
   <!-- PLAYER Y PARRILLA -->
   <div class="player-app-container">
     <!-- REPRODUCTOR -->
@@ -274,13 +303,13 @@
       </audio>
       <div class="radio-controls">
         <button id="playPauseBtn" class="play-btn">
-          <i id="playPauseIcon" class="material-icons">play_arrow</i>
+          <i id="playPauseIcon" class="material-icons">play_arrow</i> 
         </button>
-        <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="1" style="vertical-align:middle; width: 80px; margin: 0 10px;" />
-        <span id="volIcon" style="vertical-align: middle; cursor: pointer;">
-          <i class="material-icons">volume_up</i>
+        <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="1" />
+        <span id="volIcon" style="vertical-align: middle;">
+          <i id="muteIcon" class="material-icons">volume_up</i>
         </span>
-        <span id="volValue" style="font-weight: 600; margin-left: 8px;">100%</span>
+        <span id="volValue">100%</span>
       </div>
     </div>
 
@@ -325,7 +354,6 @@
   </div>
 </div>
 
-
   <!-- Materialize y tu JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
@@ -362,12 +390,33 @@
       }
     });
 
-    // Volumen
+    // Volumen y mute con icono altavoz
     const volumeBar = document.getElementById('volumeBar');
+    const volIcon = document.getElementById('muteIcon');
     const volValue = document.getElementById('volValue');
-    volumeBar.addEventListener('input', function(){
+
+    volIcon.addEventListener('click', () => {
+      player.muted = !player.muted;
+      if (player.muted) {
+        volIcon.textContent = 'volume_off';
+        volumeBar.value = 0;
+      } else {
+        volIcon.textContent = 'volume_up';
+        volumeBar.value = player.volume || 1;
+      }
+      volValue.textContent = Math.round(volumeBar.value * 100) + '%';
+    });
+
+    volumeBar.addEventListener('input', () => {
       player.volume = volumeBar.value;
-      volValue.textContent = Math.round(volumeBar.value*100) + '%';
+      if (player.volume == 0) {
+        player.muted = true;
+        volIcon.textContent = 'volume_off';
+      } else {
+        player.muted = false;
+        volIcon.textContent = 'volume_up';
+      }
+      volValue.textContent = Math.round(volumeBar.value * 100) + '%';
     });
   </script>
 </body>
