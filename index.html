@@ -404,19 +404,21 @@
 
 <!-- Tu código JS -->
 <script>
-  // Selección de radios y cambio de logo/stream
-  document.querySelectorAll('.radio-item').forEach(function(item){
-    item.addEventListener('click', function(){
-      document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
-      item.classList.add('selected');
-      document.getElementById('logoRadioActual').src = item.getAttribute('data-logo');
-      var player = document.getElementById('player');
-      player.src = item.getAttribute('data-radio');
-      player.load();
-      player.play();
-      document.getElementById('playPauseIcon').textContent = 'pause';
-    });
+// Selección de radios y cambio de logo/stream
+document.querySelectorAll('.radio-item').forEach(function(item){
+  item.addEventListener('click', function(){
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
+    document.getElementById('logoRadioActual').src = item.getAttribute('data-logo');
+    var player = document.getElementById('player');
+    player.src = item.getAttribute('data-radio');
+    player.load();
+    player.play();
+    document.getElementById('playPauseIcon').textContent = 'pause';
+    document.querySelector('.circle-player').classList.add('playing'); // ✅ esta línea se agrega aquí
   });
+});
+
 
   // Play/Pause
   const playPauseBtn = document.getElementById('playPauseBtn');
