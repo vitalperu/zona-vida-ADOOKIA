@@ -237,6 +237,16 @@ body {
   justify-content: space-between;
   min-height: 0;
 }
+
+  /* Efecto al logo cuando suena: borde blanco, glow y leve zoom */
+.circle-player.playing img {
+  transform: scale(1.03);
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+  border-radius: 20px;
+  transition: all 0.25s ease;
+}
+
   </style>
 </head>
 <body>
