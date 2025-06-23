@@ -445,15 +445,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
   M.Sidenav.init(sidenavs);
 });
-
-// Ajustar altura de app para PWA fullscreen sin espacio abajo
-function setAppHeight() {
-  const doc = document.documentElement;
-  doc.style.setProperty('--app-height', `${window.innerHeight}px`);
-}
-window.addEventListener('resize', setAppHeight);
-window.addEventListener('load', setAppHeight);
-
 </script>
 </body>
 </html>
