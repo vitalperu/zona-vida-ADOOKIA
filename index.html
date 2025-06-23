@@ -19,25 +19,27 @@
   <meta name="theme-color" content="#5e2760" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   
-  <style>
-  /* Fondo de pantalla y layout general */
+    <style>
   html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-
-  body {
+    font-family: 'Montserrat', sans-serif;
     background-image: url('https://img.freepik.com/foto-gratis/notas-musicales-fondo-estilo-dibujos-animados_23-2151056773.jpg?semt=ais_hybrid&w=740');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+  }
+
+  /* Nuevo contenedor principal */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     min-height: 100vh;
-    font-family: 'Montserrat', sans-serif;
+    padding-top: 50px;
+    padding-bottom: 20px;
   }
 
   .player-app-container {
@@ -81,36 +83,14 @@
   }
 
   @keyframes pulse {
-    0% {
-      transform: scale(1);
-      box-shadow: 0 0 20px #ff00cc, 0 0 60px #ff00cc inset;
-    }
-    50% {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px #ff00cc, 0 0 80px #ff00cc inset;
-    }
-    100% {
-      transform: scale(1);
-      box-shadow: 0 0 20px #ff00cc, 0 0 60px #ff00cc inset;
-    }
+    0% { transform: scale(1); box-shadow: 0 0 20px #ff00cc, 0 0 60px #ff00cc inset; }
+    50% { transform: scale(1.05); box-shadow: 0 0 30px #ff00cc, 0 0 80px #ff00cc inset; }
+    100% { transform: scale(1); box-shadow: 0 0 20px #ff00cc, 0 0 60px #ff00cc inset; }
   }
 
-  .song-info {
-    text-align: center;
-    margin-top: 18px;
-  }
-
-  .song-title {
-    font-weight: bold;
-    font-size: 1.15rem;
-    color: #4527a0;
-  }
-
-  .song-artist {
-    font-size: 1rem;
-    color: #5e35b1;
-    margin-top: 2px;
-  }
+  .song-info { text-align: center; margin-top: 18px; }
+  .song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
+  .song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
 
   .radio-controls-wrapper {
     display: flex;
@@ -129,7 +109,6 @@
     margin-bottom: 0;
   }
 
-  /* Parrilla de radios */
   .radio-grid-scroll {
     max-height: none;
     overflow-y: visible;
@@ -144,11 +123,10 @@
   }
 
   .radio-container {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0,0,0,0.7);
     border-radius: 12px;
     padding: 8px 10px;
     text-align: center;
-    width: auto;
     max-width: 140px;
     cursor: pointer;
     transition: box-shadow 0.18s, transform 0.18s;
@@ -157,11 +135,6 @@
   .radio-container:hover {
     box-shadow: 0 0 10px #7c4dffaa;
     transform: scale(1.05);
-  }
-
-  .radio-item {
-    padding: 0;
-    position: relative;
   }
 
   .radio-item img {
@@ -176,27 +149,19 @@
     margin: 0 auto;
   }
 
-  .radio-item.selected img,
-  .radio-item:hover img {
+  .radio-item.selected img, .radio-item:hover img {
     border-color: #7c4dff;
     box-shadow: 0 0 0 4px #d1c4e9;
     background: #fff;
   }
 
   .radio-name {
-    position: static;
     margin-top: 6px;
-    padding: 0;
-    background-color: transparent;
-    border-radius: 0;
     font-size: 0.9rem;
     color: white;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
-    box-shadow: none;
-    cursor: default;
   }
 
   .play-btn {
@@ -207,39 +172,18 @@
     color: #fff;
     cursor: pointer;
     padding: 6px 12px;
-    transition: background 0.3s ease;
     display: flex;
     align-items: center;
     gap: 5px;
   }
 
-  .play-btn:hover {
-    background: #ff00cc;
-  }
+  .play-btn:hover { background: #ff00cc; }
 
-  #volIcon {
-    cursor: pointer;
-    user-select: none;
-    font-size: 24px;
-    color: #5e35b1;
-    transition: color 0.3s ease;
-  }
+  #volIcon { cursor: pointer; font-size: 24px; color: #5e35b1; }
+  #volIcon:hover { color: #a770ef; }
 
-  #volIcon:hover {
-    color: #a770ef;
-  }
-
-  #volumeBar {
-    vertical-align: middle;
-    width: 80px;
-    margin: 0 10px;
-  }
-
-  #volValue {
-    font-weight: 600;
-    margin-left: 8px;
-    color: #5e35b1;
-  }
+  #volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
+  #volValue { font-weight: 600; margin-left: 8px; color: #5e35b1; }
 
   .install-btn {
     padding: 6px 12px;
@@ -249,12 +193,9 @@
     font-size: 14px;
     color: #fff;
     cursor: pointer;
-    transition: background 0.3s ease;
   }
 
-  .install-btn:hover {
-    background: #f57c00;
-  }
+  .install-btn:hover { background: #f57c00; }
 
   .install-button-wrapper {
     margin-top: 10px;
@@ -268,7 +209,7 @@
     border-radius: 12px;
     backdrop-filter: blur(4px);
   }
-</style>
+  </style>
 </head>
 <body>
   <!-- NAVBAR (igual, puedes personalizar) -->
