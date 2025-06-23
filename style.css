@@ -9,11 +9,11 @@ body {
 /* Parrilla de Radios */
 .radio-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 columnas */
-  grid-gap: 16px; /* Espacio entre los elementos */
-  margin-bottom: 1rem; /* Espacio debajo de la parrilla */
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 16px;
+  margin-bottom: 1rem;
   width: 100%;
-  max-width: 480px; /* Ajusta el ancho según lo necesites */
+  max-width: 480px;
   justify-items: center;
 }
 
@@ -32,7 +32,7 @@ body {
 }
 
 .radio-item img {
-  width: 60px; /* Ajusta el tamaño de los logos */
+  width: 60px;
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
@@ -60,7 +60,6 @@ nav {
   flex-wrap: wrap;
 }
 
-/* Logo y redes sociales */
 .nav-logo-socials {
   display: flex;
   align-items: center;
@@ -83,7 +82,6 @@ nav {
   box-shadow: 0 8px 24px 0 rgba(0,0,0,0.25);
 }
 
-/* Menú desktop */
 .nav-menu {
   display: flex;
   align-items: center;
@@ -107,7 +105,6 @@ nav {
   color: #a770ef;
 }
 
-/* Botón hamburguesa */
 .sidenav-trigger {
   display: none;
   cursor: pointer;
@@ -124,7 +121,6 @@ nav {
   }
 }
 
-/* Menú lateral (sidenav) */
 .sidenav {
   width: 250px;
 }
@@ -187,7 +183,6 @@ nav {
   }
 }
 
-/* Texto debajo del círculo */
 .song-info {
   margin-top: 0.5rem;
   text-align: center;
@@ -230,7 +225,6 @@ nav {
   align-items: center;
 }
 
-/* Controles de radio */
 .radio-controls-wrapper {
   margin: 0;
   display: flex;
@@ -245,7 +239,6 @@ nav {
   gap: 10px;
 }
 
-/* Botón instalar */
 .install-button-wrapper {
   display: flex;
   justify-content: center;
@@ -278,4 +271,22 @@ nav {
   font-size: 20px;
   line-height: 20px;
 }
-  
+
+/* 🔧 CORRECCIÓN PARA PWA ESPACIO VACÍO ABAJO */
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
