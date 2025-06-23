@@ -461,12 +461,34 @@ installBtn.addEventListener('click', async () => {
     alert("Para instalar, usa Chrome, Brave o Edge.");
   }
 });
+function shareApp() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Zona Vida Radio',
+      text: 'Escucha Zona Vida Radio en tu dispositivo.',
+      url: window.location.href
+    }).then(() => {
+      console.log('Compartido con éxito');
+    }).catch((error) => {
+      console.error('Error al compartir:', error);
+    });
+  } else {
+    alert("Tu navegador no soporta la función de compartir.");
+  }
+}
+
+function closeApp() {
+  if (confirm("¿Quieres salir de la app?")) {
+    window.close();
+  }
+}
 
 // Inicializar el menú hamburguesa
 document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
   M.Sidenav.init(sidenavs);
 });
+  
 </script>
 </body>
 </html>
