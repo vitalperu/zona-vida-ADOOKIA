@@ -317,7 +317,26 @@ body {
     Instalar App
   </button>
 </div>
-
+<!-- ECUALIZADOR HORIZONTAL (debajo del botón Instalar App) -->
+<div id="ecualizador-container" class="ecualizador-container" style="display: none;">
+  <button id="toggle-equalizer">Ecualizador</button>
+  <div id="ecualizador" class="ecualizador">
+    <label for="band1">Banda 1</label>
+    <input type="range" id="band1" min="-30" max="30" value="0">
+    
+    <label for="band2">Banda 2</label>
+    <input type="range" id="band2" min="-30" max="30" value="0">
+    
+    <label for="band3">Banda 3</label>
+    <input type="range" id="band3" min="-30" max="30" value="0">
+    
+    <label for="band4">Banda 4</label>
+    <input type="range" id="band4" min="-30" max="30" value="0">
+    
+    <label for="band5">Banda 5</label>
+    <input type="range" id="band5" min="-30" max="30" value="0">
+  </div>
+</div>
     <!-- CONTROLES -->
     <div class="radio-controls-wrapper">
       <audio id="player" preload="auto">
