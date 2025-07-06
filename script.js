@@ -77,20 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
     deferredPrompt = null;
     installBtn.style.display = 'none';
   });
+
+  // Función para el ecualizador
+  const openEqualizerBtn = document.getElementById('open-equalizer');
   
-  // Obtener los elementos
-const openEqualizerBtn = document.getElementById('open-equalizer');
-const equalizer = document.getElementById('equalizer');
-const closeEqualizerBtn = document.getElementById('close-equalizer');
-
-// Mostrar el ecualizador al hacer clic en el botón
-openEqualizerBtn.addEventListener('click', function() {
-  equalizer.style.display = 'block'; // Muestra el ecualizador
-});
-
-// Cerrar el ecualizador al hacer clic en el botón de cierre
-closeEqualizerBtn.addEventListener('click', function() {
-  equalizer.style.display = 'none'; // Oculta el ecualizador
-});
-
+  // Mostrar mensaje al hacer clic en el botón
+  openEqualizerBtn.addEventListener('click', function() {
+    alert('¡Ecualizador activado!');
+  });
 });
