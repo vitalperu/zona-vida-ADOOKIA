@@ -301,6 +301,48 @@ body {
     <li><a href="#">Programas</a></li>
     <li><a href="#">Contacto</a></li>
   </ul>
+  
+<!-- Botón para abrir el ecualizador -->
+<div class="menu-button">
+  <button id="open-equalizer" class="btn">⚡</button>
+</div>
+  
+  <!-- Ecualizador de 6 bandas, oculto por defecto -->
+<div id="equalizer" class="equalizer">
+  <div class="equalizer-header">
+    <span>Ecualizador</span>
+    <button id="close-equalizer" class="close-btn">X</button>
+  </div>
+  
+  <!-- Las 6 bandas del ecualizador -->
+  <div class="equalizer-bands">
+    <div class="band">
+      <label for="band1">60Hz</label>
+      <input type="range" id="band1" min="-12" max="12" value="0">
+    </div>
+    <div class="band">
+      <label for="band2">170Hz</label>
+      <input type="range" id="band2" min="-12" max="12" value="0">
+    </div>
+    <div class="band">
+      <label for="band3">310Hz</label>
+      <input type="range" id="band3" min="-12" max="12" value="0">
+    </div>
+    <div class="band">
+      <label for="band4">600Hz</label>
+      <input type="range" id="band4" min="-12" max="12" value="0">
+    </div>
+    <div class="band">
+      <label for="band5">1kHz</label>
+      <input type="range" id="band5" min="-12" max="12" value="0">
+    </div>
+    <div class="band">
+      <label for="band6">3kHz</label>
+      <input type="range" id="band6" min="-12" max="12" value="0">
+    </div>
+  </div>
+</div>
+
 
   <!-- PLAYER Y PARRILLA -->
   <div class="player-app-container">
