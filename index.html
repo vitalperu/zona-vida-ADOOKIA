@@ -284,9 +284,8 @@ body {
 <a href="#" onclick="closeApp()" style="color: #F44336; font-size: 22px;" title="Salir">
   <i class="fas fa-times-circle"></i>
 </a>
-
 </div>
-
+ 
       </div>
       <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="nav-menu right">
@@ -301,54 +300,35 @@ body {
     <li><a href="#">Programas</a></li>
     <li><a href="#">Contacto</a></li>
   </ul>
-  
-  <!-- Botón para abrir el ecualizador -->
-<div class="menu-button">
-  <button id="open-equalizer" class="btn">⚡</button>
-</div>
-<!-- Ecualizador -->
-<div id="equalizer" class="equalizer-container" style="display:none;">
-  <div class="equalizer-header">
-    <span>Ecualizador</span>
-    <button id="close-equalizer" class="close-btn">X</button>
+
+  <!-- BOTÓN ECUALIZADOR -->
+  <div style="position: absolute; top: 60px; left: 15px; z-index: 999;">
+    <button id="toggleEqualizer" class="play-btn" style="background:#00c6ff; color:#fff;">
+      🎚️ Ecualizador
+    </button>
   </div>
   
-  <div class="equalizer-bars">
-    <!-- 6 bandas -->
-    <div class="band">
-      <label for="band1">60Hz</label>
-      <input type="range" id="band1" min="-12" max="12" value="0">
-    </div>
-    <div class="band">
-      <label for="band2">170Hz</label>
-      <input type="range" id="band2" min="-12" max="12" value="0">
-    </div>
-    <div class="band">
-      <label for="band3">310Hz</label>
-      <input type="range" id="band3" min="-12" max="12" value="0">
-    </div>
-    <div class="band">
-      <label for="band4">600Hz</label>
-      <input type="range" id="band4" min="-12" max="12" value="0">
-    </div>
-    <div class="band">
-      <label for="band5">1kHz</label>
-      <input type="range" id="band5" min="-12" max="12" value="0">
-    </div>
-    <div class="band">
-      <label for="band6">3kHz</label>
-      <input type="range" id="band6" min="-12" max="12" value="0">
-    </div>
-  </div>
-</div>
-
-
+  
   <!-- PLAYER Y PARRILLA -->
   <div class="player-app-container">
     <!-- REPRODUCTOR -->
     <div class="circle-player" id="player-visual">
       <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
     </div>
+    
+    <!-- CONTENEDOR DEL ECUALIZADOR -->
+<div id="equalizer" style="display:none; padding: 20px; background: rgba(0,0,0,0.7); border-radius: 12px; margin: 20px; color: #fff;">
+  <h5 style="margin-bottom:15px;">Ecualizador 🎚️</h5>
+  <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+    <div><label>60Hz BAJOS ULTRA</label><br><input type="range" id="band1" min="-20" max="20" value="0"></div>
+    <div><label>170Hz BAJOS</label><br><input type="range" id="band2" min="-20" max="20" value="0"></div>
+    <div><label>310Hz MEDIOS BAJOS</label><br><input type="range" id="band3" min="-20" max="20" value="0"></div>
+    <div><label>600Hz MEDIOS</label><br><input type="range" id="band4" min="-20" max="20" value="0"></div>
+    <div><label>1kHz MEDIOS AGUDOS</label><br><input type="range" id="band5" min="-20" max="20" value="0"></div>
+    <div><label>3kHz AGUDOS</label><br><input type="range" id="band6" min="-20" max="20" value="0"></div>
+  </div>
+</div>
+
 
     <!-- BOTÓN INSTALAR APP -->
 <div class="install-button-wrapper">
@@ -555,6 +535,15 @@ document.addEventListener('DOMContentLoaded', function() {
   M.Sidenav.init(sidenavs);
 });
   
+  document.getElementById('toggleEqualizer').addEventListener('click', function(){
+  const eq = document.getElementById('equalizer');
+  if(eq.style.display === 'none'){
+    eq.style.display = 'block';
+  } else {
+    eq.style.display = 'none';
+  }
+});
+
 </script>
 </body>
 </html>
