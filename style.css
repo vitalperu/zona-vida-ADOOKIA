@@ -1,350 +1,549 @@
-/* Estilos generales del body */
-body {
-  background-color: #ede7f6;
-  font-family: 'Montserrat', sans-serif;
-  color: #5e2760;
-  margin: 0;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zona Vida Radio</title>
 
-/* Parrilla de Radios */
-.radio-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 16px;
-  margin-bottom: 1rem;
-  width: 100%;
-  max-width: 480px;
-  justify-items: center;
-}
+  <!-- Google Fonts y Material Icons -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-.radio-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+  <!-- Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+  <link rel="stylesheet" href="style.css" />
 
-.radio-item:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#5e2760" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  
+<style>
+    /* Fondo de pantalla */
+    body {
+      background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-.radio-item img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.radio-name {
-  font-size: 0.85rem;
-  text-align: center;
-  color: #5e2760;
-  font-weight: 600;
-  opacity: 0.75;
-  letter-spacing: 1px;
-  text-transform: capitalize;
-}
-
-/* Navegación */
-nav {
-  padding: 0 1rem;
-}
-
-.nav-wrapper {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  flex-wrap: wrap;
-}
-
-.nav-logo-socials {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-socials {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.nav-socials .btn-floating {
-  box-shadow: none;
-  transition: transform 0.2s ease;
-}
-
-.nav-socials .btn-floating:hover {
-  transform: scale(1.15) rotate(-7deg);
-  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.25);
-}
-
-.nav-menu {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 0;
-  list-style: none;
-  padding-left: 0;
-}
-
-.nav-menu li a {
-  color: #5e2760;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 1.1rem;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.nav-menu li a:hover {
-  color: #a770ef;
-}
-
-.sidenav-trigger {
-  display: none;
-  cursor: pointer;
-  font-size: 2rem;
-  color: #5e2760;
-}
-
-@media (max-width: 992px) {
-  .nav-menu {
-    display: none !important;
+  /* Nuevo contenedor principal */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding-top: 50px;
+    padding-bottom: 20px;
   }
-  .sidenav-trigger {
-    display: inline-flex !important;
+
+  .player-app-container {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 500px;
+    margin: 32px auto 0 auto;
   }
-}
 
-.sidenav {
-  width: 250px;
-}
-
-/* Visualizador circular y espectro */
-.circle-song-visual {
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #a770ef 0%, #f6d365 100%);
-  box-shadow: 0 4px 24px 0 #9b59b640;
-  position: relative;
-  animation: float 4s ease-in-out infinite;
+.circle-player {
+  width: 220px;
+  height: 220px;
+  border-radius: 40px;
+  background: #fff;
+  margin: 20px auto;
+  border: 5px solid #00c6ff;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  box-shadow: 0 0 20px #00c6ff, 0 0 60px #00c6ff inset;
+  transition: all 0.3s ease;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
+
+.circle-player.playing {
+  animation: pulse 1.2s infinite;
+  border-color: #ffffff; /* ← ahora blanco */
+  box-shadow: 0 0 20px #ffffff, 0 0 60px #ffffff inset;
+}
+
+  .circle-player img {
+    width: 90%;
+    height: 90%;
+    border-radius: 20px;
+    transition: transform 0.2s ease;
+  }
+
+  .circle-player.playing img {
+    transform: scale(1.1);
+  }
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 20px #5205e3, 0 0 60px #03fcc2 inset;
   }
   50% {
-    transform: translateY(-12px);
+    transform: scale(1.05);
+    box-shadow: 0 0 30px #009dff, 0 0 80px #009dff inset;
   }
-}
-
-.spectrum-bars {
-  position: absolute;
-  top: 38px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  height: 40px;
-  gap: 5px;
-  z-index: 2;
-}
-
-.spectrum-bars .bar {
-  width: 12px;
-  height: 22px;
-  background: #fff;
-  border-radius: 5px;
-  margin: 0 2px;
-  animation: bounce 1s infinite alternate;
-}
-
-.spectrum-bars .bar:nth-child(2) { animation-delay: 0.15s; }
-.spectrum-bars .bar:nth-child(3) { animation-delay: 0.3s; }
-.spectrum-bars .bar:nth-child(4) { animation-delay: 0.45s; }
-.spectrum-bars .bar:nth-child(5) { animation-delay: 0.6s; }
-.spectrum-bars .bar:nth-child(6) { animation-delay: 0.75s; }
-
-@keyframes bounce {
-  to {
-    height: 38px;
-    background: #fff9;
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px #fc05f0, 0 0 60px #009dff inset;
   }
-}
+  }
 
-.song-info {
-  margin-top: 0.5rem;
+  .song-info { text-align: center; margin-top: 18px; }
+  .song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
+  .song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
+
+  .radio-controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 16px 0 0 0;
+  }
+
+  .radio-controls {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.7);
+    border-radius: 18px;
+    padding: 8px 20px 8px 8px;
+    box-shadow: 0 2px 8px #ccc2;
+    margin-bottom: 0;
+  }
+
+  .radio-grid-scroll {
+    max-height: none;
+    overflow-y: visible;
+    padding: 6px 0 0 0;
+  }
+
+  .radio-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    justify-items: center;
+  }
+
+.radio-container {
+  background-color: #020742;
+  border-radius: 12px;
+  padding: 8px 10px;
   text-align: center;
-  color: #5e2760;
-  font-weight: 600;
-  font-size: 0.85rem;
-  opacity: 0.75;
-  letter-spacing: 0.8px;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.song-title {
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 1px;
-  margin-bottom: 0.2rem;
-}
-
-.song-artist {
-  font-style: italic;
-  font-size: 0.85rem;
-  opacity: 0.7;
-}
-
-/* Contenedor principal */
-.player-container {
-  min-height: calc(100vh - 100px);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 1rem;
-  padding: 2rem 0 3rem 0;
-}
-
-.circle-wrapper {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.radio-controls-wrapper {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.radio-controls {
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.install-button-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-#installBtn {
-  padding: 0 20px;
-  height: 36px;
-  font-size: 0.9rem;
-  border-radius: 20px;
-  background-color: #5e2760;
-  color: #fff;
-  text-transform: none;
-  box-shadow: 0 4px 12px rgb(94 39 96 / 0.5);
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  max-width: 140px;
   cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s;
 }
 
-#installBtn:hover {
-  background-color: #a770ef;
+  .radio-container:hover {
+    box-shadow: 0 0 10px #7c4dffaa;
+    transform: scale(1.05);
+  }
+
+  .radio-item img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px #5e35b122;
+    border: 3px solid #e0e0e0;
+    transition: border-color 0.15s;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .radio-item.selected img, .radio-item:hover img {
+    border-color: #7c4dff;
+    box-shadow: 0 0 0 4px #d1c4e9;
+    background: #fff;
+  }
+
+  .radio-name {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .play-btn {
+    background: #020c4d;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .play-btn:hover { background: #008bf5; }
+  
+    .play-btn:active,
+.play-btn:focus {
+  background: #06b8ac;
+  box-shadow: none;
+  outline: none;
 }
 
-#installBtn i.material-icons.left {
-  font-size: 20px;
-  line-height: 20px;
-}
+  #volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
+  #volIcon:hover { color: #fa2802; }
 
-/* 🔧 CORRECCIÓN PARA PWA ESPACIO VACÍO ABAJO */
+  #volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
+  #volValue { font-weight: 600; margin-left: 8px; color: #05012e }
 
-html, body {
+  .install-btn {
+    padding: 6px 12px;
+    background: #ff9800;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .install-btn:hover { background: #f57c00; }
+
+  .install-button-wrapper {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .radio-grid-background {
+    background-color: rgba(0, 0, 0, 0.45);
+    padding: 12px;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+  }
+
+  html, body {
   height: 100%;
   margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+  flex: 1;
 }
 
-.player-container {
+.player-app-container {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 0;
 }
 
-let audioContext;
-let sourceNode;
-let eqActivo = false;
+  /* Efecto al logo cuando suena: borde blanco, glow y leve zoom */
+.circle-player.playing img {
+  transform: scale(1.03);
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+  border-radius: 50%;
+  transition: all 0.25s ease;
+}
 
-playPauseBtn.addEventListener('click', () => {
-  if (!audioContext) {
-    // Inicia AudioContext la primera vez que el usuario hace clic
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    sourceNode = audioContext.createMediaElementSource(player);
+  </style>
+</head>
+<body>
+  <!-- NAVBAR (igual, puedes personalizar) -->
+  <nav class="white z-depth-1">
+    <div class="nav-wrapper container">
+      <div class="nav-logo-socials">
+        <img src="./img/logosuperior-zona-vida.png" alt="Zona Vida Radio" style="height:35px; margin-top:5px; display:none;" />
+<div class="nav-socials" style="display: flex; align-items: center; gap: 12px; margin-left: 20px;">
+  <a href="https://www.youtube.com/@enlaceperutv" target="_blank" style="color: #FF0000; font-size: 22px;">
+    <i class="fab fa-youtube"></i>
+  </a>
+  <a href="https://facebook.com" target="_blank" style="color: #1877F2; font-size: 22px;">
+    <i class="fab fa-facebook"></i>
+  </a>
+  <a href="https://tiktok.com" target="_blank" style="color: #000000; font-size: 22px;">
+    <i class="fab fa-tiktok"></i>
+  </a>
+  <a href="https://instagram.com" target="_blank" style="color: #E4405F; font-size: 22px;">
+    <i class="fab fa-instagram"></i>
+  </a>
+  <a href="https://wa.me/51900000000" target="_blank" style="color: #25D366; font-size: 22px;">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <a href="#" onclick="shareApp()" style="color: #FF9800; font-size: 22px;" title="Compartir">
+  <i class="fas fa-share-alt"></i>
+</a>
+<a href="#" onclick="closeApp()" style="color: #F44336; font-size: 22px;" title="Salir">
+  <i class="fas fa-times-circle"></i>
+</a>
+</div>
+ 
+      </div>
+      <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul class="nav-menu right">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Programas</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+  <ul class="sidenav" id="mobile-menu">
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#">Programas</a></li>
+    <li><a href="#">Contacto</a></li>
+  </ul>
 
-    // Ecualizador
-    const band1 = audioContext.createBiquadFilter();
-    band1.type = "peaking";
-    band1.frequency.value = 60;
+  <!-- BOTÓN ECUALIZADOR -->
+  <div style="position: absolute; top: 60px; left: 15px; z-index: 999;">
+    <button id="toggleEqualizer" class="play-btn" style="background:#00c6ff; color:#fff;">
+      🎚️ Ecualizador
+    </button>
+  </div>
+  
+  
+  <!-- PLAYER Y PARRILLA -->
+  <div class="player-app-container">
+    <!-- REPRODUCTOR -->
+    <div class="circle-player" id="player-visual">
+      <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
+    </div>
+    
+    <!-- CONTENEDOR DEL ECUALIZADOR -->
+<div id="equalizer" style="display:none; padding: 20px; background: rgba(0,0,0,0.7); border-radius: 12px; margin: 20px; color: #fff;">
+  <h5 style="margin-bottom:15px;">Ecualizador 🎚️</h5>
+  <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+    <div><label>60Hz BAJOS ULTRA</label><br><input type="range" id="band1" min="-20" max="20" value="0"></div>
+    <div><label>170Hz BAJOS</label><br><input type="range" id="band2" min="-20" max="20" value="0"></div>
+    <div><label>310Hz MEDIOS BAJOS</label><br><input type="range" id="band3" min="-20" max="20" value="0"></div>
+    <div><label>600Hz MEDIOS</label><br><input type="range" id="band4" min="-20" max="20" value="0"></div>
+    <div><label>1kHz MEDIOS AGUDOS</label><br><input type="range" id="band5" min="-20" max="20" value="0"></div>
+    <div><label>3kHz AGUDOS</label><br><input type="range" id="band6" min="-20" max="20" value="0"></div>
+  </div>
+</div>
 
-    const band2 = audioContext.createBiquadFilter();
-    band2.type = "peaking";
-    band2.frequency.value = 170;
 
-    const band3 = audioContext.createBiquadFilter();
-    band3.type = "peaking";
-    band3.frequency.value = 310;
+    <!-- BOTÓN INSTALAR APP -->
+<div class="install-button-wrapper">
+  <button id="installBtn" class="install-btn">
+    <i class="fab fa-android" style="color:#A4C639; font-size:20px;"></i>
+    <i class="fab fa-apple" style="color:#999; font-size:20px; margin-left:5px;"></i>
+    Instalar App
+  </button>
+</div>
 
-    const band4 = audioContext.createBiquadFilter();
-    band4.type = "peaking";
-    band4.frequency.value = 600;
+    <!-- CONTROLES -->
+    <div class="radio-controls-wrapper">
+      <audio id="player" preload="auto">
+        <source src="https://radio.zonavidahd.online/listen/hd/radio.mp3" type="audio/mpeg" />
+        Tu navegador no soporta audio en línea.
+      </audio>
+      <div class="radio-controls">
+        <button id="playPauseBtn" class="play-btn">
+          <i id="playPauseIcon" class="material-icons">play_arrow</i> 
+        </button>
+        <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="1" />
+        <span id="volIcon" style="vertical-align: middle;">
+          <i id="muteIcon" class="material-icons">volume_up</i>
+        </span>
+        <span id="volValue">100%</span>
+      </div>
+    </div>
 
-    const band5 = audioContext.createBiquadFilter();
-    band5.type = "peaking";
-    band5.frequency.value = 1000;
+    <!-- PARRILLA DE RADIOS -->
+<div class="radio-grid-scroll">
+  <div class="radio-grid-background">
+    <div class="radio-grid">
+      
+      
+      <div class="radio-item selected" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
+    <div class="radio-name">Zona Vida</div>
+  </div>
+</div>
 
-    const band6 = audioContext.createBiquadFilter();
-    band6.type = "peaking";
-    band6.frequency.value = 3000;
+<div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
+    <div class="radio-name">ZV Latino</div>
+  </div>
+</div>
 
-    // Conexión de cadena
-    sourceNode.connect(band1).connect(band2).connect(band3).connect(band4).connect(band5).connect(band6).connect(audioContext.destination);
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/4caf50/fff?text=R3" data-radio="https://some-radio-3.mp3">
+        <img src="https://via.placeholder.com/60/4caf50/fff?text=R3" alt="" />
+        <div class="radio-name">Z Vida</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/e91e63/fff?text=R4" data-radio="https://some-radio-4.mp3">
+        <img src="https://via.placeholder.com/60/e91e63/fff?text=R4" alt="" />
+        <div class="radio.name">Radio 4</div>
+      </div>
+      <!-- Agrega más radios aquí -->
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/607d8b/fff?text=R5" data-radio="https://some-radio-5.mp3">
+        <img src="https://via.placeholder.com/60/607d8b/fff?text=R5" alt="" />
+        <div class="radio.name">Radio 5</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/8bc34a/fff?text=R6" data-radio="https://some-radio-6.mp3">
+        <img src="https://via.placeholder.com/60/8bc34a/fff?text=R6" alt="" />
+        <div class="radio.name">Radio 6</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/3f51b5/fff?text=R7" data-radio="https://some-radio-7.mp3">
+        <img src="https://via.placeholder.com/60/3f51b5/fff?text=R7" alt="" />
+        <div class="radio.name">Radio 7</div>
+      </div>
+      <div class="radio-item" data-logo="https://via.placeholder.com/120/cddc39/333?text=R8" data-radio="https://some-radio-8.mp3">
+        <img src="https://via.placeholder.com/60/cddc39/333?text=R8" alt="" />
+        <div class="radio.name">Radio 8</div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    // Listeners para sliders
-    document.getElementById('band1').addEventListener('input', e => band1.gain.value = e.target.value);
-    document.getElementById('band2').addEventListener('input', e => band2.gain.value = e.target.value);
-    document.getElementById('band3').addEventListener('input', e => band3.gain.value = e.target.value);
-    document.getElementById('band4').addEventListener('input', e => band4.gain.value = e.target.value);
-    document.getElementById('band5').addEventListener('input', e => band5.gain.value = e.target.value);
-    document.getElementById('band6').addEventListener('input', e => band6.gain.value = e.target.value);
+  <!-- Materialize y tu JS -->
+ <!-- Materialize JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-    eqActivo = true;
-  }
+<!-- Tu código JS -->
+<script>
+// Selección de radios y cambio de logo/stream
+document.querySelectorAll('.radio-item').forEach(function(item){
+  item.addEventListener('click', function(){
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
+    document.getElementById('logoRadioActual').src = item.getAttribute('data-logo');
+    var player = document.getElementById('player');
+    player.src = item.getAttribute('data-radio');
+    player.load();
+    player.play();
+    document.getElementById('playPauseIcon').textContent = 'pause';
+    document.querySelector('.circle-player').classList.add('playing'); 
+  });
+});
 
-  if (player.paused) {
+// Play/Pause
+const playPauseBtn = document.getElementById('playPauseBtn');
+const playPauseIcon = document.getElementById('playPauseIcon');
+const player = document.getElementById('player');
+
+playPauseBtn.addEventListener('click', function(){
+  if(player.paused){
     player.play();
     playPauseIcon.textContent = 'pause';
+    document.querySelector('.circle-player').classList.add('playing');
   } else {
     player.pause();
     playPauseIcon.textContent = 'play_arrow';
+    document.querySelector('.circle-player').classList.remove('playing');
   }
 });
+
+// Volumen y mute con icono altavoz
+const volumeBar = document.getElementById('volumeBar');
+const volIcon = document.getElementById('muteIcon');
+const volValue = document.getElementById('volValue');
+
+volIcon.addEventListener('click', () => {
+  player.muted = !player.muted;
+  if (player.muted) {
+    volIcon.textContent = 'volume_off';
+    volumeBar.value = 0;
+  } else {
+    volIcon.textContent = 'volume_up';
+    volumeBar.value = player.volume || 1;
+  }
+  volValue.textContent = Math.round(volumeBar.value * 100) + '%';
+});
+
+volumeBar.addEventListener('input', () => {
+  player.volume = volumeBar.value;
+  if (player.volume == 0) {
+    player.muted = true;
+    volIcon.textContent = 'volume_off';
+  } else {
+    player.muted = false;
+    volIcon.textContent = 'volume_up';
+  }
+  volValue.textContent = Math.round(volumeBar.value * 100) + '%';
+});
+
+// Registro de Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      console.log('Service Worker registrado con éxito:', registration.scope);
+    }).catch(function(error) {
+      console.log('Error al registrar Service Worker:', error);
+    });
+  });
+}
+
+// Botón instalar PWA
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-block';
+});
+
+installBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('App instalada correctamente');
+      installBtn.textContent = "¡Instalada!";
+    }
+    deferredPrompt = null;
+  } else {
+    alert("Para instalar, usa Chrome, Brave o Edge.");
+  }
+});
+function shareApp() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Zona Vida Radio',
+      text: 'Escucha Zona Vida Radio en tu dispositivo.',
+      url: window.location.href
+    }).then(() => {
+      console.log('Compartido con éxito');
+    }).catch((error) => {
+      console.error('Error al compartir:', error);
+    });
+  } else {
+    alert("Tu navegador no soporta la función de compartir.");
+  }
+}
+
+function closeApp() {
+  if (confirm("¿Quieres salir de la app?")) {
+    window.close();
+  }
+}
+
+// Inicializar el menú hamburguesa
+document.addEventListener('DOMContentLoaded', function() {
+  var sidenavs = document.querySelectorAll('.sidenav');
+  M.Sidenav.init(sidenavs);
+});
+  
+  document.getElementById('toggleEqualizer').addEventListener('click', function(){
+  const eq = document.getElementById('equalizer');
+  if(eq.style.display === 'none'){
+    eq.style.display = 'block';
+  } else {
+    eq.style.display = 'none';
+  }
+});
+
+</script>
+</body>
+</html>
