@@ -291,90 +291,60 @@ body {
   justify-content: space-between;
 }
 
-/* Contenedor del botón */
-.custom-button-container {
-  position: fixed;
-  top: 80px;        /* Ajusta la distancia desde el borde superior (más abajo que el menú) */
-  left: 20px;       /* Distancia desde el borde izquierdo */
-  z-index: 1000;    /* Asegura que el botón esté por encima de otros elementos */
-}
+let audioContext;
+let sourceNode;
+let eqActivo = false;
 
-/* Estilo del botón */
-.custom-button {
-  background-color: #007BFF;    /* Color de fondo */
-  border: none;
-  color: white;                 /* Color del texto */
-  padding: 15px 30px;           /* Tamaño del botón */
-  font-size: 16px;              /* Tamaño del texto */
-  border-radius: 8px;           /* Bordes redondeados */
-  cursor: pointer;
-  transition: background-color 0.3s ease; /* Efecto cuando se pasa el ratón */
-}
+playPauseBtn.addEventListener('click', () => {
+  if (!audioContext) {
+    // Inicia AudioContext la primera vez que el usuario hace clic
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    sourceNode = audioContext.createMediaElementSource(player);
 
-/* Cambio de color cuando se pasa el ratón */
-.custom-button:hover {
-  background-color: #0056b3;
-}
+    // Ecualizador
+    const band1 = audioContext.createBiquadFilter();
+    band1.type = "peaking";
+    band1.frequency.value = 60;
 
-/* Estilo para el ecualizador */
-.equalizer-container {
-  position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  z-index: 1100;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  display: none; /* Está oculto por defecto */
-}
+    const band2 = audioContext.createBiquadFilter();
+    band2.type = "peaking";
+    band2.frequency.value = 170;
 
-/* Encabezado del ecualizador */
-.equalizer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
+    const band3 = audioContext.createBiquadFilter();
+    band3.type = "peaking";
+    band3.frequency.value = 310;
 
-.equalizer-header span {
-  font-size: 18px;
-  font-weight: bold;
-}
+    const band4 = audioContext.createBiquadFilter();
+    band4.type = "peaking";
+    band4.frequency.value = 600;
 
-.close-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-}
+    const band5 = audioContext.createBiquadFilter();
+    band5.type = "peaking";
+    band5.frequency.value = 1000;
 
-.close-btn:hover {
-  color: #ff0000;
-}
+    const band6 = audioContext.createBiquadFilter();
+    band6.type = "peaking";
+    band6.frequency.value = 3000;
 
-/* Contenedor de las barras */
-.equalizer-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+    // Conexión de cadena
+    sourceNode.connect(band1).connect(band2).connect(band3).connect(band4).connect(band5).connect(band6).connect(audioContext.destination);
 
-/* Cada banda */
-.band {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    // Listeners para sliders
+    document.getElementById('band1').addEventListener('input', e => band1.gain.value = e.target.value);
+    document.getElementById('band2').addEventListener('input', e => band2.gain.value = e.target.value);
+    document.getElementById('band3').addEventListener('input', e => band3.gain.value = e.target.value);
+    document.getElementById('band4').addEventListener('input', e => band4.gain.value = e.target.value);
+    document.getElementById('band5').addEventListener('input', e => band5.gain.value = e.target.value);
+    document.getElementById('band6').addEventListener('input', e => band6.gain.value = e.target.value);
 
-.band label {
-  font-size: 14px;
-}
+    eqActivo = true;
+  }
 
-.band input {
-  width: 200px; /* Ajusta el tamaño de las barras */
-}
+  if (player.paused) {
+    player.play();
+    playPauseIcon.textContent = 'pause';
+  } else {
+    player.pause();
+    playPauseIcon.textContent = 'play_arrow';
+  }
+});
