@@ -302,20 +302,19 @@ body {
     <li><a href="#">Contacto</a></li>
   </ul>
   
-<!-- Botón para abrir el ecualizador -->
+  <!-- Botón para abrir el ecualizador -->
 <div class="menu-button">
   <button id="open-equalizer" class="btn">⚡</button>
 </div>
-  
-  <!-- Ecualizador de 6 bandas, oculto por defecto -->
-<div id="equalizer" class="equalizer">
+<!-- Ecualizador -->
+<div id="equalizer" class="equalizer-container" style="display:none;">
   <div class="equalizer-header">
     <span>Ecualizador</span>
     <button id="close-equalizer" class="close-btn">X</button>
   </div>
   
-  <!-- Las 6 bandas del ecualizador -->
-  <div class="equalizer-bands">
+  <div class="equalizer-bars">
+    <!-- 6 bandas -->
     <div class="band">
       <label for="band1">60Hz</label>
       <input type="range" id="band1" min="-12" max="12" value="0">
