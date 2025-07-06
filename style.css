@@ -290,3 +290,86 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
+
+/* Estilo para el botón en la parte superior izquierda */
+.menu-button {
+  position: fixed;
+  top: 10px;        /* Distancia desde el borde superior */
+  left: 10px;       /* Distancia desde el borde izquierdo */
+  z-index: 1000;    /* Asegura que el botón se vea por encima de otros elementos */
+}
+
+.btn {
+  background-color: transparent;
+  border: none;
+  font-size: 30px;   /* Ajusta el tamaño del ícono */
+  color: #fff;       /* Color blanco para el botón */
+  cursor: pointer;
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  color: #00f;       /* Cambia el color cuando el mouse pasa por encima */
+}
+
+/* Estilo para el Ecualizador */
+.equalizer {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  display: none; /* Inicialmente está oculto */
+  z-index: 1100;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.equalizer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.equalizer-header span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #ff0000;
+}
+
+.equalizer-bands {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.band {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.band label {
+  font-size: 14px;
+}
+
+.band input {
+  width: 150px;
+}
+
