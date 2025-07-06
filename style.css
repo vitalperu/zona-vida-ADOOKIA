@@ -291,32 +291,35 @@ body {
   justify-content: space-between;
 }
 
-/* Estilo para el botón en la parte superior izquierda */
-.menu-button {
+/* Contenedor del botón */
+.custom-button-container {
   position: fixed;
-  top: 10px;        /* Distancia desde el borde superior */
-  left: 10px;       /* Distancia desde el borde izquierdo */
-  z-index: 1000;    /* Asegura que el botón se vea por encima de otros elementos */
+  top: 80px;        /* Ajusta la distancia desde el borde superior (más abajo que el menú) */
+  left: 20px;       /* Distancia desde el borde izquierdo */
+  z-index: 1000;    /* Asegura que el botón esté por encima de otros elementos */
 }
 
-.btn {
-  background-color: transparent;
+/* Estilo del botón */
+.custom-button {
+  background-color: #007BFF;    /* Color de fondo */
   border: none;
-  font-size: 30px;   /* Ajusta el tamaño del ícono */
-  color: #fff;       /* Color blanco para el botón */
+  color: white;                 /* Color del texto */
+  padding: 15px 30px;           /* Tamaño del botón */
+  font-size: 16px;              /* Tamaño del texto */
+  border-radius: 8px;           /* Bordes redondeados */
   cursor: pointer;
-  padding: 10px;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease; /* Efecto cuando se pasa el ratón */
 }
 
-.btn:hover {
-  color: #00f;       /* Cambia el color cuando el mouse pasa por encima */
+/* Cambio de color cuando se pasa el ratón */
+.custom-button:hover {
+  background-color: #0056b3;
 }
 
-/* Estilo para el Ecualizador */
-.equalizer {
+/* Estilo para el ecualizador */
+.equalizer-container {
   position: fixed;
-  top: 10%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.8);
@@ -324,11 +327,12 @@ body {
   padding: 20px;
   border-radius: 10px;
   width: 300px;
-  display: none; /* Inicialmente está oculto */
   z-index: 1100;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: none; /* Está oculto por defecto */
 }
 
+/* Encabezado del ecualizador */
 .equalizer-header {
   display: flex;
   justify-content: space-between;
@@ -353,12 +357,14 @@ body {
   color: #ff0000;
 }
 
-.equalizer-bands {
+/* Contenedor de las barras */
+.equalizer-bars {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+/* Cada banda */
 .band {
   display: flex;
   justify-content: space-between;
@@ -370,6 +376,5 @@ body {
 }
 
 .band input {
-  width: 150px;
+  width: 200px; /* Ajusta el tamaño de las barras */
 }
-
