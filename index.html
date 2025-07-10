@@ -318,6 +318,13 @@ body {
   </button>
 </div>
 
+  <!-- BOTÓN MÁS RADIOS -->
+<div style="margin: 10px 20px 0;">
+  <button id="btnMasRadios" class="btn-small pulse" style="background: #e91e63; border-radius: 20px; font-weight:600;">
+    <i class="fas fa-plus-circle"></i> Más Radios
+  </button>
+</div>
+  
     <!-- CONTROLES -->
     <div class="radio-controls-wrapper">
       <audio id="player" preload="auto">
@@ -336,47 +343,77 @@ body {
       </div>
     </div>
 
-    <!-- PARRILLA DE RADIOS -->
+   <!-- PARRILLA DE RADIOS -->
 <div class="radio-grid-scroll">
   <div class="radio-grid-background">
     <div class="radio-grid">
-      
-      
+
       <div class="radio-item selected" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
-    <div class="radio-name">Zona Vida</div>
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
+          <div class="radio-name">Zona Vida</div>
+        </div>
+      </div>
+
+      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino" />
+          <div class="radio-name">ZV Latino</div>
+        </div>
+      </div>
+
+      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino" />
+          <div class="radio-name">ZV Latino</div>
+        </div>
+      </div>
+
+      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino" />
+          <div class="radio-name">ZV Latino</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NUEVA PARRILLA OCULTA -->
+    <div id="masRadiosGrid" class="radio-grid" style="margin-top:14px; display:none; background-color:rgba(26,0,51,0.7); padding:10px; border-radius:12px;">
+
+      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/yourstream1">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Extra 1" />
+          <div class="radio-name">Radio Extra 1</div>
+        </div>
+      </div>
+
+      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/yourstream2">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Extra 2" />
+          <div class="radio-name">Radio Extra 2</div>
+        </div>
+      </div>
+
+      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/yourstream3">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Extra 3" />
+          <div class="radio-name">Radio Extra 3</div>
+        </div>
+      </div>
+
+      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/yourstream4">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Extra 4" />
+          <div class="radio-name">Radio Extra 4</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>
- 
-<div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>      
-      
- <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>     
-  </div>
-</div>
-
-  <!-- Materialize y tu JS -->
- <!-- Materialize JS -->
+<!-- Materialize y tu JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-<!-- Tu código JS -->
 <script>
 // Selección de radios y cambio de logo/stream
 document.querySelectorAll('.radio-item').forEach(function(item){
@@ -473,6 +510,8 @@ installBtn.addEventListener('click', async () => {
     alert("Para instalar, usa Chrome, Brave o Edge.");
   }
 });
+
+// Botón compartir
 function shareApp() {
   if (navigator.share) {
     navigator.share({
@@ -489,18 +528,32 @@ function shareApp() {
   }
 }
 
+// Cerrar app
 function closeApp() {
   if (confirm("¿Quieres salir de la app?")) {
     window.close();
   }
 }
 
-// Inicializar el menú hamburguesa
+// Inicializar menú hamburguesa
 document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
   M.Sidenav.init(sidenavs);
 });
-  
+
+// Mostrar/ocultar nueva parrilla de radios
+document.getElementById('masRadiosBtn').addEventListener('click', function(){
+  var extraGrid = document.getElementById('masRadiosGrid');
+  if(extraGrid.style.display === 'none'){
+    extraGrid.style.display = 'grid';
+    this.innerHTML = '<i class="fas fa-times-circle"></i> Cerrar Radios';
+    this.style.background = '#e53935';
+  } else {
+    extraGrid.style.display = 'none';
+    this.innerHTML = '<i class="fas fa-plus-circle"></i> Más Radios';
+    this.style.background = '#00c6ff';
+  }
+});
 </script>
 </body>
 </html>
