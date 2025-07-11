@@ -1,11 +1,10 @@
 {
   "name": "Zona Vida",
   "short_name": "Zona-Vida",
-  "start_url": "/zona-vida-ADOOKIA/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#5e2760",
-  "description": "Escucha Zona Vida Radio en tu dispositivo. Instala gratis para Android e iOS.",
+  "description": "Instala gratis para android ios.",
   "icons": [
     {
       "src": "img/icon-192x192.png",
