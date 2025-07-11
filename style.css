@@ -1,62 +1,23 @@
-/* Estilos generales del body */
+/* ======== ESTILOS GENERALES ======== */
 body {
   background-color: #ede7f6;
   font-family: 'Montserrat', sans-serif;
   color: #5e2760;
   margin: 0;
-}
-
-/* Parrilla de Radios */
-.radio-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 16px;
-  margin-bottom: 1rem;
-  width: 100%;
-  max-width: 480px;
-  justify-items: center;
-}
-
-.radio-item {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
 }
 
-.radio-item:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}
-
-.radio-item img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.radio-name {
-  font-size: 0.85rem;
-  text-align: center;
-  color: #5e2760;
-  font-weight: 600;
-  opacity: 0.75;
-  letter-spacing: 1px;
-  text-transform: capitalize;
-}
-
-/* Navegación */
+/* ======== NAVEGACIÓN ======== */
 nav {
   padding: 0 1rem;
 }
 
 .nav-wrapper {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 
@@ -72,23 +33,24 @@ nav {
   gap: 10px;
 }
 
-.nav-socials .btn-floating {
-  box-shadow: none;
+.nav-socials .tooltipped {
+  font-size: 1.3rem;
+  color: #5e2760;
   transition: transform 0.2s ease;
 }
 
-.nav-socials .btn-floating:hover {
+.nav-socials .tooltipped:hover {
   transform: scale(1.15) rotate(-7deg);
-  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.25);
+  color: #a770ef;
 }
 
 .nav-menu {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin: 0;
   list-style: none;
   padding-left: 0;
+  margin: 0;
 }
 
 .nav-menu li a {
@@ -125,18 +87,75 @@ nav {
   width: 250px;
 }
 
-/* Visualizador circular y espectro */
-.circle-song-visual {
+/* ======== PARRILLA DE RADIOS ======== */
+.radio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 16px;
+  margin-bottom: 1rem;
+  max-width: 480px;
+  justify-items: center;
+}
+
+.radio-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.radio-item:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.radio-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.radio-name {
+  font-size: 0.85rem;
+  text-align: center;
+  color: #5e2760;
+  font-weight: 600;
+  opacity: 0.75;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+}
+
+/* ======== REPRODUCTOR PRINCIPAL ======== */
+.player-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 0 3rem 0;
+  align-items: center;
+  gap: 1rem;
+}
+
+.circle-player {
   width: 240px;
   height: 240px;
   border-radius: 50%;
   background: linear-gradient(135deg, #a770ef 0%, #f6d365 100%);
   box-shadow: 0 4px 24px 0 #9b59b640;
-  position: relative;
-  animation: float 4s ease-in-out infinite;
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: float 4s ease-in-out infinite;
+}
+
+.circle-player img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 @keyframes float {
@@ -148,81 +167,24 @@ nav {
   }
 }
 
-.spectrum-bars {
-  position: absolute;
-  top: 38px;
-  left: 0;
-  width: 100%;
+/* ======== BOTONES Y CONTROLES ======== */
+.play-btn {
+  background-color: #5e2760;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(94, 39, 96, 0.5);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  height: 40px;
-  gap: 5px;
-  z-index: 2;
-}
-
-.spectrum-bars .bar {
-  width: 12px;
-  height: 22px;
-  background: #fff;
-  border-radius: 5px;
-  margin: 0 2px;
-  animation: bounce 1s infinite alternate;
-}
-
-.spectrum-bars .bar:nth-child(2) { animation-delay: 0.15s; }
-.spectrum-bars .bar:nth-child(3) { animation-delay: 0.3s; }
-.spectrum-bars .bar:nth-child(4) { animation-delay: 0.45s; }
-.spectrum-bars .bar:nth-child(5) { animation-delay: 0.6s; }
-.spectrum-bars .bar:nth-child(6) { animation-delay: 0.75s; }
-
-@keyframes bounce {
-  to {
-    height: 38px;
-    background: #fff9;
-  }
-}
-
-.song-info {
-  margin-top: 0.5rem;
-  text-align: center;
-  color: #5e2760;
-  font-weight: 600;
-  font-size: 0.85rem;
-  opacity: 0.75;
-  letter-spacing: 0.8px;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.song-title {
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 1px;
-  margin-bottom: 0.2rem;
-}
-
-.song-artist {
-  font-style: italic;
-  font-size: 0.85rem;
-  opacity: 0.7;
-}
-
-/* Contenedor principal */
-.player-container {
-  min-height: calc(100vh - 100px);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
-  gap: 1rem;
-  padding: 2rem 0 3rem 0;
+  gap: 6px;
 }
 
-.circle-wrapper {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.play-btn:hover {
+  background-color: #a770ef;
 }
 
 .radio-controls-wrapper {
@@ -232,13 +194,22 @@ nav {
 }
 
 .radio-controls {
-  margin-top: 0.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
+  margin-top: 0.5rem;
 }
 
+input[type="range"] {
+  width: 100px;
+}
+
+#volIcon i {
+  font-size: 1.3rem;
+  vertical-align: middle;
+}
+
+/* ======== BOTÓN INSTALAR ======== */
 .install-button-wrapper {
   display: flex;
   justify-content: center;
@@ -256,7 +227,6 @@ nav {
   color: #fff;
   text-transform: none;
   box-shadow: 0 4px 12px rgb(94 39 96 / 0.5);
-  transition: background-color 0.3s ease;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -267,26 +237,42 @@ nav {
   background-color: #a770ef;
 }
 
-#installBtn i.material-icons.left {
+#installBtn i {
   font-size: 20px;
-  line-height: 20px;
 }
 
-/* 🔧 CORRECCIÓN PARA PWA ESPACIO VACÍO ABAJO */
-
+/* ======== CORRECCIÓN ESPACIO PWA ======== */
 html, body {
   height: 100%;
   margin: 0;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-}
-
-.player-container {
+.player-app-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding: 20px 0;
+}
+
+.radio-grid-scroll {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.radio-grid-background {
+  padding: 10px;
+  border-radius: 12px;
+}
+
+/* ======== EFECTO ICONOS REDES ======== */
+.nav-socials i {
+  font-size: 1.4rem;
+  transition: color 0.3s ease;
+}
+
+.nav-socials i:hover {
+  color: #a770ef;
 }
