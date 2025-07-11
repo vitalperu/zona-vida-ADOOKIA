@@ -52,28 +52,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Botón instalar PWA
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
-installBtn.style.display = 'none'; // Oculta el botón al inicio
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = 'inline-flex';
-  console.log('Evento beforeinstallprompt disponible');
-});
-
-installBtn.addEventListener('click', async () => {
-  if (!deferredPrompt) {
-    alert('Para instalar, usa Chrome en Android o PC.');
-    return;
-  }
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  if (outcome === 'accepted') {
-    installBtn.textContent = '¡Instalada!';
-    installBtn.disabled = true; // Opcional: desactivar botón
-  }
-  deferredPrompt = null;
-});
