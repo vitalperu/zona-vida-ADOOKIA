@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Inicializa menú hamburguesa
   var elems = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elems);
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const volIcon = document.getElementById('volIcon');
   const volValue = document.getElementById('volValue');
 
+  // Play / Pause
   playPauseBtn.addEventListener('click', () => {
     if (player.paused) {
       player.play();
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // Control de volumen
   volumeBar.addEventListener('input', () => {
     player.volume = volumeBar.value;
     volValue.textContent = Math.round(volumeBar.value * 100) + '%';
@@ -51,3 +53,33 @@ document.addEventListener('DOMContentLoaded', function() {
       volValue.textContent = '100%';
     }
   });
+
+  // Integrar Media Session API
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: 'Zona Vida Radio',
+      artist: 'La música que te inspira',
+      album: 'Zona Vida',
+      artwork: [
+        { src: './img/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+        { src: './img/icon-512x512.png', sizes: '512x512', type: 'image/png' }
+      ]
+    });
+
+    // Controles desde la barra de bloqueo
+    navigator.mediaSession.setActionHandler('play', () => {
+      player.play();
+      playPauseIcon.textContent = 'pause';
+    });
+
+    navigator.mediaSession.setActionHandler('pause', () => {
+      player.pause();
+      playPauseIcon.textContent = 'play_arrow';
+    });
+
+    navigator.mediaSession.setActionHandler('stop', () => {
+      player.pause();
+      playPauseIcon.textContent = 'play_arrow';
+    });
+  }
+});
