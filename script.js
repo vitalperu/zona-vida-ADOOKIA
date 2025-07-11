@@ -83,3 +83,33 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+let wakeLock = null;
+
+async function requestWakeLock() {
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => {
+      console.log('Wake Lock liberado');
+    });
+    console.log('Wake Lock activado');
+  } catch (err) {
+    console.error(`${err.name}, ${err.message}`);
+  }
+}
+
+// Solicitar wake lock al reproducir audio
+player.addEventListener('play', () => {
+  if ('wakeLock' in navigator) {
+    requestWakeLock();
+  }
+});
+
+// Liberarlo al pausar
+player.addEventListener('pause', () => {
+  if (wakeLock !== null) {
+    wakeLock.release();
+    wakeLock = null;
+  }
+});
+
