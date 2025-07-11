@@ -525,6 +525,53 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// Botón instalar PWA
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-block';
+});
+
+installBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('App instalada correctamente');
+      installBtn.textContent = "¡Instalada!";
+    }
+    deferredPrompt = null;
+  } else {
+    alert("Para instalar, usa Chrome, Brave o Edge.");
+  }
+});
+function shareApp() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Zona Vida Radio',
+      text: 'Escucha Zona Vida Radio en tu dispositivo.',
+      url: window.location.href
+    }).then(() => {
+      console.log('Compartido con éxito');
+    }).catch((error) => {
+      console.error('Error al compartir:', error);
+    });
+  } else {
+    alert("Tu navegador no soporta la función de compartir.");
+  }
+}
+
+function closeApp() {
+  if (confirm("¿Quieres salir de la app?")) {
+    window.close();
+  }
+}
+
+
+  
 // Inicializar el menú hamburguesa
 document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
