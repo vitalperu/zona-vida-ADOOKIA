@@ -18,95 +18,18 @@
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#5e2760" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-</head>
-<body>
-  <!-- NAVBAR -->
-  <nav class="white z-depth-1">
-    <div class="nav-wrapper container">
-      <div class="nav-logo-socials">
-        <img src="./img/logosuperior-zona-vida.png" alt="Zona Vida Radio" style="height:35px; margin-top:5px; display:none;" />
-        <div class="nav-socials">
-          <a href="https://www.youtube.com/@enlaceperutv" target="_blank"><i class="fab fa-youtube"></i></a>
-          <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-          <a href="https://tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
-          <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-          <a href="https://wa.me/51900000000" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        </div>
-      </div>
-      <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      <ul class="nav-menu right">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Programas</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
-    </div>
-  </nav>
+  
+<style>
+    /* Fondo de pantalla */
+    body {
+      background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-  <ul class="sidenav" id="mobile-menu">
-    <li><a href="#">Inicio</a></li>
-    <li><a href="#">Programas</a></li>
-    <li><a href="#">Contacto</a></li>
-  </ul>
-
-  <!-- CONTENIDO PRINCIPAL -->
-  <div class="player-app-container">
-    <div class="circle-player" id="player-visual">
-      <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
-    </div>
-
-    <div class="install-button-wrapper">
-      <button id="installBtn" class="install-btn">
-        <i class="fab fa-android"></i>
-        <i class="fab fa-apple"></i>
-        Instalar App
-      </button>
-    </div>
-
-    <div class="radio-controls-wrapper">
-      <audio id="player" preload="auto">
-        <source src="https://radio.zonavidahd.online/listen/hd/radio.mp3" type="audio/mpeg" />
-        Tu navegador no soporta audio en línea.
-      </audio>
-      <div class="radio-controls">
-        <button id="playPauseBtn" class="play-btn">
-          <i id="playPauseIcon" class="material-icons">play_arrow</i>
-        </button>
-        <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="1" />
-        <span id="volIcon"><i class="material-icons">volume_up</i></span>
-        <span id="volValue">100%</span>
-      </div>
-    </div>
-
-    <!-- PARRILLA PRINCIPAL -->
-    <div class="radio-grid-scroll" id="parrillaPrincipal">
-      <div class="radio-grid-background">
-        <div class="radio-grid">
-          <!-- Aquí tus radios -->
-        </div>
-      </div>
-    </div>
-
-    <!-- MÁS RADIOS (oculta) -->
-    <div class="radio-grid-scroll" id="masRadiosGrid" style="display:none;">
-      <div class="radio-grid-background">
-        <div class="radio-grid">
-          <!-- Aquí radios extra -->
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center; margin:15px 0;">
-      <button id="masRadiosBtn" class="play-btn">
-        <i class="fas fa-plus-circle"></i> Más Radios
-      </button>
-    </div>
-  </div>
-
-  <!-- Materialize JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
   /* Nuevo contenedor principal */
   .main-content {
     display: flex;
@@ -523,6 +446,8 @@ body {
 </div>
    
     
+    
+  <!-- Materialize y tu JS -->
  <!-- Materialize JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
@@ -600,6 +525,53 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// Botón instalar PWA
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-block';
+});
+
+installBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('App instalada correctamente');
+      installBtn.textContent = "¡Instalada!";
+    }
+    deferredPrompt = null;
+  } else {
+    alert("Para instalar, usa Chrome, Brave o Edge.");
+  }
+});
+function shareApp() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Zona Vida Radio',
+      text: 'Escucha Zona Vida Radio en tu dispositivo.',
+      url: window.location.href
+    }).then(() => {
+      console.log('Compartido con éxito');
+    }).catch((error) => {
+      console.error('Error al compartir:', error);
+    });
+  } else {
+    alert("Tu navegador no soporta la función de compartir.");
+  }
+}
+
+function closeApp() {
+  if (confirm("¿Quieres salir de la app?")) {
+    window.close();
+  }
+}
+
+
+  
 // Inicializar el menú hamburguesa
 document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
