@@ -117,11 +117,12 @@
     margin-bottom: 0;
   }
 
-  .radio-grid-scroll {
-    max-height: none;
-    overflow-y: visible;
-    padding: 6px 0 0 0;
-  }
+.radio-grid-scroll {
+  max-height: 320px; /* o el alto que desees visible */
+  overflow-y: auto;
+  padding: 6px 0 0 0;
+}
+
 
   .radio-grid {
     display: grid;
@@ -343,7 +344,8 @@ body {
     </div>
 
     <!-- PARRILLA DE RADIOS -->
-<div class="radio-grid-scroll" id="parrillaPrincipal">
+<!-- PARRILLA DE RADIOS -->
+<div class="radio-grid-scroll" id="parrillaPrincipal" style="max-height: 330px; overflow-y: auto; margin-top: 15px;">
   <div class="radio-grid-background">
     <div class="radio-grid">
 
@@ -378,31 +380,41 @@ body {
     </div>
   </div>
 </div>
-     <!-- segunda PARRILLA DE RADIOS  ocultos-->
-    <div class="radio-grid-scroll" id="masRadiosGrid" style="display:none;">
-  <div class="radio-grid-background" style="background-color: rgba(255,255,255,0.15);">
+ 
+ <!-- segunda PARRILLA DE RADIOS con scroll -->
+<div class="radio-grid-scroll" id="masRadiosGrid" style="display:none; max-height: 330px; overflow-y: auto; margin-top: 15px;">
+  <div class="radio-grid-background" style="background-color: rgba(255,255,255,0.15); padding: 12px; border-radius: 12px;">
     <div class="radio-grid">
 
+      <!-- radios aquí, sin cambios en su estructura -->
       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
         <div class="radio-container">
           <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
           <div class="radio-name">ZV Latino</div>
         </div>
       </div>
+
+       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
+          <div class="radio-name">ZV Latino</div>
+        </div>
+      </div>   
+          <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
+          <div class="radio-name">ZV Latino</div>
+        </div>
+      </div>
       
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
         <div class="radio-container">
           <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
           <div class="radio-name">ZV Latino</div>
         </div>
-      </div>      
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>      
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+      </div>  
+      
+        <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
         <div class="radio-container">
           <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
           <div class="radio-name">ZV Latino</div>
@@ -414,57 +426,27 @@ body {
           <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
           <div class="radio-name">ZV Latino</div>
         </div>
+      </div>   
+          <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
+          <div class="radio-name">ZV Latino</div>
+        </div>
       </div>
       
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>      
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>      
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-         
        <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
         <div class="radio-container">
           <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
           <div class="radio-name">ZV Latino</div>
         </div>
       </div>
-      
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>      
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>      
-<div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-         
+
     </div>
   </div>
 </div>
-
+   
+    
+    
   <!-- Materialize y tu JS -->
  <!-- Materialize JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -541,51 +523,6 @@ if ('serviceWorker' in navigator) {
       console.log('Error al registrar Service Worker:', error);
     });
   });
-}
-
-// Botón instalar PWA
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = 'inline-block';
-});
-
-installBtn.addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      console.log('App instalada correctamente');
-      installBtn.textContent = "¡Instalada!";
-    }
-    deferredPrompt = null;
-  } else {
-    alert("Para instalar, usa Chrome, Brave o Edge.");
-  }
-});
-function shareApp() {
-  if (navigator.share) {
-    navigator.share({
-      title: 'Zona Vida Radio',
-      text: 'Escucha Zona Vida Radio en tu dispositivo.',
-      url: window.location.href
-    }).then(() => {
-      console.log('Compartido con éxito');
-    }).catch((error) => {
-      console.error('Error al compartir:', error);
-    });
-  } else {
-    alert("Tu navegador no soporta la función de compartir.");
-  }
-}
-
-function closeApp() {
-  if (confirm("¿Quieres salir de la app?")) {
-    window.close();
-  }
 }
 
 // Inicializar el menú hamburguesa
