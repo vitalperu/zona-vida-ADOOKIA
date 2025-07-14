@@ -118,18 +118,20 @@
   }
 
 .radio-grid-scroll {
-  max-height: 320px; /* o el alto que desees visible */
+  max-height: 320px;
   overflow-y: auto;
-  padding: 6px 0 0 0;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 10px;
 }
-
-
-  .radio-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    justify-items: center;
-  }
+  
+ .radio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  justify-items: center;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 
 .radio-container {
   background-color: #020742;
@@ -369,6 +371,15 @@ player.addEventListener('pause', () => {
     wakeLock = null;
   }
 });    
+html, body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
       
   </style>
 </head>
