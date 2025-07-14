@@ -20,21 +20,19 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   
 <style>
-  /* Fondo de pantalla */
+/* Fondo de pantalla */
 body {
   background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
-  overflow: hidden;
-  overscroll-behavior: none;
-  position: fixed;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 /* Contenedor principal */
@@ -43,11 +41,12 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   min-height: 100vh;
-  padding-top: 50px;
-  padding-bottom: 20px;
+  padding: 50px 0 10px 0;
+  box-sizing: border-box;
+  margin: 0;
 }
 
-/* Reproductor */
+/* Contenedor del reproductor */
 .player-app-container {
   background: transparent;
   box-shadow: none;
@@ -56,11 +55,10 @@ body {
   margin: 32px auto 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 0;
+  flex: 1;
 }
 
-/* Player circular */
+/* Reproductor circular */
 .circle-player {
   width: 220px;
   height: 220px;
@@ -86,17 +84,14 @@ body {
   width: 90%;
   height: 90%;
   border-radius: 20px;
-  transition: transform 0.25s ease;
+  transition: transform 0.2s ease;
 }
 
 .circle-player.playing img {
-  transform: scale(1.03);
-  border: 3px solid #fff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
-  border-radius: 50%;
+  transform: scale(1.1);
 }
 
-/* Efecto resplandor */
+/* Animación */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -112,7 +107,7 @@ body {
   }
 }
 
-/* Info de canción */
+/* Información de canción */
 .song-info {
   text-align: center;
   margin-top: 18px;
@@ -128,7 +123,7 @@ body {
   margin-top: 2px;
 }
 
-/* Controles */
+/* Controles de radio */
 .radio-controls-wrapper {
   display: flex;
   flex-direction: column;
@@ -138,80 +133,32 @@ body {
 .radio-controls {
   display: flex;
   align-items: center;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 18px;
   padding: 8px 20px 8px 8px;
   box-shadow: 0 2px 8px #ccc2;
-}
-
-/* Botones y volumen */
-.play-btn {
-  background: #020c4d;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-  padding: 6px 12px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.play-btn:hover { background: #008bf5; }
-.play-btn:active, .play-btn:focus {
-  background: #06b8ac;
-  box-shadow: none;
-  outline: none;
-}
-
-#volIcon { cursor: pointer; font-size: 24px; color: #2e0104; }
-#volIcon:hover { color: #fa2802; }
-#volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
-#volValue { font-weight: 600; margin-left: 8px; color: #05012e }
-
-/* Botón instalar */
-.install-btn {
-  padding: 6px 12px;
-  background: #ff9800;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-}
-.install-btn:hover { background: #f57c00; }
-.install-button-wrapper {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
+  margin-bottom: 0;
 }
 
 /* Parrilla de radios */
-.radio-grid-background {
-  background-color: rgba(0, 0, 0, 0.45);
-  padding: 12px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-}
 .radio-grid-scroll {
   max-height: 320px;
   overflow-y: auto;
-  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   margin: 0 auto;
-  padding: 0;
-  width: 100%;
+  padding: 0 10px;
 }
+
 .radio-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   justify-items: center;
-  max-width: calc(100vw - 24px);
+  max-width: 100%;
   box-sizing: border-box;
-  padding: 0 6px;
 }
 
+/* Item radio */
 .radio-container {
   background-color: #020742;
   border-radius: 12px;
@@ -221,6 +168,7 @@ body {
   cursor: pointer;
   transition: box-shadow 0.18s, transform 0.18s;
 }
+
 .radio-container:hover {
   box-shadow: 0 0 10px #7c4dffaa;
   transform: scale(1.05);
@@ -237,12 +185,14 @@ body {
   display: block;
   margin: 0 auto;
 }
+
 .radio-item.selected img,
 .radio-item:hover img {
   border-color: #7c4dff;
   box-shadow: 0 0 0 4px #d1c4e9;
   background: #fff;
 }
+
 .radio-name {
   margin-top: 6px;
   font-size: 0.9rem;
@@ -252,8 +202,90 @@ body {
   text-overflow: ellipsis;
 }
 
-      
-  </style>
+/* Botones */
+.play-btn {
+  background: #020c4d;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.play-btn:hover {
+  background: #008bf5;
+}
+
+.play-btn:active,
+.play-btn:focus {
+  background: #06b8ac;
+  box-shadow: none;
+  outline: none;
+}
+
+.install-btn {
+  padding: 6px 12px;
+  background: #ff9800;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.install-btn:hover {
+  background: #f57c00;
+}
+
+.install-button-wrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Fondo blur de la parrilla */
+.radio-grid-background {
+  background-color: rgba(0, 0, 0, 0.45);
+  padding: 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+/* Iconos de volumen */
+#volIcon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #2e0104;
+}
+#volIcon:hover {
+  color: #fa2802;
+}
+
+#volumeBar {
+  vertical-align: middle;
+  width: 80px;
+  margin: 0 10px;
+}
+#volValue {
+  font-weight: 600;
+  margin-left: 8px;
+  color: #05012e;
+}
+
+/* Efecto cuando suena */
+.circle-player.playing img {
+  transform: scale(1.03);
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  transition: all 0.25s ease;
+}
+</style>
+
 </head>
 <body>
   <!-- NAVBAR (igual, puedes personalizar) -->
