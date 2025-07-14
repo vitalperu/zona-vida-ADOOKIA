@@ -20,34 +20,47 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   
 <style>
-    /* Fondo de pantalla */
-    body {
-      background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      min-height: 100vh;
-      font-family: 'Montserrat', sans-serif;
-    }
+  /* Fondo de pantalla */
+body {
+  background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-  /* Nuevo contenedor principal */
-  .main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    min-height: 100vh;
-    padding-top: 50px;
-    padding-bottom: 20px;
-  }
+/* Contenedor principal */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
 
-  .player-app-container {
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    max-width: 500px;
-    margin: 32px auto 0 auto;
-  }
+/* Reproductor */
+.player-app-container {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  max-width: 500px;
+  margin: 32px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+}
 
+/* Player circular */
 .circle-player {
   width: 220px;
   height: 220px;
@@ -63,24 +76,27 @@
   transition: all 0.3s ease;
 }
 
-
 .circle-player.playing {
   animation: pulse 1.2s infinite;
-  border-color: #ffffff; /* ← ahora blanco */
+  border-color: #ffffff;
   box-shadow: 0 0 20px #ffffff, 0 0 60px #ffffff inset;
 }
 
-  .circle-player img {
-    width: 90%;
-    height: 90%;
-    border-radius: 20px;
-    transition: transform 0.2s ease;
-  }
+.circle-player img {
+  width: 90%;
+  height: 90%;
+  border-radius: 20px;
+  transition: transform 0.25s ease;
+}
 
-  .circle-player.playing img {
-    transform: scale(1.1);
-  }
+.circle-player.playing img {
+  transform: scale(1.03);
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+  border-radius: 50%;
+}
 
+/* Efecto resplandor */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -94,43 +110,106 @@
     transform: scale(1);
     box-shadow: 0 0 20px #fc05f0, 0 0 60px #009dff inset;
   }
-  }
+}
 
-  .song-info { text-align: center; margin-top: 18px; }
-  .song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
-  .song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
+/* Info de canción */
+.song-info {
+  text-align: center;
+  margin-top: 18px;
+}
+.song-title {
+  font-weight: bold;
+  font-size: 1.15rem;
+  color: #4527a0;
+}
+.song-artist {
+  font-size: 1rem;
+  color: #5e35b1;
+  margin-top: 2px;
+}
 
-  .radio-controls-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 16px 0 0 0;
-  }
+/* Controles */
+.radio-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0 0 0;
+}
+.radio-controls {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.7);
+  border-radius: 18px;
+  padding: 8px 20px 8px 8px;
+  box-shadow: 0 2px 8px #ccc2;
+}
 
-  .radio-controls {
-    display: flex;
-    align-items: center;
-    background: rgba(255,255,255,0.7);
-    border-radius: 18px;
-    padding: 8px 20px 8px 8px;
-    box-shadow: 0 2px 8px #ccc2;
-    margin-bottom: 0;
-  }
+/* Botones y volumen */
+.play-btn {
+  background: #020c4d;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.play-btn:hover { background: #008bf5; }
+.play-btn:active, .play-btn:focus {
+  background: #06b8ac;
+  box-shadow: none;
+  outline: none;
+}
 
+#volIcon { cursor: pointer; font-size: 24px; color: #2e0104; }
+#volIcon:hover { color: #fa2802; }
+#volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
+#volValue { font-weight: 600; margin-left: 8px; color: #05012e }
+
+/* Botón instalar */
+.install-btn {
+  padding: 6px 12px;
+  background: #ff9800;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+}
+.install-btn:hover { background: #f57c00; }
+.install-button-wrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Parrilla de radios */
+.radio-grid-background {
+  background-color: rgba(0, 0, 0, 0.45);
+  padding: 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
 .radio-grid-scroll {
   max-height: 320px;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  margin: 0 10px;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
 }
-  
- .radio-grid {
+.radio-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   justify-items: center;
-  max-width: 100%;
+  max-width: calc(100vw - 24px);
   box-sizing: border-box;
+  padding: 0 6px;
 }
 
 .radio-container {
@@ -142,244 +221,37 @@
   cursor: pointer;
   transition: box-shadow 0.18s, transform 0.18s;
 }
-
-  .radio-container:hover {
-    box-shadow: 0 0 10px #7c4dffaa;
-    transform: scale(1.05);
-  }
-
-  .radio-item img {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    box-shadow: 0 2px 8px #5e35b122;
-    border: 3px solid #e0e0e0;
-    transition: border-color 0.15s;
-    display: block;
-    margin: 0 auto;
-  }
-
-  .radio-item.selected img, .radio-item:hover img {
-    border-color: #7c4dff;
-    box-shadow: 0 0 0 4px #d1c4e9;
-    background: #fff;
-  }
-
-  .radio-name {
-    margin-top: 6px;
-    font-size: 0.9rem;
-    color: white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .play-btn {
-    background: #020c4d;
-    border: none;
-    border-radius: 30px;
-    font-size: 14px;
-    color: #fff;
-    cursor: pointer;
-    padding: 6px 12px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .play-btn:hover { background: #008bf5; }
-  
-    .play-btn:active,
-.play-btn:focus {
-  background: #06b8ac;
-  box-shadow: none;
-  outline: none;
+.radio-container:hover {
+  box-shadow: 0 0 10px #7c4dffaa;
+  transform: scale(1.05);
 }
 
-  #volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
-  #volIcon:hover { color: #fa2802; }
-
-  #volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
-  #volValue { font-weight: 600; margin-left: 8px; color: #05012e }
-
-  .install-btn {
-    padding: 6px 12px;
-    background: #ff9800;
-    border: none;
-    border-radius: 30px;
-    font-size: 14px;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  .install-btn:hover { background: #f57c00; }
-
-  .install-button-wrapper {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .radio-grid-background {
-    background-color: rgba(0, 0, 0, 0.45);
-    padding: 12px;
-    border-radius: 12px;
-    backdrop-filter: blur(4px);
-  }
-
-  html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-body {
-  flex: 1;
-}
-
-.player-app-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 0;
-}
-
-  /* Efecto al logo cuando suena: borde blanco, glow y leve zoom */
-.circle-player.playing img {
-  transform: scale(1.03);
-  border: 3px solid #fff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+.radio-item img {
   border-radius: 50%;
-  transition: all 0.25s ease;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px #5e35b122;
+  border: 3px solid #e0e0e0;
+  transition: border-color 0.15s;
+  display: block;
+  margin: 0 auto;
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-  // Inicializa menú hamburguesa
-  var elems = document.querySelectorAll('.sidenav');
-  M.Sidenav.init(elems);
-
-  // Inicializa tooltips para redes sociales
-  var tooltips = document.querySelectorAll('.tooltipped');
-  M.Tooltip.init(tooltips);
-
-  // Reproductor audio
-  const player = document.getElementById('player');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const playPauseIcon = document.getElementById('playPauseIcon');
-  const volumeBar = document.getElementById('volumeBar');
-  const volIcon = document.getElementById('volIcon');
-  const volValue = document.getElementById('volValue');
-
-  // Play / Pause
-  playPauseBtn.addEventListener('click', () => {
-    if (player.paused) {
-      player.play();
-      playPauseIcon.textContent = 'pause';
-    } else {
-      player.pause();
-      playPauseIcon.textContent = 'play_arrow';
-    }
-  });
-
-  // Control de volumen
-  volumeBar.addEventListener('input', () => {
-    player.volume = volumeBar.value;
-    volValue.textContent = Math.round(volumeBar.value * 100) + '%';
-
-    if (volumeBar.value == 0) {
-      volIcon.innerHTML = '<i class="material-icons">volume_off</i>';
-    } else if (volumeBar.value <= 0.5) {
-      volIcon.innerHTML = '<i class="material-icons">volume_down</i>';
-    } else {
-      volIcon.innerHTML = '<i class="material-icons">volume_up</i>';
-    }
-  });
-
-  volIcon.addEventListener('click', () => {
-    if (player.volume > 0) {
-      player.volume = 0;
-      volumeBar.value = 0;
-      volIcon.innerHTML = '<i class="material-icons">volume_off</i>';
-      volValue.textContent = '0%';
-    } else {
-      player.volume = 1;
-      volumeBar.value = 1;
-      volIcon.innerHTML = '<i class="material-icons">volume_up</i>';
-      volValue.textContent = '100%';
-    }
-  });
-
-  // Integrar Media Session API
-  if ('mediaSession' in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: 'Zona Vida Radio',
-      artist: 'La música que te inspira',
-      album: 'Zona Vida',
-      artwork: [
-        { src: './img/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-        { src: './img/icon-512x512.png', sizes: '512x512', type: 'image/png' }
-      ]
-    });
-
-    // Controles desde la barra de bloqueo
-    navigator.mediaSession.setActionHandler('play', () => {
-      player.play();
-      playPauseIcon.textContent = 'pause';
-    });
-
-    navigator.mediaSession.setActionHandler('pause', () => {
-      player.pause();
-      playPauseIcon.textContent = 'play_arrow';
-    });
-
-    navigator.mediaSession.setActionHandler('stop', () => {
-      player.pause();
-      playPauseIcon.textContent = 'play_arrow';
-    });
-  }
-});
-
-let wakeLock = null;
-
-async function requestWakeLock() {
-  try {
-    wakeLock = await navigator.wakeLock.request('screen');
-    wakeLock.addEventListener('release', () => {
-      console.log('Wake Lock liberado');
-    });
-    console.log('Wake Lock activado');
-  } catch (err) {
-    console.error(`${err.name}, ${err.message}`);
-  }
+.radio-item.selected img,
+.radio-item:hover img {
+  border-color: #7c4dff;
+  box-shadow: 0 0 0 4px #d1c4e9;
+  background: #fff;
 }
-
-// Solicitar wake lock al reproducir audio
-player.addEventListener('play', () => {
-  if ('wakeLock' in navigator) {
-    requestWakeLock();
-  }
-});
-
-// Liberarlo al pausar
-player.addEventListener('pause', () => {
-  if (wakeLock !== null) {
-    wakeLock.release();
-    wakeLock = null;
-  }
-});    
-html, body {
+.radio-name {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: white;
+  white-space: nowrap;
   overflow: hidden;
-  overscroll-behavior: none;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  text-overflow: ellipsis;
 }
+
       
   </style>
 </head>
