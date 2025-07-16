@@ -301,16 +301,17 @@ body {
     <li><a href="#">Programas</a></li>
     <li><a href="#">Contacto</a></li>
   </ul>
-
-  <!-- BOTÓN MÁS RADIOS (extra pequeño, alineado a la izquierda) -->
+<!-- BOTÓN MÁS RADIOS (extra pequeño, alineado a la izquierda) -->
 <div style="margin: 6px 0 0 8px;">
   <button id="btnMasRadios" class="btn" style="background-color:#FF4081; color:white; height: 21px; line-height: 22px; padding: 0 4px; font-size: 11px; border-radius: 16px; min-width: auto;">
     <i class="material-icons left" style="font-size: 16px; margin-right: 4px;">add</i> Radios
   </button>
 </div>
-  
+
   <!-- PLAYER Y PARRILLA -->
   <div class="player-app-container">
+    
+    
     <!-- REPRODUCTOR -->
     <div class="circle-player" id="player-visual">
       <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
@@ -343,7 +344,7 @@ body {
       </div>
     </div>
 
-    <!-- PARRILLA DE RADIOS -->
+    <!-- PARRILLA DE RADIOS PRINCIPAL-->
 <div class="radio-grid-scroll">
   <div class="radio-grid-background">
     <div class="radio-grid">
@@ -377,6 +378,33 @@ body {
   </div>
 </div>     
 
+ <!-- PARRILLA SECUNDARIA: MULTI-RADIO (oculta por defecto) -->
+<div class="radio-grid-scroll" id="multiRadioGrid" style="display: none;">
+  <div class="radio-grid-background">
+    <div class="radio-grid">
+
+      <!-- Ejemplo de radios adicionales -->
+      <div class="radio-item" data-logo="img/logo-vida-extra.png" data-radio="https://stream.zeno.fm/xxxxx">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Radio Nueva" />
+          <div class="radio-name">Radio Nueva</div>
+        </div>
+      </div>
+
+      <div class="radio-item" data-logo="img/logo-vida-extra2.png" data-radio="https://stream.zeno.fm/yyyyy">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Otra Radio" />
+          <div class="radio-name">Otra Radio</div>
+        </div>
+      </div>
+
+      <!-- Puedes agregar más radios copiando el bloque .radio-item -->
+
+    </div>
+  </div>
+</div>
+     
+      
   </div>
 </div>
 
@@ -508,6 +536,21 @@ document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
   M.Sidenav.init(sidenavs);
 });
+  
+ // Mostrar/Ocultar parrilla secundaria
+document.getElementById('btnMultiRadio').addEventListener('click', () => {
+  const principal = document.querySelector('.radio-grid-scroll');
+  const secundaria = document.getElementById('multiRadioGrid');
+
+  if (secundaria.style.display === 'none') {
+    principal.style.display = 'none';
+    secundaria.style.display = 'block';
+  } else {
+    secundaria.style.display = 'none';
+    principal.style.display = 'block';
+  }
+});
+ 
   
 </script>
 </body>
