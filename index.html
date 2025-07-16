@@ -20,45 +20,34 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   
 <style>
-/* Fondo de pantalla */
-body {
-  background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  font-family: 'Montserrat', sans-serif;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
+    /* Fondo de pantalla */
+    body {
+      background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-/* Contenedor principal */
-.main-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding: 50px 0 10px 0;
-  box-sizing: border-box;
-  margin: 0;
-}
+  /* Nuevo contenedor principal */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding-top: 50px;
+    padding-bottom: 20px;
+  }
 
-/* Contenedor del reproductor */
-.player-app-container {
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  max-width: 500px;
-  margin: 32px auto 0 auto;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
+  .player-app-container {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 500px;
+    margin: 32px auto 0 auto;
+  }
 
-/* Reproductor circular */
 .circle-player {
   width: 220px;
   height: 220px;
@@ -74,24 +63,24 @@ body {
   transition: all 0.3s ease;
 }
 
+
 .circle-player.playing {
   animation: pulse 1.2s infinite;
-  border-color: #ffffff;
+  border-color: #ffffff; /* ← ahora blanco */
   box-shadow: 0 0 20px #ffffff, 0 0 60px #ffffff inset;
 }
 
-.circle-player img {
-  width: 90%;
-  height: 90%;
-  border-radius: 20px;
-  transition: transform 0.2s ease;
-}
+  .circle-player img {
+    width: 90%;
+    height: 90%;
+    border-radius: 20px;
+    transition: transform 0.2s ease;
+  }
 
-.circle-player.playing img {
-  transform: scale(1.1);
-}
+  .circle-player.playing img {
+    transform: scale(1.1);
+  }
 
-/* Animación */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -105,72 +94,42 @@ body {
     transform: scale(1);
     box-shadow: 0 0 20px #fc05f0, 0 0 60px #009dff inset;
   }
-}
+  }
 
-/* Información de canción */
-.song-info {
-  text-align: center;
-  margin-top: 18px;
-}
-.song-title {
-  font-weight: bold;
-  font-size: 1.15rem;
-  color: #4527a0;
-}
-.song-artist {
-  font-size: 1rem;
-  color: #5e35b1;
-  margin-top: 2px;
-}
+  .song-info { text-align: center; margin-top: 18px; }
+  .song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
+  .song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
 
-/* Controles de radio */
-.radio-controls-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 16px 0 0 0;
-}
-.radio-controls {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 18px;
-  padding: 8px 20px 8px 8px;
-  box-shadow: 0 2px 8px #ccc2;
-  margin-bottom: 0;
-}
+  .radio-controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 16px 0 0 0;
+  }
 
-/* Parrilla de radios */
-.radio-grid-scroll {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  margin: 0 auto;
-  padding: 0 10px;
-}
+  .radio-controls {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.7);
+    border-radius: 18px;
+    padding: 8px 20px 8px 8px;
+    box-shadow: 0 2px 8px #ccc2;
+    margin-bottom: 0;
+  }
 
-/* Parrilla principal: solo una fila, menor altura */
-#parrillaPrincipal.radio-grid-scroll {
-  max-height: 160px;
-  overflow-y: hidden;
-  overflow-x: auto;
-}
+  .radio-grid-scroll {
+    max-height: none;
+    overflow-y: visible;
+    padding: 6px 0 0 0;
+  }
 
-/* Segunda parrilla: se mantiene como está */
-#masRadiosGrid.radio-grid-scroll {
-  max-height: 330px;
-}
+  .radio-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    justify-items: center;
+  }
 
-
-.radio-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  justify-items: center;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* Item radio */
 .radio-container {
   background-color: #020742;
   border-radius: 12px;
@@ -181,148 +140,121 @@ body {
   transition: box-shadow 0.18s, transform 0.18s;
 }
 
-.radio-container:hover {
-  box-shadow: 0 0 10px #7c4dffaa;
-  transform: scale(1.05);
-}
+  .radio-container:hover {
+    box-shadow: 0 0 10px #7c4dffaa;
+    transform: scale(1.05);
+  }
 
-.radio-item img {
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px #5e35b122;
-  border: 3px solid #e0e0e0;
-  transition: border-color 0.15s;
-  display: block;
-  margin: 0 auto;
-}
+  .radio-item img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px #5e35b122;
+    border: 3px solid #e0e0e0;
+    transition: border-color 0.15s;
+    display: block;
+    margin: 0 auto;
+  }
 
-.radio-item.selected img,
-.radio-item:hover img {
-  border-color: #7c4dff;
-  box-shadow: 0 0 0 4px #d1c4e9;
-  background: #fff;
-}
+  .radio-item.selected img, .radio-item:hover img {
+    border-color: #7c4dff;
+    box-shadow: 0 0 0 4px #d1c4e9;
+    background: #fff;
+  }
 
-.radio-name {
-  margin-top: 6px;
-  font-size: 0.9rem;
-  color: white;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .radio-name {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-/* Botones */
-.play-btn {
-  background: #020c4d;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-  padding: 6px 12px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
+  .play-btn {
+    background: #020c4d;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
 
-.play-btn:hover {
-  background: #008bf5;
-}
-
-.play-btn:active,
+  .play-btn:hover { background: #008bf5; }
+  
+    .play-btn:active,
 .play-btn:focus {
   background: #06b8ac;
   box-shadow: none;
   outline: none;
 }
 
-.install-btn {
-  padding: 6px 12px;
-  background: #ff9800;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-}
+  #volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
+  #volIcon:hover { color: #fa2802; }
 
-.install-btn:hover {
-  background: #f57c00;
-}
+  #volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
+  #volValue { font-weight: 600; margin-left: 8px; color: #05012e }
 
-.install-button-wrapper {
-  margin-top: 10px;
+  .install-btn {
+    padding: 6px 12px;
+    background: #ff9800;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .install-btn:hover { background: #f57c00; }
+
+  .install-button-wrapper {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .radio-grid-background {
+    background-color: rgba(0, 0, 0, 0.45);
+    padding: 12px;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+  }
+
+  html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 }
 
-/* Fondo blur de la parrilla */
-.radio-grid-background {
-  background-color: rgba(0, 0, 0, 0.45);
-  padding: 12px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
+body {
+  flex: 1;
 }
 
-/* Iconos de volumen */
-#volIcon {
-  cursor: pointer;
-  font-size: 24px;
-  color: #2e0104;
-}
-#volIcon:hover {
-  color: #fa2802;
+.player-app-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
 }
 
-#volumeBar {
-  vertical-align: middle;
-  width: 80px;
-  margin: 0 10px;
-}
-#volValue {
-  font-weight: 600;
-  margin-left: 8px;
-  color: #05012e;
-}
-
-/* Efecto cuando suena */
+  /* Efecto al logo cuando suena: borde blanco, glow y leve zoom */
 .circle-player.playing img {
   transform: scale(1.03);
   border: 3px solid #fff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
   border-radius: 50%;
   transition: all 0.25s ease;
 }
-  
-/* Estilo solo para la parrilla principal como una sola fila con scroll horizontal */
-#parrillaPrincipal .radio-grid {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 14px;
-  overflow-x: auto;
-  padding: 10px;
-}
 
-#parrillaPrincipal .radio-grid::-webkit-scrollbar {
-  height: 6px;
-}
-#parrillaPrincipal .radio-grid::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-
-#parrillaPrincipal .radio-grid-background {
-  padding: 0;
-  background-color: transparent;
-}
-
-
-  
-</style>
-
+  </style>
 </head>
 <body>
   <!-- NAVBAR (igual, puedes personalizar) -->
@@ -370,13 +302,6 @@ body {
     <li><a href="#">Contacto</a></li>
   </ul>
 
- <!-- boton mas radios -->
-   <div style="text-align:center; margin:15px 0;">
-  <button id="masRadiosBtn" class="play-btn" style="background: #00c6ff;">
-    <i class="fas fa-plus-circle"></i> Más Radios
-  </button>
-</div>
-  
   <!-- PLAYER Y PARRILLA -->
   <div class="player-app-container">
     <!-- REPRODUCTOR -->
@@ -391,7 +316,8 @@ body {
     <i class="fab fa-apple" style="color:#999; font-size:20px; margin-left:5px;"></i>
     Instalar App
   </button>
-</div>        
+</div>
+
     <!-- CONTROLES -->
     <div class="radio-controls-wrapper">
       <audio id="player" preload="auto">
@@ -411,25 +337,18 @@ body {
     </div>
 
     <!-- PARRILLA DE RADIOS -->
-<!-- PARRILLA DE RADIOS -->
-<div class="radio-grid-scroll" id="parrillaPrincipal" style="max-height: 330px; overflow-y: auto; margin-top: 15px;">
+<div class="radio-grid-scroll">
   <div class="radio-grid-background">
     <div class="radio-grid">
-
-      <div class="radio-item" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida">
-          <div class="radio-name">Zona Vida</div>
-        </div>
-      </div>
       
-<div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+      
+      <div class="radio-item selected" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
   <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
+    <div class="radio-name">Zona Vida</div>
   </div>
-</div> 
-      
+</div>
+
 <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
   <div class="radio-container">
     <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
@@ -442,103 +361,18 @@ body {
     <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
     <div class="radio-name">ZV Latino</div>
   </div>
-</div>     
+</div>
       
-    </div>
+ <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
+    <div class="radio-name">ZV Latino</div>
+  </div>
+</div>     
+
   </div>
 </div>
- 
- <!-- segunda PARRILLA DE RADIOS con scroll -->
-<div class="radio-grid-scroll" id="masRadiosGrid" style="display:none; max-height: 330px; overflow-y: auto; margin-top: 15px;">
-  <div class="radio-grid-background" style="background-color: rgba(255,255,255,0.15); padding: 12px; border-radius: 12px;">
-    <div class="radio-grid">
 
-      <!-- radios aquí, sin cambios en su estructura -->
-      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-
-       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>   
-          <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-      
-       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>  
-      
-        <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-
-       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>   
-          <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-      
-       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-
-         <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-
-       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>   
-          <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-      
-       <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino">
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>     
-      
-    </div>
-  </div>
-</div>       
-    
   <!-- Materialize y tu JS -->
  <!-- Materialize JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -662,45 +496,10 @@ function closeApp() {
   }
 }
 
-
-  
 // Inicializar el menú hamburguesa
 document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
   M.Sidenav.init(sidenavs);
-});
- 
-// Alternar parrillas
-document.getElementById('masRadiosBtn').addEventListener('click', function(){
-  var extraGrid = document.getElementById('masRadiosGrid');
-  var principalGrid = document.getElementById('parrillaPrincipal');
-
-  if(extraGrid.style.display === 'none'){
-    extraGrid.style.display = 'block';
-    principalGrid.style.display = 'none';
-    this.innerHTML = '<i class="fas fa-times-circle"></i> Cerrar Radios';
-    this.style.background = '#e53935';
-  } else {
-    extraGrid.style.display = 'none';
-    principalGrid.style.display = 'block';
-    this.innerHTML = '<i class="fas fa-plus-circle"></i> Más Radios';
-    this.style.background = '#00c6ff';
-  }
-});
-
-// Play en cualquier radio
-document.querySelectorAll('.radio-item').forEach(function(item){
-  item.addEventListener('click', function(){
-    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
-    item.classList.add('selected');
-    document.getElementById('logoRadioActual').src = item.getAttribute('data-logo');
-    var player = document.getElementById('player');
-    player.src = item.getAttribute('data-radio');
-    player.load();
-    player.play();
-    document.getElementById('playPauseIcon').textContent = 'pause';
-    document.querySelector('.circle-player').classList.add('playing');
-  });
 });
   
 </script>
