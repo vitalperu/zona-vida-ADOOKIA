@@ -284,6 +284,24 @@ body {
   border-radius: 50%;
   transition: all 0.25s ease;
 }
+  
+/* Parrilla principal con solo una fila */
+#parrillaPrincipal .radio-grid {
+  grid-auto-flow: column;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: grid;
+  grid-auto-columns: minmax(120px, 1fr);
+  padding-bottom: 10px;
+}
+
+#parrillaPrincipal .radio-grid-background {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+  
 </style>
 
 </head>
