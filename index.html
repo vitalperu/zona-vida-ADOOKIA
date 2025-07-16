@@ -285,21 +285,28 @@ body {
   transition: all 0.25s ease;
 }
   
-/* Parrilla principal con solo una fila */
+/* Estilo solo para la parrilla principal como una sola fila con scroll horizontal */
 #parrillaPrincipal .radio-grid {
-  grid-auto-flow: column;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 14px;
   overflow-x: auto;
-  overflow-y: hidden;
-  display: grid;
-  grid-auto-columns: minmax(120px, 1fr);
-  padding-bottom: 10px;
+  padding: 10px;
+}
+
+#parrillaPrincipal .radio-grid::-webkit-scrollbar {
+  height: 6px;
+}
+#parrillaPrincipal .radio-grid::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
 }
 
 #parrillaPrincipal .radio-grid-background {
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 10px 0;
+  padding: 0;
+  background-color: transparent;
 }
+
 
   
 </style>
