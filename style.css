@@ -1,14 +1,17 @@
 <style>
-    /* Fondo de pantalla */
-    body {
-      background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      min-height: 100vh;
-      font-family: 'Montserrat', sans-serif;
-    }
-
+  /* Fondo de pantalla */
+   html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
   
 
 /* Navegación */
