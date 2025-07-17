@@ -283,26 +283,6 @@ nav {
     backdrop-filter: blur(4px);
   }
 
-  html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-body {
-  flex: 1;
-}
-
-.player-app-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 0;
-}
-
   /* Efecto al logo cuando suena: borde blanco, glow y leve zoom */
 .circle-player.playing img {
   transform: scale(1.03);
