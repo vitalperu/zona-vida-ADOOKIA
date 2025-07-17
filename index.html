@@ -536,6 +536,75 @@ document.getElementById('btnMasRadios').addEventListener('click', function () {
   }
 });
 
+<script>
+  // Lista de radios adicionales
+  const radiosAdicionales = [
+    {
+      nombre: "Radio 2",
+      logo: "https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-radio2.png",
+      stream: "https://streaming.radio2.com/radio.mp3"
+    },
+    {
+      nombre: "Radio 3",
+      logo: "https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-radio3.png",
+      stream: "https://streaming.radio3.com/radio.mp3"
+    },
+    {
+      nombre: "Radio 4",
+      logo: "https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-radio4.png",
+      stream: "https://streaming.radio4.com/radio.mp3"
+    }
+    // Agrega más radios si deseas
+  ];
+
+  const btnMasRadios = document.getElementById('btnMasRadios');
+  const parrillaPrincipal = document.getElementById('parrillaPrincipal');
+  const multiRadio = document.getElementById('multi-radio');
+
+  btnMasRadios.addEventListener('click', () => {
+    // Ocultar parrilla principal
+    parrillaPrincipal.style.display = 'none';
+
+    // Limpiar parrilla secundaria y mostrarla
+    multiRadio.innerHTML = '';
+    multiRadio.classList.remove('oculto');
+
+    // Crear cada radio adicional
+    radiosAdicionales.forEach(radio => {
+      const item = document.createElement('div');
+      item.classList.add('radio-item');
+      item.setAttribute('data-logo', radio.logo);
+      item.setAttribute('data-radio', radio.stream);
+
+      item.innerHTML = `
+        <div class="radio-container">
+          <img src="${radio.logo}" alt="${radio.nombre}" />
+          <div class="radio-name">${radio.nombre}</div>
+        </div>
+      `;
+
+      // Evento para cambiar el reproductor al hacer clic
+      item.addEventListener('click', () => {
+        const logo = radio.logo;
+        const stream = radio.stream;
+        const reproductorLogo = document.querySelector('.reproductor-logo img');
+        const reproductorAudio = document.getElementById('audioPlayer');
+
+        if (reproductorLogo) reproductorLogo.src = logo;
+        if (reproductorAudio) {
+          reproductorAudio.src = stream;
+          reproductorAudio.play();
+        }
+
+        // Opcional: destacar la radio seleccionada
+        document.querySelectorAll('.radio-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+      });
+
+      multiRadio.appendChild(item);
+    });
+  });
+</script>
   
 </script>
 </body>
