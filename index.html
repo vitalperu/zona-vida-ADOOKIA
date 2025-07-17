@@ -19,242 +19,7 @@
   <meta name="theme-color" content="#5e2760" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   
-<style>
-    /* Fondo de pantalla */
-    body {
-      background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      min-height: 100vh;
-      font-family: 'Montserrat', sans-serif;
-    }
 
-  /* Nuevo contenedor principal */
-  .main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    min-height: 100vh;
-    padding-top: 50px;
-    padding-bottom: 20px;
-  }
-
-  .player-app-container {
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    max-width: 500px;
-    margin: 32px auto 0 auto;
-  }
-
-.circle-player {
-  width: 220px;
-  height: 220px;
-  border-radius: 40px;
-  background: #fff;
-  margin: 20px auto;
-  border: 5px solid #00c6ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 0 20px #00c6ff, 0 0 60px #00c6ff inset;
-  transition: all 0.3s ease;
-}
-
-
-.circle-player.playing {
-  animation: pulse 1.2s infinite;
-  border-color: #ffffff; /* ← ahora blanco */
-  box-shadow: 0 0 20px #ffffff, 0 0 60px #ffffff inset;
-}
-
-  .circle-player img {
-    width: 90%;
-    height: 90%;
-    border-radius: 20px;
-    transition: transform 0.2s ease;
-  }
-
-  .circle-player.playing img {
-    transform: scale(1.1);
-  }
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 20px #5205e3, 0 0 60px #03fcc2 inset;
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px #009dff, 0 0 80px #009dff inset;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 20px #fc05f0, 0 0 60px #009dff inset;
-  }
-  }
-
-  .song-info { text-align: center; margin-top: 18px; }
-  .song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
-  .song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
-
-  .radio-controls-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 16px 0 0 0;
-  }
-
-  .radio-controls {
-    display: flex;
-    align-items: center;
-    background: rgba(255,255,255,0.7);
-    border-radius: 18px;
-    padding: 8px 20px 8px 8px;
-    box-shadow: 0 2px 8px #ccc2;
-    margin-bottom: 0;
-  }
-
-  .radio-grid-scroll {
-    max-height: none;
-    overflow-y: visible;
-    padding: 6px 0 0 0;
-  }
-
-  .radio-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    justify-items: center;
-  }
-
-.radio-container {
-  background-color: #020742;
-  border-radius: 12px;
-  padding: 8px 10px;
-  text-align: center;
-  max-width: 140px;
-  cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s;
-}
-
-  .radio-container:hover {
-    box-shadow: 0 0 10px #7c4dffaa;
-    transform: scale(1.05);
-  }
-
-  .radio-item img {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    box-shadow: 0 2px 8px #5e35b122;
-    border: 3px solid #e0e0e0;
-    transition: border-color 0.15s;
-    display: block;
-    margin: 0 auto;
-  }
-
-  .radio-item.selected img, .radio-item:hover img {
-    border-color: #7c4dff;
-    box-shadow: 0 0 0 4px #d1c4e9;
-    background: #fff;
-  }
-
-  .radio-name {
-    margin-top: 6px;
-    font-size: 0.9rem;
-    color: white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .play-btn {
-    background: #020c4d;
-    border: none;
-    border-radius: 30px;
-    font-size: 14px;
-    color: #fff;
-    cursor: pointer;
-    padding: 6px 12px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .play-btn:hover { background: #008bf5; }
-  
-    .play-btn:active,
-.play-btn:focus {
-  background: #06b8ac;
-  box-shadow: none;
-  outline: none;
-}
-
-  #volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
-  #volIcon:hover { color: #fa2802; }
-
-  #volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
-  #volValue { font-weight: 600; margin-left: 8px; color: #05012e }
-
-  .install-btn {
-    padding: 6px 12px;
-    background: #ff9800;
-    border: none;
-    border-radius: 30px;
-    font-size: 14px;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  .install-btn:hover { background: #f57c00; }
-
-  .install-button-wrapper {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .radio-grid-background {
-    background-color: rgba(0, 0, 0, 0.45);
-    padding: 12px;
-    border-radius: 12px;
-    backdrop-filter: blur(4px);
-  }
-
-  html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-body {
-  flex: 1;
-}
-
-.player-app-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 0;
-}
-
-  /* Efecto al logo cuando suena: borde blanco, glow y leve zoom */
-.circle-player.playing img {
-  transform: scale(1.03);
-  border: 3px solid #fff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
-  border-radius: 50%;
-  transition: all 0.25s ease;
-}
-
-  </style>
 </head>
 <body>
   <!-- NAVBAR (igual, puedes personalizar) -->
@@ -301,7 +66,12 @@ body {
     <li><a href="#">Programas</a></li>
     <li><a href="#">Contacto</a></li>
   </ul>
-
+<!-- BOTÓN MÁS RADIOS (extra pequeño, alineado a la izquierda) -->
+<div style="margin: 6px 0 0 8px;">
+  <button id="btnMasRadios" class="btn" style="background-color:#FF4081; color:white; height: 21px; line-height: 22px; padding: 0 4px; font-size: 11px; border-radius: 16px; min-width: auto;">
+    <i class="material-icons left" style="font-size: 16px; margin-right: 4px;">add</i> Radios
+  </button>
+</div>
 
   <!-- PLAYER Y PARRILLA -->
   <div class="player-app-container">
@@ -339,17 +109,11 @@ body {
       </div>
     </div>
 
-  <!-- BOTÓN MÁS RADIOS -->
-<div style="position: absolute; top: 20px; left: 20px; z-index: 999;">
-  <button id="btnMasRadios" class="btn-mas-radios" style="padding: 4px 10px; font-size: 13px;">
-    <i class="fas fa-plus"></i> Más Radios
-  </button>
-</div>
-    
     <!-- PARRILLA DE RADIOS PRINCIPAL-->
 <div id="parrillaPrincipal" class="radio-grid-scroll">
   <div class="radio-grid-background">
     <div class="radio-grid">
+      
       <div class="radio-item selected" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
         <div class="radio-container">
           <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
@@ -377,22 +141,9 @@ body {
     <div class="radio-name">ZV Latino</div>
   </div>
 </div>     
-
- <!-- PARRILLA SECUNDARIA: MULTI-RADIO (oculta por defecto) -->
-<div id="multiRadios" class="radio-grid-scroll" style="display: none;">
-  <div class="radio-grid-background">
-    <div class="radio-grid">
-      <!-- Aquí agregas más radios -->
-      <div class="radio-item" data-logo="img/logo-radio2.png" data-radio="https://streaming.radio2.com/radio.mp3">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-radio2.png" alt="Radio 2" />
-          <div class="radio-name">Radio 2</div>
-        </div>
-      </div>
-      <!-- Agrega más radios si deseas -->
-    </div>
+       
   </div>
-</div>    
+</div>
 
   <!-- Materialize y tu JS -->
  <!-- Materialize JS -->
@@ -522,86 +273,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
   M.Sidenav.init(sidenavs);
 });
-  
-<!-- SCRIPT FUNCIONAL -->
-
-document.getElementById('btnMasRadios').addEventListener('click', function () {
-  const multiRadios = document.getElementById('multiRadios');
-  if (multiRadios.style.display === 'none') {
-    multiRadios.style.display = 'block';
-    this.innerHTML = '<i class="fas fa-minus"></i> Ocultar Radios';
-  } else {
-    multiRadios.style.display = 'none';
-    this.innerHTML = '<i class="fas fa-plus"></i> Más Radios';
-  }
-});
-  // Lista de radios adicionales
-  const radiosAdicionales = [
-    {
-      nombre: "Radio 2",
-      logo: "https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-radio2.png",
-      stream: "https://streaming.radio2.com/radio.mp3"
-    },
-    {
-      nombre: "Radio 3",
-      logo: "https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-radio3.png",
-      stream: "https://streaming.radio3.com/radio.mp3"
-    },
-    {
-      nombre: "Radio 4",
-      logo: "https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-radio4.png",
-      stream: "https://streaming.radio4.com/radio.mp3"
-    }
-    // Agrega más radios si deseas
-  ];
-
-  const btnMasRadios = document.getElementById('btnMasRadios');
-  const parrillaPrincipal = document.getElementById('parrillaPrincipal');
-  const multiRadio = document.getElementById('multi-radio');
-
-  btnMasRadios.addEventListener('click', () => {
-    // Ocultar parrilla principal
-    parrillaPrincipal.style.display = 'none';
-
-    // Limpiar parrilla secundaria y mostrarla
-    multiRadio.innerHTML = '';
-    multiRadio.classList.remove('oculto');
-
-    // Crear cada radio adicional
-    radiosAdicionales.forEach(radio => {
-      const item = document.createElement('div');
-      item.classList.add('radio-item');
-      item.setAttribute('data-logo', radio.logo);
-      item.setAttribute('data-radio', radio.stream);
-
-      item.innerHTML = `
-        <div class="radio-container">
-          <img src="${radio.logo}" alt="${radio.nombre}" />
-          <div class="radio-name">${radio.nombre}</div>
-        </div>
-      `;
-
-      // Evento para cambiar el reproductor al hacer clic
-      item.addEventListener('click', () => {
-        const logo = radio.logo;
-        const stream = radio.stream;
-        const reproductorLogo = document.querySelector('.reproductor-logo img');
-        const reproductorAudio = document.getElementById('audioPlayer');
-
-        if (reproductorLogo) reproductorLogo.src = logo;
-        if (reproductorAudio) {
-          reproductorAudio.src = stream;
-          reproductorAudio.play();
-        }
-
-        // Opcional: destacar la radio seleccionada
-        document.querySelectorAll('.radio-item').forEach(el => el.classList.remove('selected'));
-        item.classList.add('selected');
-      });
-
-      multiRadio.appendChild(item);
-    });
-  });
   
 </script>
 </body>
