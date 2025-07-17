@@ -1,5 +1,5 @@
 <style>
-  /* Fondo de pantalla */
+    /* Fondo de pantalla */
    html, body {
   height: 100%;
   margin: 0;
@@ -12,7 +12,6 @@
   background-position: center;
   background-attachment: fixed;
 }
-  
 
 /* Navegación */
 nav {
@@ -285,7 +284,8 @@ nav {
     border-radius: 12px;
     backdrop-filter: blur(4px);
   }
- html, body {
+
+  html, body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -314,4 +314,4 @@ body {
   transition: all 0.25s ease;
 }
 
-  </style>
+  </style
