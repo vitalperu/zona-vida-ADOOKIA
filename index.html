@@ -301,12 +301,7 @@ body {
     <li><a href="#">Programas</a></li>
     <li><a href="#">Contacto</a></li>
   </ul>
-<!-- BOTÓN MÁS RADIOS (extra pequeño, alineado a la izquierda) -->
-<div style="margin: 6px 0 0 8px;">
-  <button id="btnMasRadios" class="btn" style="background-color:#FF4081; color:white; height: 21px; line-height: 22px; padding: 0 4px; font-size: 11px; border-radius: 16px; min-width: auto;">
-    <i class="material-icons left" style="font-size: 16px; margin-right: 4px;">add</i> Radios
-  </button>
-</div>
+
 
   <!-- PLAYER Y PARRILLA -->
   <div class="player-app-container">
@@ -344,18 +339,23 @@ body {
       </div>
     </div>
 
+  <!-- BOTÓN MÁS RADIOS -->
+<div style="position: absolute; top: 20px; left: 20px; z-index: 999;">
+  <button id="btnMasRadios" class="btn-mas-radios" style="padding: 4px 10px; font-size: 13px;">
+    <i class="fas fa-plus"></i> Más Radios
+  </button>
+</div>
+    
     <!-- PARRILLA DE RADIOS PRINCIPAL-->
-<div class="radio-grid-scroll">
+<div id="parrillaPrincipal" class="radio-grid-scroll">
   <div class="radio-grid-background">
     <div class="radio-grid">
-      
-      
       <div class="radio-item selected" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
-    <div class="radio-name">Zona Vida</div>
-  </div>
-</div>
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
+          <div class="radio-name">Zona Vida</div>
+        </div>
+      </div>
 
 <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
   <div class="radio-container">
@@ -379,34 +379,20 @@ body {
 </div>     
 
  <!-- PARRILLA SECUNDARIA: MULTI-RADIO (oculta por defecto) -->
-<div class="radio-grid-scroll" id="multiRadioGrid" style="display: none;">
+<div id="multiRadios" class="radio-grid-scroll" style="display: none;">
   <div class="radio-grid-background">
     <div class="radio-grid">
-
-      <!-- Ejemplo de radios adicionales -->
-      <div class="radio-item" data-logo="img/logo-vida-extra.png" data-radio="https://stream.zeno.fm/xxxxx">
+      <!-- Aquí agregas más radios -->
+      <div class="radio-item" data-logo="img/logo-radio2.png" data-radio="https://streaming.radio2.com/radio.mp3">
         <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Radio Nueva" />
-          <div class="radio-name">Radio Nueva</div>
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-radio2.png" alt="Radio 2" />
+          <div class="radio-name">Radio 2</div>
         </div>
       </div>
-
-      <div class="radio-item" data-logo="img/logo-vida-extra2.png" data-radio="https://stream.zeno.fm/yyyyy">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Otra Radio" />
-          <div class="radio-name">Otra Radio</div>
-        </div>
-      </div>
-
-      <!-- Puedes agregar más radios copiando el bloque .radio-item -->
-
+      <!-- Agrega más radios si deseas -->
     </div>
   </div>
-</div>
-     
-      
-  </div>
-</div>
+</div>    
 
   <!-- Materialize y tu JS -->
  <!-- Materialize JS -->
@@ -537,20 +523,19 @@ document.addEventListener('DOMContentLoaded', function() {
   M.Sidenav.init(sidenavs);
 });
   
- // Mostrar/Ocultar parrilla secundaria
-document.getElementById('btnMultiRadio').addEventListener('click', () => {
-  const principal = document.querySelector('.radio-grid-scroll');
-  const secundaria = document.getElementById('multiRadioGrid');
+<!-- SCRIPT FUNCIONAL -->
 
-  if (secundaria.style.display === 'none') {
-    principal.style.display = 'none';
-    secundaria.style.display = 'block';
+document.getElementById('btnMasRadios').addEventListener('click', function () {
+  const multiRadios = document.getElementById('multiRadios');
+  if (multiRadios.style.display === 'none') {
+    multiRadios.style.display = 'block';
+    this.innerHTML = '<i class="fas fa-minus"></i> Ocultar Radios';
   } else {
-    secundaria.style.display = 'none';
-    principal.style.display = 'block';
+    multiRadios.style.display = 'none';
+    this.innerHTML = '<i class="fas fa-plus"></i> Más Radios';
   }
 });
- 
+
   
 </script>
 </body>
