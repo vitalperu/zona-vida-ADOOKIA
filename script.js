@@ -141,3 +141,12 @@ document.addEventListener('DOMContentLoaded', function() {
     M.Sidenav.init(sidenavs);
   }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const btnMasRadios = document.getElementById("btnMasRadios");
+  const parrillaExtra = document.getElementById("parrillaExtra");
+
+  btnMasRadios.addEventListener("click", function () {
+    parrillaExtra.classList.toggle("oculto");
+  });
+});
