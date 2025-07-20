@@ -306,14 +306,15 @@ nav { padding: 0 1rem; }
 #parrillaExtra {
   display: flex;
   overflow-x: auto;
-  background-color: #e8f0fe; /* fondo azul claro */
+  background-color: rgba(1, 69, 29, 0.6);
   padding: 1rem;
   gap: 1rem;
-  border-radius: 16px;
+  border-radius: 20px;
+  margin: 1rem auto;
   width: 95%;
   scroll-behavior: smooth;
   max-width: 340px;
-  margin: 1rem auto 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 #parrillaExtra::-webkit-scrollbar {
@@ -329,36 +330,44 @@ nav { padding: 0 1rem; }
   flex: 0 0 auto;
   width: 80px;
   text-align: center;
-  background: white;
-  padding: 0.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: #fafeff; /*<-fondo logos*/
+  padding: 0.6rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#parrillaExtra .radio-item img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50% !important;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto 0.3rem auto;
-  border: 3px solid #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  backdrop-filter: blur(4px);
+  border: 1px solid #bbdefb;
 }
 
 #parrillaExtra .radio-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transform: scale(1.08);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  border-color: #42a5f5;
+}
+
+#parrillaExtra .radio-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border: 2px solid #e3f2fd;
+  transition: border-color 0.3s ease;
+  background: white;
+  padding: 2px;
+  margin-bottom: 0.4rem;
+}
+
+#parrillaExtra .radio-item:hover img {
+  border-color: #42a5f5;
 }
 
 #parrillaExtra .radio-item p {
   margin: 0;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #333;
+  text-shadow: 0 1px 1px #fff;
 }
 
 /* =============================== */
