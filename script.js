@@ -142,11 +142,31 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const btnMasRadios = document.getElementById("btnMasRadios");
-  const parrillaExtra = document.getElementById("parrillaExtra");
+<!-- Botón mas radio editar color -->
+const btnMasRadios = document.getElementById('btnMasRadios');
+const iconoMasRadios = document.getElementById('iconoMasRadios');
+const parrillaExtra = document.getElementById('parrillaExtra');
+let visible = false;
 
-  btnMasRadios.addEventListener("click", function () {
-    parrillaExtra.classList.toggle("oculto");
+btnMasRadios.addEventListener('click', () => {
+  visible = !visible;
+  parrillaExtra.classList.toggle('oculto');
+  iconoMasRadios.textContent = visible ? 'remove' : 'add';
+  
+  // Alternar color del botón
+  btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081'; // Verde y rosado
+});
+
+
+
+
+// Agrega automáticamente la palabra "Radio" en cada item de la parrilla extra
+document.addEventListener("DOMContentLoaded", function () {
+  const radios = document.querySelectorAll("#parrillaExtra .radio-item");
+  radios.forEach(radio => {
+    const etiqueta = document.createElement("div");
+    etiqueta.className = "etiqueta-radio";
+    etiqueta.textContent = "Radio";
+    radio.insertBefore(etiqueta, radio.querySelector("p"));
   });
 });
