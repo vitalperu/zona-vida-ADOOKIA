@@ -329,10 +329,10 @@ nav { padding: 0 1rem; }
 #parrillaExtra .radio-item {
   flex: 0 0 auto;
   width: 80px;
-  min-height: 110px;
+  min-height: 90px;
   text-align: center;
   background: #fafeff;
-  padding: 0.5rem;
+  padding: 0.1rem;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   cursor: pointer;
@@ -344,18 +344,19 @@ nav { padding: 0 1rem; }
   align-items: center;
   justify-content: flex-start;
 }
-
+/* editar tamaño logo */
 #parrillaExtra .radio-item img {
-  width: 100%;
-  height: auto;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border: 2px solid #e3f2fd;
   transition: border-color 0.3s ease;
   background: white;
   padding: 2px;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0 rem;
 }
+
 
 /* palabra "Radio" debajo del logo */
 #parrillaExtra .radio-item .etiqueta-radio {
@@ -364,7 +365,7 @@ nav { padding: 0 1rem; }
   color: #d32f2f; 
   text-transform: uppercase;
   margin-bottom: -1px;
-  opacity: 0.95;
+  opacity: 1;
   letter-spacing: 1.5px;
 }
 
