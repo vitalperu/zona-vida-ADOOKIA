@@ -329,21 +329,20 @@ nav { padding: 0 1rem; }
 #parrillaExtra .radio-item {
   flex: 0 0 auto;
   width: 80px;
+  min-height: 110px;
   text-align: center;
-  background: #fafeff; /*<-fondo logos*/
-  padding: 0.6rem;
+  background: #fafeff;
+  padding: 0.5rem;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   transition: transform 0.22s ease, box-shadow 0.22s ease;
   backdrop-filter: blur(4px);
   border: 1px solid #bbdefb;
-}
-
-#parrillaExtra .radio-item:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-  border-color: #42a5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 #parrillaExtra .radio-item img {
@@ -355,24 +354,58 @@ nav { padding: 0 1rem; }
   transition: border-color 0.3s ease;
   background: white;
   padding: 2px;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+
+/* palabra "Radio" debajo del logo */
+#parrillaExtra .radio-item .etiqueta-radio {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #d32f2f; 
+  text-transform: uppercase;
+  margin-bottom: -1px;
+  opacity: 0.95;
+  letter-spacing: 1.5px;
+}
+
+
+/* Nombre de la radio */
+#parrillaExtra .radio-item p {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #222;
+  max-height: 2.4em;
+  overflow: hidden;
+  line-height: 1.2em;
+  text-align: center;
+  text-shadow: 0 1px 1px #fff;
+}
+
+#parrillaExtra .radio-item:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  border-color: #42a5f5;
 }
 
 #parrillaExtra .radio-item:hover img {
   border-color: #42a5f5;
 }
 
-#parrillaExtra .radio-item p {
-  margin: 0;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: #333;
-  text-shadow: 0 1px 1px #fff;
-}
+
+<div class="radio-item">
+  <img src="logo.png" alt="Nombre">
+  <p>La Vida</p> <!-- tú solo pones el nombre -->
+</div>
+
 
 /* =============================== */
 /* 🚫 UTILIDADES GLOBALES         */
 /* =============================== */
 .oculto {
+  display: none !important;
+}
+
+#parrillaExtra.oculto {
   display: none !important;
 }
