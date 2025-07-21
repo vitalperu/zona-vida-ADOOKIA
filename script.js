@@ -186,3 +186,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const toggleParrillaBtn = document.getElementById('toggleParrillaBtn');
+  const parrilla = document.getElementById('radio-grid');
+
+  toggleParrillaBtn.addEventListener('click', () => {
+    const isVisible = window.getComputedStyle(parrilla).display !== 'none';
+
+    if (isVisible) {
+      parrilla.style.display = 'none';
+      toggleParrillaBtn.innerHTML = '<i class="fas fa-eye left"></i> Mostrar Parrilla';
+    } else {
+      parrilla.style.display = 'grid';
+      toggleParrillaBtn.innerHTML = '<i class="fas fa-eye-slash left"></i> Ocultar Parrilla';
+    }
+  });
+});
+</script>
