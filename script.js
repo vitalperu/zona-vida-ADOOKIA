@@ -146,19 +146,23 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Botón Más Radios: alternar parrillas (principal vs secundaria)
-const btnMasRadios = document.getElementById('btnMasRadios');
-const iconoMasRadios = document.getElementById('iconoMasRadios');
-const parrillaExtra = document.getElementById('parrillaExtra');
-const parrillaPrincipal = document.getElementById('parrillaPrincipal');
-let visible = false;
+// Mostrar/Ocultar parrillas al alternar botón Más Radios
+document.addEventListener("DOMContentLoaded", function () {
+  const btnMasRadios = document.getElementById("btnMasRadios");
+  const iconoMasRadios = document.getElementById("iconoMasRadios");
+  const parrillaExtra = document.getElementById("parrillaExtra");
+  const parrillaPrincipal = document.getElementById("parrillaPrincipal");
 
-btnMasRadios.addEventListener('click', () => {
-  visible = !visible;
-  parrillaExtra.classList.toggle('oculto');
-  parrillaPrincipal.classList.toggle('oculto'); // Oculta la parrilla principal
-  iconoMasRadios.textContent = visible ? 'remove' : 'add';
-  btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
+  btnMasRadios.addEventListener("click", function () {
+    const mostrarExtra = parrillaExtra.classList.contains("oculto");
+
+    // Alternar visibilidad
+    parrillaExtra.classList.toggle("oculto", !mostrarExtra); // mostrarExtra=true → ocultar=false → mostrar
+    parrillaPrincipal.classList.toggle("oculto", mostrarExtra); // mostrarExtra=true → ocultar principal
+
+    // Cambiar ícono del botón
+    iconoMasRadios.textContent = mostrarExtra ? "close" : "add";
+  });
 });
 
 // Agregar etiquetas "Radio" a cada item de la segunda parrilla
