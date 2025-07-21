@@ -146,15 +146,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Botón Más Radios: alternar parrilla secundaria
+// Botón Más Radios: alternar parrillas (principal vs secundaria)
 const btnMasRadios = document.getElementById('btnMasRadios');
 const iconoMasRadios = document.getElementById('iconoMasRadios');
 const parrillaExtra = document.getElementById('parrillaExtra');
+const parrillaPrincipal = document.getElementById('parrillaPrincipal');
 let visible = false;
 
 btnMasRadios.addEventListener('click', () => {
   visible = !visible;
   parrillaExtra.classList.toggle('oculto');
+  parrillaPrincipal.classList.toggle('oculto'); // Oculta la parrilla principal
   iconoMasRadios.textContent = visible ? 'remove' : 'add';
   btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
 });
