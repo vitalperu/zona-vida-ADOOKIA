@@ -1,27 +1,23 @@
 // script.js - Zona Vida Radio
 
-function activarRadioItem(item) {
-  document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
-  item.classList.add('selected');
-  const logo = document.getElementById('logoRadioActual');
-  const player = document.getElementById('player');
-  const radioUrl = item.getAttribute('data-radio');
-  const logoUrl = item.getAttribute('data-logo');
-
-  if (logo && logoUrl) logo.src = logoUrl;
-  if (player && radioUrl) {
-    player.src = radioUrl;
-    player.load();
-    player.play();
-    document.getElementById('playPauseIcon').textContent = 'pause';
-    document.querySelector('.circle-player').classList.add('playing');
-  }
-}
-
-// Aplicar a TODAS las radios (ambas parrillas)
+// Selección de radios y cambio de logo/stream
 document.querySelectorAll('.radio-item').forEach(function(item) {
   item.addEventListener('click', function() {
-    activarRadioItem(item);
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
+    const logo = document.getElementById('logoRadioActual');
+    const player = document.getElementById('player');
+    const radioUrl = item.getAttribute('data-radio');
+    const logoUrl = item.getAttribute('data-logo');
+
+    if (logo && logoUrl) logo.src = logoUrl;
+    if (player && radioUrl) {
+      player.src = radioUrl;
+      player.load();
+      player.play();
+      document.getElementById('playPauseIcon').textContent = 'pause';
+      document.querySelector('.circle-player').classList.add('playing');
+    }
   });
 });
 
@@ -146,26 +142,22 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Mostrar/Ocultar parrillas al alternar botón Más Radios
-document.addEventListener("DOMContentLoaded", function () {
-  const btnMasRadios = document.getElementById("btnMasRadios");
-  const iconoMasRadios = document.getElementById("iconoMasRadios");
-  const parrillaExtra = document.getElementById("parrillaExtra");
-  const parrillaPrincipal = document.getElementById("parrillaPrincipal");
+<!-- Botón mas radio editar color -->
+const btnMasRadios = document.getElementById('btnMasRadios');
+const iconoMasRadios = document.getElementById('iconoMasRadios');
+const parrillaExtra = document.getElementById('parrillaExtra');
+let visible = false;
 
-  btnMasRadios.addEventListener("click", function () {
-    const mostrarExtra = parrillaExtra.classList.contains("oculto");
-
-    // Alternar visibilidad
-    parrillaExtra.classList.toggle("oculto", !mostrarExtra); // mostrarExtra=true → ocultar=false → mostrar
-    parrillaPrincipal.classList.toggle("oculto", mostrarExtra); // mostrarExtra=true → ocultar principal
-
-    // Cambiar ícono del botón
-    iconoMasRadios.textContent = mostrarExtra ? "close" : "add";
-  });
+btnMasRadios.addEventListener('click', () => {
+  visible = !visible;
+  parrillaExtra.classList.toggle('oculto');
+  iconoMasRadios.textContent = visible ? 'remove' : 'add';
+  
+  // Alternar color del botón
+  btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081'; // Verde y rosado
 });
 
-// Agregar etiquetas "Radio" a cada item de la segunda parrilla
+
 document.addEventListener("DOMContentLoaded", function () {
   const radios = document.querySelectorAll("#parrillaExtra .radio-item");
   radios.forEach(radio => {
@@ -173,5 +165,24 @@ document.addEventListener("DOMContentLoaded", function () {
     etiqueta.className = "etiqueta-radio";
     etiqueta.textContent = "Radio";
     radio.insertBefore(etiqueta, radio.querySelector("p"));
+
+    // 👉 Agregar evento click para que cambie el logo y stream también
+    radio.addEventListener('click', function () {
+      document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+      radio.classList.add('selected');
+      const logo = document.getElementById('logoRadioActual');
+      const player = document.getElementById('player');
+      const radioUrl = radio.getAttribute('data-radio');
+      const logoUrl = radio.getAttribute('data-logo');
+
+      if (logo && logoUrl) logo.src = logoUrl;
+      if (player && radioUrl) {
+        player.src = radioUrl;
+        player.load();
+        player.play();
+        document.getElementById('playPauseIcon').textContent = 'pause';
+        document.querySelector('.circle-player').classList.add('playing');
+      }
+    });
   });
 });
