@@ -186,3 +186,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const toggleParrillaBtn = document.getElementById('toggleParrillaBtn');
+  const parrilla = document.getElementById('radio-grid');
+  const icono = toggleParrillaBtn.querySelector('i');
+
+  toggleParrillaBtn.addEventListener('click', () => {
+    if (parrilla.style.display === 'none') {
+      parrilla.style.display = 'grid'; // Mostrar parrilla
+      toggleParrillaBtn.innerHTML = '<i class="fas fa-eye-slash left"></i> Ocultar Parrilla';
+    } else {
+      parrilla.style.display = 'none'; // Ocultar parrilla
+      toggleParrillaBtn.innerHTML = '<i class="fas fa-eye left"></i> Mostrar Parrilla';
+    }
+  });
+});
