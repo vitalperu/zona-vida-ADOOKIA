@@ -158,9 +158,6 @@ btnMasRadios.addEventListener('click', () => {
 });
 
 
-
-
-// Agrega automáticamente la palabra "Radio" en cada item de la parrilla extra
 document.addEventListener("DOMContentLoaded", function () {
   const radios = document.querySelectorAll("#parrillaExtra .radio-item");
   radios.forEach(radio => {
@@ -168,5 +165,25 @@ document.addEventListener("DOMContentLoaded", function () {
     etiqueta.className = "etiqueta-radio";
     etiqueta.textContent = "Radio";
     radio.insertBefore(etiqueta, radio.querySelector("p"));
+
+    // 👉 Agregar evento click para que cambie el logo y stream también
+    radio.addEventListener('click', function () {
+      document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+      radio.classList.add('selected');
+      const logo = document.getElementById('logoRadioActual');
+      const player = document.getElementById('player');
+      const radioUrl = radio.getAttribute('data-radio');
+      const logoUrl = radio.getAttribute('data-logo');
+
+      if (logo && logoUrl) logo.src = logoUrl;
+      if (player && radioUrl) {
+        player.src = radioUrl;
+        player.load();
+        player.play();
+        document.getElementById('playPauseIcon').textContent = 'pause';
+        document.querySelector('.circle-player').classList.add('playing');
+      }
+    });
   });
 });
+
