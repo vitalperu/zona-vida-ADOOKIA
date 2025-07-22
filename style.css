@@ -195,12 +195,12 @@ nav { padding: 0 1rem; }
 .radio-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px; /* Reducido el espacio entre radios */
+  gap: 8px; /* Reducido espacio entre radios */
   justify-items: center;
 }
 
 .radio-grid-background {
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: rgba(54, 0, 14, 0.45);
   padding: 8px;
   border-radius: 12px;
   backdrop-filter: blur(4px);
@@ -261,7 +261,7 @@ nav { padding: 0 1rem; }
   font-size: 14px;
   color: #fff;
   cursor: pointer;
-  padding: 6px 12px;
+  padding: 2px 12px;
   display: flex;
   align-items: center;
   gap: 5px;
