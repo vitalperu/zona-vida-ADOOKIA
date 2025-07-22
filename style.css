@@ -119,12 +119,12 @@ nav { padding: 0 1rem; }
   border-radius: 40px;
   background: #fff;
   margin: 20px auto;
-  border: 5px solid #00c6ff;
+  border: 3px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 0 20px #00c6ff, 0 0 60px #00c6ff inset;
+  box-shadow: 0 0 20px #00ffcc, 0 0 60px #02ceed inset;
   transition: all 0.3s ease;
 }
 
@@ -137,7 +137,7 @@ nav { padding: 0 1rem; }
 
 .circle-player.playing {
   animation: pulse 1.2s infinite;
-  border-color: #ffffff;
+  border-color: #00ffd9;
   box-shadow: 0 0 20px #ffffff, 0 0 60px #ffffff inset;
 }
 
