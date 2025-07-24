@@ -1,202 +1,412 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zona Vida Radio</title>
-  
-<link rel="stylesheet" href="style.css">
-  
-  <!-- Google Fonts y Material Icons -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+/* =============================== */
+/* 🌌 FONDO GENERAL Y ESTRUCTURA  */
+/* =============================== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  background-image: url('https://wallpapers.com/images/hd/on-air-black-radio-station-4hkl6ai4ymy5awty.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-  <!-- Materialize CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+/* =============================== */
+/* 🧭 BARRA DE NAVEGACIÓN         */
+/* =============================== */
+nav { padding: 0 1rem; }
 
-  <!-- PWA -->
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#5e2760" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  
+.nav-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap;
+}
 
-</head>
-<body>
-  <!-- NAVBAR (igual, puedes personalizar) -->
-  <nav class="white z-depth-1">
-    <div class="nav-wrapper container">
-      <div class="nav-logo-socials">
-        <img src="./img/logosuperior-zona-vida.png" alt="Zona Vida Radio" style="height:35px; margin-top:5px; display:none;" />
-<div class="nav-socials" style="display: flex; align-items: center; gap: 12px; margin-left: 20px;">
-  <a href="https://www.youtube.com/@enlaceperutv" target="_blank" style="color: #FF0000; font-size: 22px;">
-    <i class="fab fa-youtube"></i>
-  </a>
-  <a href="https://facebook.com" target="_blank" style="color: #1877F2; font-size: 22px;">
-    <i class="fab fa-facebook"></i>
-  </a>
-  <a href="https://tiktok.com" target="_blank" style="color: #000000; font-size: 22px;">
-    <i class="fab fa-tiktok"></i>
-  </a>
-  <a href="https://instagram.com" target="_blank" style="color: #E4405F; font-size: 22px;">
-    <i class="fab fa-instagram"></i>
-  </a>
-  <a href="https://wa.me/51900000000" target="_blank" style="color: #25D366; font-size: 22px;">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-  <a href="#" onclick="shareApp()" style="color: #FF9800; font-size: 22px;" title="Compartir">
-  <i class="fas fa-share-alt"></i>
-</a>
-<a href="#" onclick="closeApp()" style="color: #F44336; font-size: 22px;" title="Salir">
-  <i class="fas fa-times-circle"></i>
-</a>
+.nav-logo-socials {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
+.nav-socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-socials .btn-floating {
+  box-shadow: none;
+  transition: transform 0.2s ease;
+}
+
+.nav-socials .btn-floating:hover {
+  transform: scale(1.15) rotate(-7deg);
+  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.25);
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  list-style: none;
+  padding-left: 0;
+}
+
+.nav-menu li a {
+  color: #5e2760;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-menu li a:hover {
+  color: #a770ef;
+}
+
+.sidenav-trigger {
+  display: none;
+  cursor: pointer;
+  font-size: 2rem;
+  color: #5e2760;
+}
+
+@media (max-width: 992px) {
+  .nav-menu { display: none !important; }
+  .sidenav-trigger { display: inline-flex !important; }
+}
+
+.sidenav { width: 250px; }
+
+/* =============================== */
+/* 🧩 CONTENEDORES PRINCIPALES    */
+/* =============================== */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding-top: 50px;
+  padding-bottom: 2px;
+}
+
+.player-app-container {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  max-width: 500px;
+  margin: 32px auto 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+}
+
+/* =============================== */
+/* 🔊 PLAYER REDONDO CENTRAL      */
+/* =============================== */
+.circle-player {
+  width: 220px;
+  height: 220px;
+  border-radius: 40px;
+  background: #fff;
+  margin: 20px auto;
+  border: 3px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 20px #00ffcc, 0 0 60px #f7fafa inset;
+  transition: all 0.3s ease;
+}
+
+.circle-player img {
+  width: 90%;
+  height: 90%;
+  border-radius: 20px;
+  transition: transform 0.2s ease;
+}
+
+.circle-player.playing {
+  animation: pulse 1.2s infinite;
+  border-color: #00ffd9;
+  box-shadow: 0 0 20px #ffffff, 0 0 60px #ffffff inset;
+}
+
+.circle-player.playing img {
+  transform: scale(1.1);
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+  border-radius: 50%;
+  transition: all 0.25s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 20px #5205e3, 0 0 60px #03fcc2 inset; }
+  50% { transform: scale(1.05); box-shadow: 0 0 30px #009dff, 0 0 80px #009dff inset; }
+  100% { transform: scale(1); box-shadow: 0 0 20px #fc05f0, 0 0 60px #f7f9fa inset; }
+}
+
+/* =============================== */
+/* 📝 INFO DE CANCIÓN             */
+/* =============================== */
+.song-info { text-align: center; margin-top: 18px; }
+.song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
+.song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
+
+/* =============================== */
+/* 🎮 CONTROLES DE RADIO          */
+/* =============================== */
+.radio-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0 0 0;
+}
+
+.radio-controls {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.7);
+  border-radius: 18px;
+  padding: 8px 20px 8px 8px;
+  box-shadow: 0 2px 8px #ccc2;
+  margin-bottom: 0;
+}
+
+/* =============================== */
+/* 🎧 PARRILLA PRINCIPAL          */
+/* =============================== */
+.radio-grid-scroll {
+  max-height: none;
+  overflow-y: visible;
+  padding: 4px 0 0 0; /* Más compacto */
+  margin-bottom: 10px; /* Elimina espacio inferior excesivo */
+}
+
+.radio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px; /* Reducido espacio entre radios */
+  justify-items: center;
+}
+
+.radio-grid-background {
+  background-color: rgba(54, 0, 14, 0.45);
+  padding: 8px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  max-width: 340px;   /* 👈 Añade esta línea */
+  margin: 0 auto;     /* 👈 Centra horizontalmente */
+}
+
+.radio-container {
+  background-color: #020742;
+  border-radius: 10px;
+  padding: 6px 8px; /* Cuadro más pequeño */
+  text-align: center;
+  max-width: 120px; /* Más estrecho */
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s;
+}
+
+.radio-container:hover {
+  box-shadow: 0 0 10px #7c4dffaa;
+  transform: scale(1.05);
+}
+
+.radio-item img {
+  border-radius: 50%;
+  width: 52px; /* Más pequeño */
+  height: 52px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px #5e35b122;
+  border: 2px solid #e0e0e0;
+  transition: border-color 0.15s;
+  display: block;
+  margin: 0 auto;
+}
+
+.radio-item.selected img,
+.radio-item:hover img {
+  border-color: #7c4dff;
+  box-shadow: 0 0 0 3px #d1c4e9;
+  background: #fff;
+}
+
+.radio-name {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =============================== */
+/* 🔘 BOTONES Y CONTROLES EXTRA   */
+/* =============================== */
+.play-btn {
+  background: #020c4d;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  padding: 2px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.play-btn:hover { background: #008bf5; }
+
+.play-btn:active,
+.play-btn:focus {
+  background: #06b8ac;
+  box-shadow: none;
+  outline: none;
+}
+
+#volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
+#volIcon:hover { color: #fa2802; }
+
+#volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
+#volValue { font-weight: 600; margin-left: 8px; color: #05012e }
+
+.install-btn {
+  padding: 6px 12px;
+  background: #ff9800;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.install-btn:hover { background: #f57c00; }
+
+.install-button-wrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+/* =============================== */
+/* 🎛️ SEGUNDA PARRILLA EXTRA     */
+/* =============================== */
+#parrillaExtra {
+  display: flex;
+  overflow-x: auto;
+  background-color: rgba(0, 15, 6, 0.6);
+  padding: 0.7rem; /*espacio bordes*/
+  gap: 0.7rem; /*espacio entre radios*/
+  border-radius: 7px; /*squinas fondo*/
+  margin: 1rem auto;
+  width: 95%;
+  scroll-behavior: smooth;
+  max-width: 340px; /* ancho parrilla */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+#parrillaExtra::-webkit-scrollbar {
+  height: 8px;
+}
+
+#parrillaExtra::-webkit-scrollbar-thumb {
+  background-color: #90caf9;
+  border-radius: 10px;
+}
+
+#parrillaExtra .radio-item {
+  flex: 0 0 auto;
+  width: 65px; /* ancho de cuadrito */
+  min-height: 80px; /* alto de cuadrito */
+  text-align: center;
+  background: #fafeff;
+  padding: 0.1rem;
+  border-radius: 7px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  backdrop-filter: blur(4px);
+  border: 1px solid #bbdefb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+/* editar tamaño logo */
+#parrillaExtra .radio-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border: 2px solid #e3f2fd;
+  transition: border-color 0.3s ease;
+  background: white;
+  padding: 2px;
+  margin-bottom: 0 rem;
+}
+
+
+/* palabra "Radio" debajo del logo */
+#parrillaExtra .radio-item .etiqueta-radio {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #d32f2f; 
+  text-transform: uppercase;
+  margin-bottom: -1px;
+  opacity: 1;
+  letter-spacing: 1.5px;
+}
+
+
+/* Nombre de la radio */
+#parrillaExtra .radio-item p {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #222;
+  max-height: 2.4em;
+  overflow: hidden;
+  line-height: 1.2em;
+  text-align: center;
+  text-shadow: 0 1px 1px #fff;
+}
+
+#parrillaExtra .radio-item:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  border-color: #42a5f5;
+}
+
+#parrillaExtra .radio-item:hover img {
+  border-color: #42a5f5;
+}
+
+
+<div class="radio-item">
+  <img src="logo.png" alt="Nombre">
+  <p>La Vida</p> <!-- tú solo pones el nombre -->
 </div>
 
-      </div>
-      <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      <ul class="nav-menu right">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Programas</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
-    </div>
-  </nav>
-  <ul class="sidenav" id="mobile-menu">
-    <li><a href="#">Inicio</a></li>
-    <li><a href="#">Programas</a></li>
-    <li><a href="#">Contacto</a></li>
-  </ul>
-  
-<!-- BOTÓN MÁS RADIOS (extra pequeño, alineado a la izquierda) -->
-<div style="margin: 6px 0 0 8px;">
-  <button id="btnMasRadios" class="btn" style="background-color:#FF4081; color:white; height: 21px; line-height: 22px; padding: 0 4px; font-size: 11px; border-radius: 16px; min-width: auto;">
-    <i id="iconoMasRadios" class="material-icons left" style="font-size: 16px; margin-right: 4px;">add</i> Radios
-  </button>
-</div>
 
+/* =============================== */
+/* 🚫 UTILIDADES GLOBALES         */
+/* =============================== */
+.oculto {
+  display: none !important;
+}
 
-  <!-- PLAYER Y PARRILLA -->
-  <div class="player-app-container">
-    
-    
-    <!-- REPRODUCTOR -->
-    <div class="circle-player" id="player-visual">
-      <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
-    </div>
-
-    <!-- BOTÓN INSTALAR APP -->
-<div class="install-button-wrapper">
-  <button id="installBtn" class="install-btn">
-    <i class="fab fa-android" style="color:#A4C639; font-size:20px;"></i>
-    <i class="fab fa-apple" style="color:#999; font-size:20px; margin-left:5px;"></i>
-    Instalar App
-  </button>
-</div>
-
-    <!-- CONTROLES -->
-    <div class="radio-controls-wrapper">
-      <audio id="player" preload="auto">
-        <source src="https://radio.zonavidahd.online/listen/hd/radio.mp3" type="audio/mpeg" />
-        Tu navegador no soporta audio en línea.
-      </audio>
-      <div class="radio-controls">
-        <button id="playPauseBtn" class="play-btn">
-          <i id="playPauseIcon" class="material-icons">play_arrow</i> 
-        </button>
-        <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="1" />
-        <span id="volIcon" style="vertical-align: middle;">
-          <i id="muteIcon" class="material-icons">volume_up</i>
-        </span>
-        <span id="volValue">100%</span>
-      </div>
-    </div>
-
- <!-- PARRILLA EXTRA HORIZONTAL (OCULTA POR DEFECTO) -->
-<div id="parrillaExtra" class="radio-grid-horizontal oculto">
-
-  <div class="radio-item" 
-    data-radio="https://genexservicios.com:8112/stream" 
-    data-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s" alt="Metanoia">
-    <p>Metanoia</p>
-  </div>
-
-  <div class="radio-item" 
-    data-radio="https://tupanel.info:9260/stream" 
-    data-logo="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg">
-    <img src="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg" alt="Rio">
-    <p>Rio</p>
-  </div>
-
-  <div class="radio-item" 
-    data-radio="https://stream-153.zeno.fm/gnnppwt0mwzuv?zs=nmjPgRExSbucYm0Rfh0pcQ" 
-    data-logo="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png" alt="Radio 3">
-    <p>Interactiva</p>
-  </div>
-
-  <div class="radio-item" 
-    data-radio="https://stream4.example.com" 
-    data-logo="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg" alt="Radio 4">
-    <p>Bethel</p>
-  </div>
-
-  <div class="radio-item" 
-    data-radio="https://neptuno-2-audio.mediaserver.digital/79525baf-b0f5-4013-a8bd-3c5c293c6561" 
-    data-logo="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg" alt="Radio 5">
-    <p>Exitosa</p>
-  </div>
-
-  <div class="radio-item" 
-    data-radio="https://mdstrm.com/audio/5fab3416b5f9ef165cfab6e9/icecast.audio" 
-    data-logo="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png" alt="Radio 6">
-    <p>RPP</p>
-  </div>
-
-</div>
-
-  
-    
-    <!-- PARRILLA DE RADIOS PRINCIPAL-->
-<div id="parrillaPrincipal" class="radio-grid-scroll">
-  <div class="radio-grid-background">
-    <div class="radio-grid">
-      
-      <div class="radio-item selected" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
-          <div class="radio-name">Zona Vida</div>
-        </div>
-      </div>
-
-<div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>
-      
- <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>
-      
- <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>     
-
-<!-- LIBRERÍAS JS AL FINAL DEL BODY -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="script.js"></script>  
-
-</body>
-</html>
+#parrillaExtra.oculto {
+  display: none !important;
+}
