@@ -200,7 +200,7 @@ nav { padding: 0 1rem; }
 }
 
 .radio-grid-background {
-  background-color: rgba(54, 0, 14, 0.45);
+  background-color: rgba(255, 255, 255, 0.45);
   padding: 8px;
   border-radius: 12px;
   backdrop-filter: blur(4px);
@@ -306,7 +306,7 @@ nav { padding: 0 1rem; }
 #parrillaExtra {
   display: flex;
   overflow-x: auto;
-  background-color: rgba(0, 15, 6, 0.6);
+  background-color: rgba(255, 255, 255, 0.6);
   padding: 0.7rem; /*espacio bordes*/
   gap: 0.7rem; /*espacio entre radios*/
   border-radius: 7px; /*squinas fondo*/
