@@ -410,3 +410,27 @@ nav { padding: 0 1rem; }
 #parrillaExtra.oculto {
   display: none !important;
 }
+
+/* =============================== */
+/* 🔹 BOTÓN HAMBURGUESA SOBRE FONDO */
+/* =============================== */
+nav {
+  padding: 0 1rem;
+  position: relative; /* necesario para que el botón absolute se posicione respecto al navbar */
+}
+
+.sidenav-trigger {
+  display: inline-flex !important;
+  position: absolute;    /* lo saca del flujo normal */
+  top: 20px;             /* distancia desde el borde superior del navbar */
+  right: 20px;           /* distancia desde el borde derecho del navbar */
+  font-size: 2.2rem;     /* tamaño del icono */
+  color: #ffffff;        /* color del icono sobre la imagen */
+  z-index: 1000;         /* que quede por encima de todo */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.sidenav-trigger:hover {
+  transform: scale(1.15);
+}
