@@ -155,6 +155,14 @@ nav { padding: 0 1rem; }
   100% { transform: scale(1); box-shadow: 0 0 20px #fc05f0, 0 0 60px #f7f9fa inset; }
 }
 
+/* 🔹 RESPONSIVO PARA CELULAR */
+@media (max-width: 600px) {
+  .circle-player {
+    width: 35vw;    /* ancho relativo a la pantalla */
+    height: 35vw;   /* mantiene cuadrado */
+  }
+}
+
 /* =============================== */
 /* 📝 INFO DE CANCIÓN             */
 /* =============================== */
