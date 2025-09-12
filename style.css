@@ -346,3 +346,26 @@ html, body {
 .sidenav-trigger:hover {
   transform: scale(1.15);
 }
+
+#btnMenuFlotante {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  background-color: #FF4081; /* color del botón */
+  color: white;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#btnMenuFlotante i {
+  font-size: 28px;
+}
+
