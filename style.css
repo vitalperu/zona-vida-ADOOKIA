@@ -47,17 +47,18 @@ html, body {
 .circle-player {
   width: 220px;
   height: 220px;
-  border-radius: 40px;
-  background: transparent;   /* ← transparente ahora */
+  border-radius: 50%; /* 🔹 hace un círculo perfecto */
+  background: rgba(255,255,255,0); /* fondo transparente */
   margin: 20px auto;
   border: 3px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 0 20px #00ffcc,
+  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
   transition: all 0.3s ease;
 }
+
 
 .circle-player img {
   width: 90%;
