@@ -4,111 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zona Vida Radio</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Materialize CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- CSS personalizado -->
   <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="blue darken-3">
-    <div class="nav-wrapper">
-      <a href="#!" class="brand-logo center">Zona Vida Radio</a>
+  <!-- 🔹 Navbar -->
+  <nav class="navbar">
+    <div class="logo">🎵 Zona Vida Radio</div>
+    <div class="menu">
+      <button id="btnMasRadios">Más Radios</button>
     </div>
   </nav>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <div class="main-content">
-
-    <!-- REPRODUCTOR LUNA PLAYER -->
-    <div class="player-section">
-      <div id="lunaradio"></div>
+  <!-- 🔹 Reproductor -->
+  <section class="player-bar">
+    <div class="player-logo">
+      <img src="img/logo.png" alt="Logo Zona Vida" id="cover">
     </div>
-
-    <!-- BOTÓN INSTALAR APP -->
-    <div class="install-button-wrapper">
-      <button class="install-btn">INSTALAR APP</button>
+    <div class="player-controls">
+      <h3 id="songTitle">Cargando...</h3>
+      <button id="playPauseBtn" class="btn">▶</button>
+      <input type="range" id="volumeBar" min="0" max="1" step="0.05" value="0.8">
     </div>
+  </section>
 
-    <!-- BOTÓN MÁS RADIOS -->
-    <div class="center-align" style="margin: 20px 0;">
-      <button id="btnMasRadios" class="btn blue">MÁS RADIOS</button>
+  <!-- 🔹 Parrilla principal -->
+  <main class="radio-grid">
+    <div class="radio-item" data-stream="https://radio.zonavidahd.online/listen/hd/radio.mp3">
+      <img src="img/logo.png" alt="Zona Vida">
+      <p>Zona Vida</p>
     </div>
+    <!-- Aquí van más radios como ya tienes -->
+  </main>
 
-    <!-- PARRILLA PRINCIPAL -->
-    <div class="radio-grid-scroll" id="parrillaPrincipal">
-      <div class="radio-grid-background">
-        <div class="radio-grid">
-          <!-- Radio ejemplo -->
-          <div class="radio-container radio-item" data-stream="https://radio.zonavidahd.online/listen/hd/radio.mp3" data-logo="./img/logo-zona-vida.png">
-            <img src="./img/logo-zona-vida.png" alt="Zona Vida Radio">
-            <p class="radio-name">Zona Vida Radio</p>
-          </div>
-          <!-- Agrega aquí más radios -->
-        </div>
-      </div>
+  <!-- 🔹 Parrilla extra (oculta por defecto) -->
+  <section id="parrillaExtra" class="oculto">
+    <div class="radio-item" data-stream="https://stream.zeno.fm/xyz123">
+      <img src="img/logo.png" alt="Extra">
+      <p>Radio Extra</p>
     </div>
-
-    <!-- SEGUNDA PARRILLA (oculta por defecto) -->
-    <div id="parrillaExtra" class="oculto">
-      <div class="radio-item" data-stream="https://servidor.com/stream1.mp3" data-logo="./img/logo1.png">
-        <img src="./img/logo1.png" alt="Radio 1">
-        <p>Radio 1</p>
-      </div>
-      <div class="radio-item" data-stream="https://servidor.com/stream2.mp3" data-logo="./img/logo2.png">
-        <img src="./img/logo2.png" alt="Radio 2">
-        <p>Radio 2</p>
-      </div>
-      <!-- más radios extra -->
-    </div>
-
-  </div> <!-- /main-content -->
-
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- Materialize JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-  <!-- Luna Player -->
-  <script src="lunaradio.min.js"></script>
-
-  <!-- Script personalizado -->
-  <script src="script.js"></script>
-
-  <!-- Inicializar Luna Player -->
-  <script>
-    $(document).ready(function () {
-      $("#lunaradio").lunaradio({
-        streamurl: "https://radio.zonavidahd.online/listen/hd/radio.mp3",
-        radioname: "Zona Vida Radio",
-        coverimage: "./img/logo-zona-vida.png", // Logo circular cuando no haya metadata
-        onlycoverimage: false,
-        userinterface: "big",
-        backgroundcolor: "#000000",
-        fontcolor: "#ffffff",
-        hightlightcolor: "#ff4081",
-        fontname: "Roboto",
-        fontratio: "0.4",
-        radionamefontcolor: "#ffffff",
-        scroll: "true",
-        coverstyle: "circle",
-        usevisualizer: "real",
-        visualizertype: "4",
-        metadatainterval: "5000",
-        showmetadata: true
-      });
-    });
-  </script>
+  </section>
 
 </body>
 </html>
