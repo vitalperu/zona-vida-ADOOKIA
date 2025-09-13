@@ -174,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // ===============================
 // 🔊 NUEVO REPRODUCTOR LUNA-TYPE
 // ===============================
-
 document.addEventListener('DOMContentLoaded', () => {
   const lunaPlayer = document.getElementById('lunaPlayer');
   const lunaPlayBtn = document.getElementById('lunaPlayBtn');
@@ -184,38 +183,42 @@ document.addEventListener('DOMContentLoaded', () => {
   const songArtistElem = document.querySelector('.luna-player-info .song-artist');
   const lunaVolume = document.getElementById('lunaVolume');
 
-  if (lunaPlayBtn && lunaAudio && lunaPlayer) {
-    lunaPlayBtn.addEventListener('click', () => {
-      if (lunaAudio.paused) {
-        lunaAudio.play();
-        lunaPlayer.classList.add('luna-player-playing');
-        lunaPlayBtn.textContent = '⏸';
-      } else {
-        lunaAudio.pause();
-        lunaPlayer.classList.remove('luna-player-playing');
-        lunaPlayBtn.textContent = '▶️';
-      }
-    });
+  // Nuevo: logo central dentro del círculo
+  const circlePlayer = document.getElementById('player-visual');
+  const circleLogo = circlePlayer ? circlePlayer.querySelector('img') : null;
 
-    // Actualizar barra de progreso
-    lunaAudio.addEventListener('timeupdate', () => {
-      if (progressBar) {
-        const percent = (lunaAudio.currentTime / lunaAudio.duration) * 100;
-        progressBar.style.width = percent + '%';
-      }
-    });
+  if (!lunaPlayer || !lunaPlayBtn || !lunaAudio) return; // seguridad
 
-    // Cambiar metadatos (título y artista)
-    function setSongInfo(title, artist) {
-      if (songTitleElem) songTitleElem.textContent = title;
-      if (songArtistElem) songArtistElem.textContent = artist;
+  lunaPlayBtn.addEventListener('click', () => {
+    if (lunaAudio.paused) {
+      lunaAudio.play();
+      if (circleLogo) circleLogo.classList.add('playing'); // pulso solo al logo
+      lunaPlayBtn.textContent = '⏸';
+    } else {
+      lunaAudio.pause();
+      if (circleLogo) circleLogo.classList.remove('playing'); // quitar pulso al pausar
+      lunaPlayBtn.textContent = '▶️';
     }
+  });
 
-    // Control de volumen
-    if (lunaVolume) {
-      lunaVolume.addEventListener('input', () => {
-        lunaAudio.volume = lunaVolume.value;
-      });
-    }
+ // Actualizar barra de progreso
+lunaAudio.addEventListener('timeupdate', () => {
+  const percent = (lunaAudio.currentTime / lunaAudio.duration) * 100;
+  const progressBar = document.querySelector('.luna-player-progress .progress-filled');
+  if (progressBar) progressBar.style.width = percent + '%';
+});
+
+
+  // Cambiar metadatos (título y artista)
+  function setSongInfo(title, artist) {
+    if (songTitleElem) songTitleElem.textContent = title;
+    if (songArtistElem) songArtistElem.textContent = artist;
+  }
+
+  // Control de volumen
+  if (lunaVolume) {
+    lunaVolume.addEventListener('input', () => {
+      lunaAudio.volume = lunaVolume.value;
+    });
   }
 });
