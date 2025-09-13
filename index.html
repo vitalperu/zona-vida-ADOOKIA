@@ -108,22 +108,41 @@
   </div>
 </div>
 
-<!-- NUEVO REPRODUCTOR TIPO LUNA PLAYER (abajo, borde a borde) -->
-<div id="lunaPlayerContainer">
-  <!-- Aquí irá el reproductor moderno tipo Luna Player -->
-  <div class="luna-player">
-    <div class="luna-player-info">
-      <div class="song-title" id="lunaSongTitle">Canción Actual</div>
-      <div class="song-artist" id="lunaSongArtist">Artista</div>
-    </div>
-    <div class="luna-player-controls">
-      <button id="lunaPlayPauseBtn" class="luna-play-btn">
-        <i id="lunaPlayIcon" class="material-icons">play_arrow</i>
-      </button>
-      <input id="lunaVolumeBar" type="range" min="0" max="1" step="0.01" value="1" />
+<!-- NUEVO REPRODUCTOR TIPO LUNA PLAYER -->
+<div id="lunaPlayer" class="luna-player-container">
+
+  <!-- Logo circular central -->
+  <div class="luna-logo-wrapper">
+    <img id="lunaLogo" src="./img/logo-zona-vida.png" alt="Logo Radio">
+    <button id="lunaPlayBtn" class="luna-play-btn">
+      <i class="material-icons">play_arrow</i>
+    </button>
+  </div>
+
+  <!-- Barra de progreso tipo Luna Player -->
+  <div class="luna-player-progress">
+    <div class="progress-bg">
+      <div class="progress-filled"></div>
     </div>
   </div>
+
+  <!-- Barra de volumen -->
+  <div class="luna-volume-container">
+    <input type="range" id="lunaVolume" min="0" max="1" step="0.01" value="1">
+  </div>
+
+  <!-- Info de canción -->
+  <div class="luna-player-info">
+    <div class="song-title" id="lunaSongTitle">Canción Actual</div>
+    <div class="song-artist" id="lunaSongArtist">Artista</div>
+  </div>
+
+  <!-- Audio -->
+  <audio id="lunaAudio" src="https://radio.zonavidahd.online/listen/hd/radio.mp3"></audio>
+
 </div>
+
+
 
 <!-- LIBRERÍAS JS AL FINAL DEL BODY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
