@@ -111,19 +111,22 @@
 <!-- NUEVO REPRODUCTOR TIPO LUNA PLAYER -->
 <div id="lunaPlayer" class="luna-player-container">
 
-  <!-- Logo circular central -->
-  <div class="luna-logo-wrapper">
-    <img id="lunaLogo" src="./img/logo-zona-vida.png" alt="Logo Radio">
+  <!-- Logo circular central dentro del reproductor -->
+  <div id="player-visual">
+    <img id="lunaLogo" src="./img/logo-zona-vida.png" alt="Zona Vida Radio">
     <button id="lunaPlayBtn" class="luna-play-btn">
       <i class="material-icons">play_arrow</i>
     </button>
   </div>
 
-  <!-- Barra de progreso tipo Luna Player -->
+  <!-- Barra de progreso tipo Luna Player con GIF -->
   <div class="luna-player-progress">
-    <div class="progress-bg">
-      <div class="progress-filled"></div>
+    <!-- GIF de spectrum -->
+    <div class="progress-gif">
+      <img src="spectrum.gif" alt="spectrum">
     </div>
+    <!-- Barra de progreso normal -->
+    <div class="progress-filled"></div>
   </div>
 
   <!-- Barra de volumen -->
@@ -141,8 +144,6 @@
   <audio id="lunaAudio" src="https://radio.zonavidahd.online/listen/hd/radio.mp3"></audio>
 
 </div>
-
-
 
 <!-- LIBRERÍAS JS AL FINAL DEL BODY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
