@@ -24,59 +24,99 @@ html, body {
   flex-direction: column;
   justify-content: flex-start;
   min-height: 100vh;
-  padding-top: 10px;  /* reducido para acercar todo */
-  padding-bottom: 10px; /* un poco de espacio al final */
+  padding-top: 50px;
+  padding-bottom: 2px;
 }
 
-/* Player container */
 .player-app-container {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
   max-width: 500px;
-  margin: 10px auto 5px auto; /* márgenes reducidos arriba y abajo */
+  margin: 32px auto 0 auto;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* no separar demasiado */
+  justify-content: space-between;
   min-height: 0;
-  gap: 10px; /* espacio uniforme entre elementos internos */
 }
 
+/* =============================== */
+/* 🔊 PLAYER REDONDO CENTRAL      */
+/* =============================== */
 /* =============================== */
 /* 🔊 PLAYER REDONDO CENTRAL      */
 /* =============================== */
 .circle-player {
   width: 220px;
   height: 220px;
-  border-radius: 50%; /* círculo perfecto */
+  border-radius: 50%; /* 🔹 hace un círculo perfecto */
   background: rgba(255,255,255,0); /* fondo transparente */
-  margin: 10px auto; /* reducido de 20px */
+  margin: 20px auto;
   border: 3px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 0 10px #00ffcc; /* resplandor exterior */
+  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
   transition: all 0.3s ease;
 }
+
 
 .circle-player img {
   width: 90%;
   height: 90%;
-  border-radius: 50%; /* círculo perfecto para el logo */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 50px;
+  transition: transform 0.2s ease;
 }
 
-/* Animación solo para el logo cuando reproduce */
-.circle-player img.playing {
-  animation: pulseLogo 1.2s infinite;
+.circle-player.playing {
+  animation: pulse 1.2s infinite;
+  border-color: #00ffd9;
+  box-shadow: 0 0 20px #ffffff,
 }
 
-@keyframes pulseLogo {
-  0% { transform: scale(1); box-shadow: 0 0 10px #00ffd9; }
-  50% { transform: scale(1.05); box-shadow: 0 0 20px #00ffcc; }
-  100% { transform: scale(1); box-shadow: 0 0 10px #00ffd9; }
+.circle-player.playing {
+  animation: pulse 1.2s infinite;
+  border-color: #00ffd9;
+  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
+  background: rgba(255,255,255,0); /* fondo completamente transparente */
 }
 
 
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 20px #5205e3, 0 0 60px #03fcc2 inset; }
+  50% { transform: scale(1.05); box-shadow: 0 0 30px #009dff, 0 0 80px #fcfcfc inset; }
+  100% { transform: scale(1); box-shadow: 0 0 20px #fc05f0, 0 0 60px #f7f9fa inset; }
+}
+
+
+/* =============================== */
+/* 📝 INFO DE CANCIÓN             */
+/* =============================== */
+.song-info { text-align: center; margin-top: 18px; }
+.song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
+.song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
+
+/* =============================== */
+/* 🎮 CONTROLES DE RADIO          */
+/* =============================== */
+.radio-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0 0 0;
+}
+
+.radio-controls {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.7);
+  border-radius: 18px;
+  padding: 8px 20px 8px 8px;
+  box-shadow: 0 2px 8px #ccc2;
+  margin-bottom: 0;
+}
 
 /* =============================== */
 /* 🎧 PARRILLA PRINCIPAL          */
@@ -146,6 +186,37 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* =============================== */
+/* 🔘 BOTONES Y CONTROLES EXTRA   */
+/* =============================== */
+.play-btn {
+  background: #020c4d;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  padding: 2px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.play-btn:hover { background: #008bf5; }
+
+.play-btn:active,
+.play-btn:focus {
+  background: #06b8ac;
+  box-shadow: none;
+  outline: none;
+}
+
+#volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
+#volIcon:hover { color: #fa2802; }
+
+#volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
+#volValue { font-weight: 600; margin-left: 8px; color: #05012e }
 
 .install-btn {
   padding: 6px 12px;
@@ -301,80 +372,4 @@ html, body {
 
 #btnMenuFlotante i {
   font-size: 28px;
-}
-
-/* =============================== */
-/* 🎨 BARRA DE REPRODUCCIÓN TIPO LUNA PLAYER CON EFECTO GIF */
-/* =============================== */
-.luna-player {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 500px; /* ancho máximo */
-  margin: 0 auto;
-  background: transparent; /* sin fondo sólido */
-  padding: 12px 0;
-}
-
-.luna-player-info {
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.luna-player-info .song-title {
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: #ffffff;
-}
-
-.luna-player-info .song-artist {
-  font-size: 0.9rem;
-  color: #cfcfcf;
-  margin-top: 2px;
-}
-
-/* Contenedor de controles */
-.luna-player-controls {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  position: relative;
-}
-
-/* Botón de play grande e independiente */
-.luna-play-btn {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #6c63ff, #00ffd9);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Contenedor del logo central */
-#player-visual { 
-  width: 220px;        /* ancho fijo */
-  aspect-ratio: 1 / 1; /* fuerza altura igual al ancho */
-  border-radius: 50%;  /* círculo perfecto */
-  overflow: hidden;    /* recorta imagen dentro del círculo */
-  margin: 20px auto;   /* centrar */
-  flex-shrink: 0;      /* evita que se comprima en flex */
-}
-
-/* Imagen dentro del logo */
-#player-visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;   /* ajusta imagen sin deformarla */
-  border-radius: 50%;  /* mantiene círculo perfecto */
-  display: block;
 }
