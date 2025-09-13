@@ -92,33 +92,6 @@ html, body {
 
 
 /* =============================== */
-/* 📝 INFO DE CANCIÓN             */
-/* =============================== */
-.song-info { text-align: center; margin-top: 18px; }
-.song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
-.song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
-
-/* =============================== */
-/* 🎮 CONTROLES DE RADIO          */
-/* =============================== */
-.radio-controls-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 16px 0 0 0;
-}
-
-.radio-controls {
-  display: flex;
-  align-items: center;
-  background: rgba(255,255,255,0.7);
-  border-radius: 18px;
-  padding: 8px 20px 8px 8px;
-  box-shadow: 0 2px 8px #ccc2;
-  margin-bottom: 0;
-}
-
-/* =============================== */
 /* 🎧 PARRILLA PRINCIPAL          */
 /* =============================== */
 .radio-grid-scroll {
@@ -186,37 +159,6 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/* =============================== */
-/* 🔘 BOTONES Y CONTROLES EXTRA   */
-/* =============================== */
-.play-btn {
-  background: #020c4d;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-  padding: 2px 12px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.play-btn:hover { background: #008bf5; }
-
-.play-btn:active,
-.play-btn:focus {
-  background: #06b8ac;
-  box-shadow: none;
-  outline: none;
-}
-
-#volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
-#volIcon:hover { color: #fa2802; }
-
-#volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
-#volValue { font-weight: 600; margin-left: 8px; color: #05012e }
 
 .install-btn {
   padding: 6px 12px;
@@ -372,4 +314,114 @@ html, body {
 
 #btnMenuFlotante i {
   font-size: 28px;
+}
+
+/* =============================== */
+/* 🔊 NUEVO REPRODUCTOR LUNA-TYPE  */
+/* =============================== */
+.luna-player-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #5e2760, #4527a0);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 -4px 15px rgba(0,0,0,0.25);
+  z-index: 999;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Contenedor de información de canción */
+.luna-player-info {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.luna-player-info .song-title {
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.luna-player-info .song-artist {
+  font-size: 0.85rem;
+  color: #d1c4e9;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Controles del reproductor */
+.luna-player-controls {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  justify-content: space-between;
+}
+
+.luna-player-controls button {
+  background: #fff;
+  color: #4527a0;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.luna-player-controls button:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Barra de progreso */
+.luna-player-progress {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+
+.luna-player-progress .progress-filled {
+  height: 100%;
+  width: 0%;
+  background: #ff4081;
+  border-radius: 3px;
+  transition: width 0.2s ease;
+}
+
+/* Botón de volumen */
+.luna-player-volume {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.luna-player-volume input[type=range] {
+  width: 100px;
+}
+
+/* Animación al darle play */
+.luna-player-playing {
+  animation: pulseLuna 1.2s infinite;
+}
+
+@keyframes pulseLuna {
+  0% { transform: scale(1); box-shadow: 0 0 8px #ff4081, 0 0 20px #7c4dff inset; }
+  50% { transform: scale(1.05); box-shadow: 0 0 12px #ff4081, 0 0 28px #7c4dff inset; }
+  100% { transform: scale(1); box-shadow: 0 0 8px #ff4081, 0 0 20px #7c4dff inset; }
 }
