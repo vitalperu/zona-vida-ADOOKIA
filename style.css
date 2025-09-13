@@ -44,13 +44,10 @@ html, body {
 /* =============================== */
 /* 🔊 PLAYER REDONDO CENTRAL      */
 /* =============================== */
-/* =============================== */
-/* 🔊 PLAYER REDONDO CENTRAL      */
-/* =============================== */
 .circle-player {
   width: 220px;
   height: 220px;
-  border-radius: 50%; /* 🔹 hace un círculo perfecto */
+  border-radius: 50%; /* 🔹 círculo perfecto */
   background: rgba(255,255,255,0); /* fondo transparente */
   margin: 20px auto;
   border: 3px solid #ffffff;
@@ -58,37 +55,28 @@ html, body {
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
+  box-shadow: 0 0 10px #00ffcc; /* resplandor exterior */
   transition: all 0.3s ease;
 }
-
 
 .circle-player img {
   width: 90%;
   height: 90%;
-  border-radius: 50px;
-  transition: transform 0.2s ease;
+  border-radius: 50%; /* círculo perfecto para el logo */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.circle-player.playing {
-  animation: pulse 1.2s infinite;
-  border-color: #00ffd9;
-  box-shadow: 0 0 20px #ffffff,
+/* Animación solo para el logo cuando reproduce */
+.circle-player img.playing {
+  animation: pulseLogo 1.2s infinite;
 }
 
-.circle-player.playing {
-  animation: pulse 1.2s infinite;
-  border-color: #00ffd9;
-  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
-  background: rgba(255,255,255,0); /* fondo completamente transparente */
+@keyframes pulseLogo {
+  0% { transform: scale(1); box-shadow: 0 0 10px #00ffd9; }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px #00ffcc; }
+  100% { transform: scale(1); box-shadow: 0 0 10px #00ffd9; }
 }
 
-
-@keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 20px #5205e3, 0 0 60px #03fcc2 inset; }
-  50% { transform: scale(1.05); box-shadow: 0 0 30px #009dff, 0 0 80px #fcfcfc inset; }
-  100% { transform: scale(1); box-shadow: 0 0 20px #fc05f0, 0 0 60px #f7f9fa inset; }
-}
 
 
 /* =============================== */
@@ -317,111 +305,96 @@ html, body {
 }
 
 /* =============================== */
-/* 🔊 NUEVO REPRODUCTOR LUNA-TYPE  */
+/* 🎨 BARRA DE REPRODUCCIÓN TIPO LUNA PLAYER */
 /* =============================== */
-.luna-player-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(90deg, #5e2760, #4527a0);
-  color: #fff;
+.luna-player {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 20px;
-  box-shadow: 0 -4px 15px rgba(0,0,0,0.25);
-  z-index: 999;
-  font-family: 'Montserrat', sans-serif;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px; /* ancho máximo */
+  margin: 0 auto;
+  background: transparent; /* sin fondo sólido */
+  padding: 12px 0;
 }
 
-/* Contenedor de información de canción */
 .luna-player-info {
   text-align: center;
   margin-bottom: 8px;
 }
 
 .luna-player-info .song-title {
-  font-size: 1rem;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #ffffff;
 }
 
 .luna-player-info .song-artist {
-  font-size: 0.85rem;
-  color: #d1c4e9;
+  font-size: 0.9rem;
+  color: #cfcfcf;
   margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-/* Controles del reproductor */
+/* Contenedor de controles */
 .luna-player-controls {
+  width: 100%;
   display: flex;
   align-items: center;
-  width: 100%;
-  max-width: 480px;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
 }
 
-.luna-player-controls button {
-  background: #fff;
-  color: #4527a0;
-  border: none;
+/* Botón de play grande e independiente */
+.luna-play-btn {
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  width: 42px;
-  height: 42px;
+  background: linear-gradient(145deg, #6c63ff, #00ffd9);
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.luna-player-controls button:hover {
-  transform: scale(1.15);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+.luna-play-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.luna-play-btn i {
+  font-size: 28px;
+  color: #fff;
 }
 
 /* Barra de progreso */
 .luna-player-progress {
-  width: 100%;
-  height: 6px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 3px;
+  flex: 1;
+  height: 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2); /* fondo de barra */
   overflow: hidden;
-  margin: 6px 0;
+  margin-left: 12px;
+  margin-right: 12px;
+  position: relative;
 }
 
 .luna-player-progress .progress-filled {
-  height: 100%;
   width: 0%;
-  background: #ff4081;
-  border-radius: 3px;
-  transition: width 0.2s ease;
+  height: 100%;
+  background: linear-gradient(90deg, #6c63ff, #00ffd9, #ff4081);
+  border-radius: 10px;
+  transition: width 0.2s linear;
+  animation: gradientMove 2s infinite linear;
 }
 
-/* Botón de volumen */
-.luna-player-volume {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.luna-player-volume input[type=range] {
-  width: 100px;
-}
-
-/* Animación al darle play */
-.luna-player-playing {
-  animation: pulseLuna 1.2s infinite;
-}
-
-@keyframes pulseLuna {
-  0% { transform: scale(1); box-shadow: 0 0 8px #ff4081, 0 0 20px #7c4dff inset; }
-  50% { transform: scale(1.05); box-shadow: 0 0 12px #ff4081, 0 0 28px #7c4dff inset; }
-  100% { transform: scale(1); box-shadow: 0 0 8px #ff4081, 0 0 20px #7c4dff inset; }
+/* Animación de degradado tipo Luna Player */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
