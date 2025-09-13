@@ -1,20 +1,82 @@
-// script.js - Zona Vida Radio
+// script.js - Zona Vida Radio (versión con Luna Player)
 
+// =============================
+// Inicializar Luna Player
+// =============================
+document.addEventListener("DOMContentLoaded", function () {
+  $("#lunaradio").lunaradio({
+    streamurl: "https://radio.zonavidahd.online/listen/hd/radio.mp3",
+    radioname: "Zona Vida Radio",
+    coverimage: "img/logo-zona-vida.png",
+    userinterface: "big",
+    backgroundcolor: "rgba(0,0,0,0.6)",
+    fontcolor: "#ffffff",
+    hightlightcolor: "#FF4081",
+    fontname: "Montserrat",
+    googlefont: "Montserrat:600",
+    fontratio: "0.4",
+    scroll: "true",
+    autoplay: "true",
+    coverstyle: "circle",
+    usevisualizer: "real",
+    visualizertype: "7",
+    metadatatechnic: "icy",
+    ownmetadataurl: "",
+    streamtype: "icecast2",
+    shoutcastpath: "/stream",
+    shoutcastid: "1",
+    metadatainterval: "20000",
+    volume: "90",
+    usestreamcorsproxy: "false",
+    corsproxy: "",
+    displayliveicon: "true",
+    displayvisualizericon: "true",
+    displaycoverart: "true",
+    displaymetadata: "true",
+    displayvolume: "true",
+    displayclock: "false",
+  });
+});
+
+// =============================
+// Activar Radio desde la parrilla
+// =============================
 function activarRadioItem(item) {
   document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
   item.classList.add('selected');
-  const logo = document.getElementById('logoRadioActual');
-  const player = document.getElementById('player');
+
   const radioUrl = item.getAttribute('data-radio');
   const logoUrl = item.getAttribute('data-logo');
 
-  if (logo && logoUrl) logo.src = logoUrl;
-  if (player && radioUrl) {
-    player.src = radioUrl;
-    player.load();
-    player.play();
-    document.getElementById('playPauseIcon').textContent = 'pause';
-    document.querySelector('.circle-player').classList.add('playing');
+  if (radioUrl) {
+    // Reiniciar Luna Player con nueva radio
+    $("#lunaradio").lunaradio({
+      streamurl: radioUrl,
+      coverimage: logoUrl || "img/logo-zona-vida.png",
+      radioname: item.querySelector("p")?.textContent || "Radio",
+      userinterface: "big",
+      backgroundcolor: "rgba(0,0,0,0.6)",
+      fontcolor: "#ffffff",
+      hightlightcolor: "#FF4081",
+      fontname: "Montserrat",
+      googlefont: "Montserrat:600",
+      fontratio: "0.4",
+      scroll: "true",
+      autoplay: "true",
+      coverstyle: "circle",
+      usevisualizer: "real",
+      visualizertype: "7",
+      metadatatechnic: "icy",
+      streamtype: "icecast2",
+      metadatainterval: "20000",
+      volume: "90",
+      displayliveicon: "true",
+      displayvisualizericon: "true",
+      displaycoverart: "true",
+      displaymetadata: "true",
+      displayvolume: "true",
+      displayclock: "false",
+    });
   }
 }
 
@@ -25,57 +87,9 @@ document.querySelectorAll('.radio-item').forEach(function(item) {
   });
 });
 
-// Botón Play/Pause
-const playPauseBtn = document.getElementById('playPauseBtn');
-const playPauseIcon = document.getElementById('playPauseIcon');
-const player = document.getElementById('player');
-
-if (playPauseBtn && playPauseIcon && player) {
-  playPauseBtn.addEventListener('click', function() {
-    if (player.paused) {
-      player.play();
-      playPauseIcon.textContent = 'pause';
-      document.querySelector('.circle-player').classList.add('playing');
-    } else {
-      player.pause();
-      playPauseIcon.textContent = 'play_arrow';
-      document.querySelector('.circle-player').classList.remove('playing');
-    }
-  });
-}
-
-// Control de volumen y mute
-const volumeBar = document.getElementById('volumeBar');
-const volIcon = document.getElementById('muteIcon');
-const volValue = document.getElementById('volValue');
-
-if (volumeBar && volIcon && volValue) {
-  volIcon.addEventListener('click', () => {
-    player.muted = !player.muted;
-    if (player.muted) {
-      volIcon.textContent = 'volume_off';
-      volumeBar.value = 0;
-    } else {
-      volIcon.textContent = 'volume_up';
-      volumeBar.value = player.volume || 1;
-    }
-    volValue.textContent = Math.round(volumeBar.value * 100) + '%';
-  });
-
-  volumeBar.addEventListener('input', () => {
-    player.volume = volumeBar.value;
-    if (player.volume == 0) {
-      player.muted = true;
-      volIcon.textContent = 'volume_off';
-    } else {
-      player.muted = false;
-      volIcon.textContent = 'volume_up';
-    }
-    volValue.textContent = Math.round(volumeBar.value * 100) + '%';
-  });
-}
-
+// =============================
 // Registro de Service Worker
+// =============================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('/sw.js')
@@ -88,7 +102,9 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// =============================
 // Botón de instalación PWA
+// =============================
 let deferredPrompt;
 const installBtn = document.getElementById('installBtn');
 
@@ -114,7 +130,9 @@ if (installBtn) {
   });
 }
 
+// =============================
 // Compartir App
+// =============================
 function shareApp() {
   if (navigator.share) {
     navigator.share({
@@ -131,14 +149,18 @@ function shareApp() {
   }
 }
 
+// =============================
 // Cerrar App
+// =============================
 function closeApp() {
   if (confirm("¿Quieres salir de la app?")) {
     window.close();
   }
 }
 
+// =============================
 // Inicializar menú hamburguesa (Materialize)
+// =============================
 document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
   if (sidenavs.length) {
@@ -146,7 +168,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// =============================
 // Botón Más Radios: alternar parrilla secundaria
+// =============================
 const btnMasRadios = document.getElementById('btnMasRadios');
 const iconoMasRadios = document.getElementById('iconoMasRadios');
 const parrillaExtra = document.getElementById('parrillaExtra');
@@ -159,7 +183,9 @@ btnMasRadios.addEventListener('click', () => {
   btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
 });
 
+// =============================
 // Agregar etiquetas "Radio" a cada item de la segunda parrilla
+// =============================
 document.addEventListener("DOMContentLoaded", function () {
   const radios = document.querySelectorAll("#parrillaExtra .radio-item");
   radios.forEach(radio => {
