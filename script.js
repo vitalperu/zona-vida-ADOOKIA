@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // ===============================
-// 🔊 NUEVO REPRODUCTOR LUNA-TYPE
+// 🔊REPRODUCTOR LUNA-TYPE GIF
 // ===============================
 document.addEventListener('DOMContentLoaded', () => {
   const lunaPlayer = document.getElementById('lunaPlayer');
@@ -183,37 +183,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const songArtistElem = document.querySelector('.luna-player-info .song-artist');
   const lunaVolume = document.getElementById('lunaVolume');
 
-  // Nuevo: logo central dentro del círculo
   const circlePlayer = document.getElementById('player-visual');
   const circleLogo = circlePlayer ? circlePlayer.querySelector('img') : null;
 
-  if (!lunaPlayer || !lunaPlayBtn || !lunaAudio) return; // seguridad
+  if (!lunaPlayer || !lunaPlayBtn || !lunaAudio || !progressBar) return;
+
+  // Agregamos un GIF de Spectrum como fondo
+  const gifURL = 'tu-gif-spectrum.gif'; // <-- reemplaza con tu GIF
+  progressBar.style.background = `url('${gifURL}') no-repeat center / cover`;
+  progressBar.style.opacity = 0; // empieza oculto
 
   lunaPlayBtn.addEventListener('click', () => {
     if (lunaAudio.paused) {
       lunaAudio.play();
-      if (circleLogo) circleLogo.classList.add('playing'); // pulso solo al logo
+      if (circleLogo) circleLogo.classList.add('playing'); 
       lunaPlayBtn.textContent = '⏸';
+      progressBar.style.opacity = 1; // mostrar GIF al reproducir
     } else {
       lunaAudio.pause();
-      if (circleLogo) circleLogo.classList.remove('playing'); // quitar pulso al pausar
+      if (circleLogo) circleLogo.classList.remove('playing'); 
       lunaPlayBtn.textContent = '▶️';
+      progressBar.style.opacity = 0; // ocultar GIF al pausar
     }
   });
 
- // Actualizar barra de progreso
-lunaAudio.addEventListener('timeupdate', () => {
-  const percent = (lunaAudio.currentTime / lunaAudio.duration) * 100;
-  const progressBar = document.querySelector('.luna-player-progress .progress-filled');
-  if (progressBar) progressBar.style.width = percent + '%';
-});
-
-
-  // Cambiar metadatos (título y artista)
-  function setSongInfo(title, artist) {
-    if (songTitleElem) songTitleElem.textContent = title;
-    if (songArtistElem) songArtistElem.textContent = artist;
-  }
+  // Actualizar barra de progreso
+  lunaAudio.addEventListener('timeupdate', () => {
+    const percent = (lunaAudio.currentTime / lunaAudio.duration) * 100;
+    progressBar.style.width = percent + '%';
+  });
 
   // Control de volumen
   if (lunaVolume) {
