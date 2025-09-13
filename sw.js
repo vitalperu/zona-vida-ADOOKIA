@@ -1,44 +1,37 @@
-const audio = new Audio("https://radio.zonavidahd.online/listen/hd/radio.mp3");
-const playBtn = document.getElementById("playPauseBtn");
-const volumeBar = document.getElementById("volumeBar");
-const songTitle = document.getElementById("songTitle");
-const cover = document.getElementById("cover");
-const logoContainer = document.querySelector(".player-logo");
+const CACHE_NAME = 'zona-vida-cache-v1';
+const urlsToCache = [
+  '/zona-vida-ADOOKIA/',
+  '/zona-vida-ADOOKIA/index.html',
+  '/zona-vida-ADOOKIA/style.css',
+  '/zona-vida-ADOOKIA/script.js',
+  '/zona-vida-ADOOKIA/favicon.ico',
+  '/zona-vida-ADOOKIA/manifest.json',
+  '/zona-vida-ADOOKIA/img/logo.png',
+  // Agrega otros recursos estáticos necesarios aquí
+];
 
-let isPlaying = false;
-
-// Play / Pause
-playBtn.addEventListener("click", () => {
-  if (!isPlaying) {
-    audio.play();
-    isPlaying = true;
-    playBtn.textContent = "⏸";
-    logoContainer.classList.add("playing");
-  } else {
-    audio.pause();
-    isPlaying = false;
-    playBtn.textContent = "▶";
-    logoContainer.classList.remove("playing");
-  }
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+      .then(() => self.skipWaiting())
+  );
 });
 
-// Volumen
-volumeBar.addEventListener("input", () => {
-  audio.volume = volumeBar.value;
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
-// Cambiar radio desde parrilla
-document.querySelectorAll(".radio-item").forEach(item => {
-  item.addEventListener("click", () => {
-    let stream = item.getAttribute("data-stream");
-    audio.src = stream;
-    audio.play();
-    isPlaying = true;
-    playBtn.textContent = "⏸";
-    logoContainer.classList.add("playing");
-    songTitle.textContent = item.querySelector("p").textContent;
-  });
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
 });
-
-// TODO: Aquí podemos integrar metadata del stream si tu servidor lo permite
-songTitle.textContent = "Zona Vida Radio";
