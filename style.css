@@ -1,285 +1,115 @@
-/* =============================== */
-/* 🌌 FONDO GENERAL Y ESTRUCTURA  */
-/* =============================== */
-html, body {
-  height: 100%;
+body {
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
   font-family: 'Montserrat', sans-serif;
-  background-image: url('https://blogger.googleusercontent.com/img/a/AVvXsEigvHKs8xEiJY7NjyNY8i69ey_86W5oPtqUUbXfQsWOQRQa-YXf9cZLlZ1PHG5m3EmBAURzSkx67GDzR1Fs8Q8wAi4MS-aQc7IkIvvA0Kr34_I5m_hjWzUgYDnsbcvGYO1NQfV4w9PJ2yq6w66TirqjvzwOz82wSc40b7IN1Fv82qkdBPVGvY_LFVmb8Tc=s16000');
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(120deg, #020024, #090979, #00d4ff);
   background-attachment: fixed;
+  color: #fff;
 }
 
-/* =============================== */
-/* 🧩 CONTENEDORES PRINCIPALES    */
-/* =============================== */
-.main-content {
+/* Navbar */
+.navbar {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding-top: 50px;
-  padding-bottom: 2px;
-}
-
-.player-app-container {
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  max-width: 500px;
-  margin: 32px auto 0 auto;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  min-height: 0;
+  align-items: center;
+  background: #111;
+  padding: 10px 20px;
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
 }
 
-/* =============================== */
-/* 🎵 LUNA PLAYER (nuevo)         */
-/* =============================== */
-.player-section {
+/* Player barra tipo Spotify */
+.player-bar {
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin: 20px 0;
+  gap: 20px;
+  padding: 15px;
+  background: rgba(0,0,0,0.7);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-#lunaradio {
-  width: 100%;
-  max-width: 400px;   /* ancho máximo */
-  margin: 0 auto;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+.player-logo img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 15px #00e5ff;
+  transition: transform 0.6s linear;
 }
 
-/* =============================== */
-/* 🎧 PARRILLA PRINCIPAL          */
-/* =============================== */
-.radio-grid-scroll {
-  max-height: none;
-  overflow-y: visible;
-  padding: 4px 0 0 0;
-  margin-bottom: 10px;
+.player-logo.playing img {
+  animation: spin 4s linear infinite;
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.player-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#songTitle {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+  color: #ffeb3b;
+}
+
+.btn {
+  background: #ff4081;
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #f50057;
+}
+
+#volumeBar {
+  margin-top: 8px;
+  width: 120px;
+}
+
+/* Radios grid */
 .radio-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  justify-items: center;
+  gap: 12px;
+  padding: 20px;
 }
 
-.radio-grid-background {
-  background-color: rgba(255, 255, 255, 0.45);
-  padding: 8px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-  max-width: 340px;
-  margin: 0 auto;
-}
-
-.radio-container {
-  background-color: #020742;
-  border-radius: 10px;
-  padding: 6px 8px;
+.radio-item {
   text-align: center;
-  max-width: 120px;
   cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s;
-}
-
-.radio-container:hover {
-  box-shadow: 0 0 10px #7c4dffaa;
-  transform: scale(1.05);
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 8px;
+  transition: 0.3s;
 }
 
 .radio-item img {
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  width: 52px;
-  height: 52px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px #5e35b122;
-  border: 2px solid #e0e0e0;
-  transition: border-color 0.15s;
-  display: block;
-  margin: 0 auto;
 }
 
-.radio-item.selected img,
-.radio-item:hover img {
-  border-color: #7c4dff;
-  box-shadow: 0 0 0 3px #d1c4e9;
-  background: #fff;
+.radio-item:hover {
+  background: rgba(255,255,255,0.25);
+  transform: scale(1.05);
 }
 
-.radio-name {
-  margin-top: 4px;
-  font-size: 0.85rem;
-  color: white;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* =============================== */
-/* 🔘 BOTONES Y CONTROLES EXTRA   */
-/* =============================== */
-.install-btn {
-  padding: 6px 12px;
-  background: #ff9800;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-}
-
-.install-btn:hover { background: #f57c00; }
-
-.install-button-wrapper {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-/* =============================== */
-/* 🎛️ SEGUNDA PARRILLA EXTRA     */
-/* =============================== */
-#parrillaExtra {
-  display: flex;
-  overflow-x: auto;
-  background-color: rgba(255, 255, 255, 0.6);
-  padding: 0.7rem;
-  gap: 0.7rem;
-  border-radius: 7px;
-  margin: 1rem auto;
-  width: 95%;
-  scroll-behavior: smooth;
-  max-width: 340px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-}
-
-#parrillaExtra::-webkit-scrollbar {
-  height: 8px;
-}
-
-#parrillaExtra::-webkit-scrollbar-thumb {
-  background-color: #90caf9;
-  border-radius: 10px;
-}
-
-#parrillaExtra .radio-item {
-  flex: 0 0 auto;
-  width: 65px;
-  min-height: 80px;
-  text-align: center;
-  background: #fafeff;
-  padding: 0.1rem;
-  border-radius: 7px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
-  backdrop-filter: blur(4px);
-  border: 1px solid #bbdefb;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#parrillaExtra .radio-item img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  border: 2px solid #e3f2fd;
-  transition: border-color 0.3s ease;
-  background: white;
-  padding: 2px;
-}
-
-#parrillaExtra .radio-item .etiqueta-radio {
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: #d32f2f;
-  text-transform: uppercase;
-  margin-bottom: -1px;
-  letter-spacing: 1.5px;
-}
-
-#parrillaExtra .radio-item p {
-  margin: 0;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #222;
-  max-height: 2.4em;
-  overflow: hidden;
-  line-height: 1.2em;
-  text-align: center;
-  text-shadow: 0 1px 1px #fff;
-}
-
-#parrillaExtra .radio-item:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-  border-color: #42a5f5;
-}
-
-#parrillaExtra .radio-item:hover img {
-  border-color: #42a5f5;
-}
-
-/* =============================== */
-/* 🚫 UTILIDADES GLOBALES         */
-/* =============================== */
 .oculto {
-  display: none !important;
-}
-
-#parrillaExtra.oculto {
-  display: none !important;
-}
-
-.sidenav-trigger:hover {
-  transform: scale(1.15);
-}
-
-#btnMenuFlotante {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 999;
-  background-color: #FF4081;
-  color: white;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-#btnMenuFlotante i {
-  font-size: 28px;
-}
-
-.player-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto;
-}
-
-#lunaradio {
-  width: 100%;
-  max-width: 400px;  /* tamaño máximo */
-  height: 400px;     /* altura visible */
+  display: none;
 }
