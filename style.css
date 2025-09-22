@@ -41,9 +41,7 @@ html, body {
   min-height: 0;
 }
 
-/* =============================== */
-/* 🔊 PLAYER REDONDO CENTRAL      */
-/* =============================== */
+
 /* =============================== */
 /* 🔊 PLAYER REDONDO CENTRAL      */
 /* =============================== */
@@ -100,7 +98,9 @@ html, body {
 
 
 
-/* INICIO: NUEVO REPRODUCTOR LUNA */
+/* ============================= */
+/*  INICIO NUEVO REPRODUCTOR   */
+/* ============================= */
 /* ============================= */
 /* 🎶 NUEVO REPRODUCTOR MODERNO  */
 /* ============================= */
@@ -266,7 +266,9 @@ body {
 #playBtn.pause::before { left: 35%; }
 #playBtn.pause::after { right: 35%; }
 
-/* FINAL:  NUEVO REPRODUCTOR LUNA */
+/* ============================= */
+/*  FIN DEL NUEVO REPRODUCTOR   */
+/* ============================= */
 
 
 
