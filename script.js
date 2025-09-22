@@ -25,55 +25,119 @@ document.querySelectorAll('.radio-item').forEach(function(item) {
   });
 });
 
-// Botón Play/Pause
-const playPauseBtn = document.getElementById('playPauseBtn');
-const playPauseIcon = document.getElementById('playPauseIcon');
-const player = document.getElementById('player');
 
-if (playPauseBtn && playPauseIcon && player) {
-  playPauseBtn.addEventListener('click', function() {
-    if (player.paused) {
-      player.play();
-      playPauseIcon.textContent = 'pause';
-      document.querySelector('.circle-player').classList.add('playing');
-    } else {
-      player.pause();
-      playPauseIcon.textContent = 'play_arrow';
-      document.querySelector('.circle-player').classList.remove('playing');
-    }
-  });
+/* 🔊 INICIO DE BUEVO REPRODUCTOR   */
+// 🎵 Nuevo Reproductor - Zona Vida Radio
+
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const volumeControl = document.getElementById("volumeControl");
+const volumePercent = document.getElementById("volumePercent");
+const muteIcon = document.getElementById("muteIcon");
+const soundIcon = document.getElementById("soundIcon");
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d");
+
+// Ajustar tamaño del canvas según pantalla
+function resizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  canvas.width = canvas.clientWidth * dpr;
+  canvas.height = canvas.clientHeight * dpr;
+  ctx.scale(dpr, dpr);
 }
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-// Control de volumen y mute
-const volumeBar = document.getElementById('volumeBar');
-const volIcon = document.getElementById('muteIcon');
-const volValue = document.getElementById('volValue');
+// 🎶 Web Audio API
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+const source = audioCtx.createMediaElementSource(audio);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+analyser.fftSize = 2048;
+const bufferLength = analyser.fftSize;
+const dataArray = new Uint8Array(bufferLength);
 
-if (volumeBar && volIcon && volValue) {
-  volIcon.addEventListener('click', () => {
-    player.muted = !player.muted;
-    if (player.muted) {
-      volIcon.textContent = 'volume_off';
-      volumeBar.value = 0;
-    } else {
-      volIcon.textContent = 'volume_up';
-      volumeBar.value = player.volume || 1;
-    }
-    volValue.textContent = Math.round(volumeBar.value * 100) + '%';
-  });
+// Dibujar onda
+function draw() {
+  requestAnimationFrame(draw);
+  analyser.getByteTimeDomainData(dataArray);
 
-  volumeBar.addEventListener('input', () => {
-    player.volume = volumeBar.value;
-    if (player.volume == 0) {
-      player.muted = true;
-      volIcon.textContent = 'volume_off';
-    } else {
-      player.muted = false;
-      volIcon.textContent = 'volume_up';
-    }
-    volValue.textContent = Math.round(volumeBar.value * 100) + '%';
-  });
+  ctx.fillStyle = "rgba(10,10,26,1)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // 🚫 No dibuja si está en pausa, muteado o sin volumen
+  if (audio.paused || audio.muted || audio.volume === 0) return;
+
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+  gradient.addColorStop(0, "rgba(0,229,255,0)");
+  gradient.addColorStop(0.05, "rgba(0,229,255,1)");
+  gradient.addColorStop(0.95, "rgba(0,229,255,1)");
+  gradient.addColorStop(1, "rgba(0,229,255,0)");
+
+  ctx.strokeStyle = gradient;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+
+  const step = 8;
+  const sliceWidth = canvas.width / (bufferLength / step);
+  let x = 0;
+
+  for (let i = 0; i < bufferLength; i += step) {
+    const v = dataArray[i] / 128.0;
+    const y = (v * canvas.height / 2) + 45;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+    x += sliceWidth;
+  }
+
+  ctx.stroke();
 }
+draw();
+
+// ▶️ Play / ⏸ Pause
+playBtn.addEventListener("click", async () => {
+  if (audioCtx.state === "suspended") {
+    await audioCtx.resume(); // 🔹 Necesario para navegadores modernos
+  }
+
+  if (audio.paused) {
+    audio.play();
+    playBtn.classList.remove("play");
+    playBtn.classList.add("pause");
+  } else {
+    audio.pause();
+    playBtn.classList.remove("pause");
+    playBtn.classList.add("play");
+  }
+});
+
+// 🔊 Volumen dinámico
+volumeControl.addEventListener("input", () => {
+  const value = volumeControl.value;
+  audio.volume = value / 100;
+  volumePercent.textContent = value + "%";
+
+  volumeControl.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+});
+
+// 🔇 Mute / Unmute
+muteIcon.addEventListener("click", () => {
+  audio.muted = true;
+  muteIcon.classList.add("active");   // 🔴 rojo en mute
+  soundIcon.classList.remove("active");
+});
+
+soundIcon.addEventListener("click", () => {
+  audio.muted = false;
+  muteIcon.classList.remove("active");
+  soundIcon.classList.add("active");
+});
+
+/* 🔊 FIN DE BUEVO REPRODUCTOR   */
+
+
 
 // Registro de Service Worker
 if ('serviceWorker' in navigator) {
