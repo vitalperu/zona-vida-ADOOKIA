@@ -65,8 +65,8 @@ function draw() {
   requestAnimationFrame(draw);
   analyser.getByteTimeDomainData(dataArray);
 
-  ctx.fillStyle = "rgba(10,10,26,1)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+// limpiar canvas sin fondo (transparente)
+ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // 🚫 No dibuja si está en pausa, muteado o sin volumen
   if (audio.paused || audio.muted || audio.volume === 0) return;
