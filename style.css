@@ -99,26 +99,6 @@ html, body {
 .song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
 
 /* =============================== */
-/* 🎮 CONTROLES DE RADIO          */
-/* =============================== */
-.radio-controls-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 16px 0 0 0;
-}
-
-.radio-controls {
-  display: flex;
-  align-items: center;
-  background: rgba(255,255,255,0.7);
-  border-radius: 18px;
-  padding: 8px 20px 8px 8px;
-  box-shadow: 0 2px 8px #ccc2;
-  margin-bottom: 0;
-}
-
-/* =============================== */
 /* 🎧 PARRILLA PRINCIPAL          */
 /* =============================== */
 .radio-grid-scroll {
@@ -186,37 +166,6 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/* =============================== */
-/* 🔘 BOTONES Y CONTROLES EXTRA   */
-/* =============================== */
-.play-btn {
-  background: #020c4d;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-  padding: 2px 12px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.play-btn:hover { background: #008bf5; }
-
-.play-btn:active,
-.play-btn:focus {
-  background: #06b8ac;
-  box-shadow: none;
-  outline: none;
-}
-
-#volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
-#volIcon:hover { color: #fa2802; }
-
-#volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
-#volValue { font-weight: 600; margin-left: 8px; color: #05012e }
 
 .install-btn {
   padding: 6px 12px;
