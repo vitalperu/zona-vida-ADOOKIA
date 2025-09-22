@@ -65,11 +65,13 @@ function draw() {
   requestAnimationFrame(draw);
   analyser.getByteTimeDomainData(dataArray);
 
-// limpiar canvas sin fondo (transparente)
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // limpiar canvas sin pintar fondo
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // 🚫 No dibuja si está en pausa, muteado o sin volumen
-  if (audio.paused || audio.muted || audio.volume === 0) return;
+  // ✅ si está en pausa, muteado o sin volumen, no dibujar nada
+  if (audio.paused || audio.muted || audio.volume === 0) {
+    return;
+  }
 
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
   gradient.addColorStop(0, "rgba(0,229,255,0)");
@@ -79,8 +81,8 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.strokeStyle = gradient;
   ctx.lineWidth = 1;
-  ctx.beginPath();
 
+  ctx.beginPath();
   const step = 8;
   const sliceWidth = canvas.width / (bufferLength / step);
   let x = 0;
@@ -95,7 +97,6 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.stroke();
 }
-draw();
 
 // ▶️ Play / ⏸ Pause
 playBtn.addEventListener("click", async () => {
