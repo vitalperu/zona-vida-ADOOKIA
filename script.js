@@ -64,9 +64,10 @@ const dataArray = new Uint8Array(bufferLength);
 function draw() {
   requestAnimationFrame(draw);
   analyser.getByteTimeDomainData(dataArray);
-
-  // limpiar canvas sin pintar fondo
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // limpiar canvas pero mantener transparente
+ctx.fillStyle = "rgba(0,0,0,0)";  
+ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // ✅ si está en pausa, muteado o sin volumen, no dibujar nada
   if (audio.paused || audio.muted || audio.volume === 0) {
