@@ -26,7 +26,7 @@ document.querySelectorAll('.radio-item').forEach(function(item) {
 });
 
 
-/* 🔊 INICIO DE BUEVO REPRODUCTOR   */
+<!-- 🔊 INICIO DE NUEVO REPRODUCTOR -->
 // 🎵 Nuevo Reproductor - Zona Vida Radio
 
 const audio = document.getElementById("audio");
@@ -135,7 +135,7 @@ soundIcon.addEventListener("click", () => {
   soundIcon.classList.add("active");
 });
 
-/* 🔊 FIN DE BUEVO REPRODUCTOR   */
+<!-- 🔊 FIN DE NUEVO REPRODUCTOR -->
 
 
 
