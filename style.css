@@ -98,6 +98,178 @@ html, body {
 .song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
 .song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
 
+
+
+/* INICIO: NUEVO REPRODUCTOR LUNA */
+/* ============================= */
+/* 🎶 NUEVO REPRODUCTOR MODERNO  */
+/* ============================= */
+body {
+  margin: 0;
+  background: #0a0a1a;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.player-container {
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+  margin-top: 170px; /* 🔹 mueve todo el bloque hacia abajo */
+}
+
+#visualizer {
+  width: 100%;
+  height: 220px;   /* subimos un poco la altura */
+  display: block;
+  background: transparent;
+  margin-bottom: 10px; /* espacio con la barra de volumen */
+}
+
+/* ============================= */
+/* 🔊 BARRA DE VOLUMEN ESTILO    */
+/* ============================= */
+.volume-section {
+  width: 100%;
+  max-width: none;
+  margin: -53px 0;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.volume-section input[type="range"] {
+  width: 100%;
+  appearance: none;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #00e5ff 70%, #444 70%);
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.volume-section input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00e5ff;
+  cursor: pointer;
+  border: none;
+}
+
+.volume-section input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00e5ff;
+  border: none;
+  cursor: pointer;
+}
+
+.volume-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+}
+
+#muteIcon { order: 1; }
+#volumePercent { order: 2; margin-left: auto; padding: 0 10px; }
+#soundIcon { order: 3; }
+
+.volume-icons .icon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, fill 0.3s ease;
+}
+
+.volume-icons svg {
+  width: 28px;
+  height: 28px;
+  fill: #ffffff;
+  transition: fill 0.3s ease, transform 0.2s ease;
+}
+
+.volume-icons .icon:hover svg { fill: #00e5ff; }
+#muteIcon.active svg { fill: #ff4d4d; }
+
+/* ============================= */
+/* ▶️ BOTÓN PLAY/PAUSE           */
+/* ============================= */
+.controls {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#playBtn {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  background: #fafcfc;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 0 20px #018c6c, 0 0 40px #0044b5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#playBtn:hover {
+  transform: scale(1.1);
+  background: #f5fafa;
+  box-shadow: 0 0 2px #02fafa, 0 0 20px #02fafa;
+}
+
+#playBtn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 15px #e102fa, 0 0 30px #e102fa;
+}
+
+#playBtn.play::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-40%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid #04c4de;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+}
+
+#playBtn.pause::before,
+#playBtn.pause::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 28px;
+  background: #04c4de;
+  border-radius: 2px;
+}
+
+#playBtn.pause::before { left: 35%; }
+#playBtn.pause::after { right: 35%; }
+
+/* FINAL:  NUEVO REPRODUCTOR LUNA */
+
+
+
 /* =============================== */
 /* 🎧 PARRILLA PRINCIPAL          */
 /* =============================== */
