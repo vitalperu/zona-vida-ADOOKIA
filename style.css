@@ -126,11 +126,8 @@ body {
   width: 100%;
   height: 220px;
   display: block;
-  background: none !important; /* forzamos que no tenga fondo */
-  margin-bottom: 10px;
+  background: transparent !important; /* 🔑 */
 }
-
-
 
 /* ============================= */
 /* 🔊 BARRA DE VOLUMEN ESTILO    */
