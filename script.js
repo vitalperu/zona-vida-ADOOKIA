@@ -37,7 +37,7 @@ const volumePercent = document.getElementById("volumePercent");
 const muteIcon = document.getElementById("muteIcon");
 const soundIcon = document.getElementById("soundIcon");
 const canvas = document.getElementById("visualizer");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d", { alpha: true }); // 🔑 asegura transparencia
 
 // Ajustar tamaño del canvas según pantalla
 function resizeCanvas() {
