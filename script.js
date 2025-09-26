@@ -65,10 +65,9 @@ function draw() {
   requestAnimationFrame(draw);
   analyser.getByteTimeDomainData(dataArray);
 
-  // ❌ No pintamos ningún fondo, solo limpiamos el canvas
+  // Limpiar canvas sin pintar fondo negro
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // ✅ si está en pausa, muteado o sin volumen, no dibujar nada
   if (audio.paused || audio.muted || audio.volume === 0) {
     return;
   }
@@ -80,7 +79,7 @@ function draw() {
   gradient.addColorStop(1, "rgba(0,229,255,0)");
 
   ctx.strokeStyle = gradient;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 2;
 
   ctx.beginPath();
   const step = 8;
@@ -89,7 +88,7 @@ function draw() {
 
   for (let i = 0; i < bufferLength; i += step) {
     const v = dataArray[i] / 128.0;
-    const y = (v * canvas.height / 2) + 45;
+    const y = (v * canvas.height) / 2;
     if (i === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
     x += sliceWidth;
@@ -99,6 +98,7 @@ function draw() {
 }
 
 draw();
+
 
 
 // ▶️ Play / ⏸ Pause
