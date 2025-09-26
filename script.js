@@ -65,9 +65,8 @@ function draw() {
   requestAnimationFrame(draw);
   analyser.getByteTimeDomainData(dataArray);
 
-  // limpiar canvas
-  ctx.fillStyle = "rgba(10,10,26,1)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // ❌ No pintamos ningún fondo, solo limpiamos el canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // ✅ si está en pausa, muteado o sin volumen, no dibujar nada
   if (audio.paused || audio.muted || audio.volume === 0) {
@@ -100,6 +99,7 @@ function draw() {
 }
 
 draw();
+
 
 // ▶️ Play / ⏸ Pause
 playBtn.addEventListener("click", async () => {
