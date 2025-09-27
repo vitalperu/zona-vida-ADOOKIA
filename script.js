@@ -28,10 +28,27 @@ document.querySelectorAll('.radio-item').forEach(function(item) {
 
 
  <!-- 🔊 INICIO DE NUEVO REPRODUCTOR --> 
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d", { alpha: true });
 
+// Ajustar tamaño del canvas según pantalla
+function resizeCanvas() { ... }
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
+// 🎶 Web Audio API
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+const source = audioCtx.createMediaElementSource(audio);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+analyser.fftSize = 2048;
+const bufferLength = analyser.fftSize;
+const dataArray = new Uint8Array(bufferLength);
 
-
+// Dibujar onda
+function draw() { ... }
+draw();
 
 
 // ▶️ Play / ⏸ Pause
