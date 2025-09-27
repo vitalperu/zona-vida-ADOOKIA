@@ -491,3 +491,8 @@ body {
 #btnMenuFlotante i {
   font-size: 28px;
 }
+
+body, html, .player-container, #visualizer {
+  background: transparent !important;
+}
+
