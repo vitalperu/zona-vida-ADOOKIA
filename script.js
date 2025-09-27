@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+
   
 // Botón Más Radios: alternar parrilla secundaria
 const btnMasRadios = document.getElementById('btnMasRadios');
