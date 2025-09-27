@@ -41,7 +41,9 @@ html, body {
   min-height: 0;
 }
 
-
+/* =============================== */
+/* 🔊 PLAYER REDONDO CENTRAL      */
+/* =============================== */
 /* =============================== */
 /* 🔊 PLAYER REDONDO CENTRAL      */
 /* =============================== */
@@ -96,180 +98,25 @@ html, body {
 .song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
 .song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
 
-
-
-/* ============================= */
-/*  INICIO NUEVO REPRODUCTOR   */
-/* ============================= */
-/* ============================= */
-/* 🎶 NUEVO REPRODUCTOR MODERNO  */
-/* ============================= */
-body {
-  margin: 0;
-  background: #0a0a1a;
-  color: white;
-  font-family: Arial, sans-serif;
+/* =============================== */
+/* 🎮 CONTROLES DE RADIO          */
+/* =============================== */
+.radio-controls-wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  margin: 16px 0 0 0;
 }
 
-.player-container {
-  width: 100%;
-  max-width: 700px;
-  text-align: center;
-  margin-top: 170px; /* 🔹 mueve todo el bloque hacia abajo */
-}
-#visualizer {
-  display: block;
-  width: 100%;
-  height: 100px;
-  background: transparent !important;
-  pointer-events: none;
-}
-
-/* ============================= */
-/* 🔊 BARRA DE VOLUMEN ESTILO    */
-/* ============================= */
-.volume-section {
-  width: 100%;
-  max-width: none;
-  margin: -53px 0;
-  padding: 0 10px;
-  box-sizing: border-box;
-}
-
-.volume-section input[type="range"] {
-  width: 100%;
-  appearance: none;
-  height: 4px;
-  border-radius: 4px;
-  background: linear-gradient(to right, #00e5ff 70%, #444 70%);
-  outline: none;
-  cursor: pointer;
-  margin-bottom: 8px;
-}
-
-.volume-section input[type="range"]::-webkit-slider-thumb {
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #00e5ff;
-  cursor: pointer;
-  border: none;
-}
-
-.volume-section input[type="range"]::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #00e5ff;
-  border: none;
-  cursor: pointer;
-}
-
-.volume-icons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  font-size: 16px;
-}
-
-#muteIcon { order: 1; }
-#volumePercent { order: 2; margin-left: auto; padding: 0 10px; }
-#soundIcon { order: 3; }
-
-.volume-icons .icon {
-  cursor: pointer;
+.radio-controls {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease, fill 0.3s ease;
+  background: rgba(255,255,255,0.7);
+  border-radius: 18px;
+  padding: 8px 20px 8px 8px;
+  box-shadow: 0 2px 8px #ccc2;
+  margin-bottom: 0;
 }
-
-.volume-icons svg {
-  width: 28px;
-  height: 28px;
-  fill: #ffffff;
-  transition: fill 0.3s ease, transform 0.2s ease;
-}
-
-.volume-icons .icon:hover svg { fill: #00e5ff; }
-#muteIcon.active svg { fill: #ff4d4d; }
-
-/* ============================= */
-/* ▶️ BOTÓN PLAY/PAUSE           */
-/* ============================= */
-.controls {
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#playBtn {
-  position: relative;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: none;
-  background: #fafcfc;
-  color: white;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
-  box-shadow: 0 0 20px #018c6c, 0 0 40px #0044b5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#playBtn:hover {
-  transform: scale(1.1);
-  background: #f5fafa;
-  box-shadow: 0 0 2px #02fafa, 0 0 20px #02fafa;
-}
-
-#playBtn:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 15px #e102fa, 0 0 30px #e102fa;
-}
-
-#playBtn.play::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-40%, -50%);
-  width: 0;
-  height: 0;
-  border-left: 20px solid #04c4de;
-  border-top: 14px solid transparent;
-  border-bottom: 14px solid transparent;
-}
-
-#playBtn.pause::before,
-#playBtn.pause::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 28px;
-  background: #04c4de;
-  border-radius: 2px;
-}
-
-#playBtn.pause::before { left: 35%; }
-#playBtn.pause::after { right: 35%; }
-
-/* ============================= */
-/*  FIN DEL NUEVO REPRODUCTOR   */
-/* ============================= */
-
-
 
 /* =============================== */
 /* 🎧 PARRILLA PRINCIPAL          */
@@ -339,6 +186,37 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* =============================== */
+/* 🔘 BOTONES Y CONTROLES EXTRA   */
+/* =============================== */
+.play-btn {
+  background: #020c4d;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  padding: 2px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.play-btn:hover { background: #008bf5; }
+
+.play-btn:active,
+.play-btn:focus {
+  background: #06b8ac;
+  box-shadow: none;
+  outline: none;
+}
+
+#volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
+#volIcon:hover { color: #fa2802; }
+
+#volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
+#volValue { font-weight: 600; margin-left: 8px; color: #05012e }
 
 .install-btn {
   padding: 6px 12px;
@@ -495,5 +373,3 @@ body {
 #btnMenuFlotante i {
   font-size: 28px;
 }
-
-
