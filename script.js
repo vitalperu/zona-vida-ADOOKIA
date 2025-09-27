@@ -197,7 +197,7 @@ function closeApp() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+
 
 // Inicializar menú hamburguesa (Materialize)
 document.addEventListener('DOMContentLoaded', function() {
