@@ -198,27 +198,37 @@ function closeApp() {
 }
 
 
+document.addEventListener("DOMContentLoaded", function() {
 
-// Inicializar menú hamburguesa (Materialize)
-document.addEventListener('DOMContentLoaded', function() {
+  // ----------------------------
+  // Inicializar menú hamburguesa (Materialize)
+  // ----------------------------
   var sidenavs = document.querySelectorAll('.sidenav');
   if (sidenavs.length) {
     M.Sidenav.init(sidenavs);
   }
-});
-  
-// Botón Más Radios: alternar parrilla secundaria
-const btnMasRadios = document.getElementById('btnMasRadios');
-const iconoMasRadios = document.getElementById('iconoMasRadios');
-const parrillaExtra = document.getElementById('parrillaExtra');
-let visible = false;
 
-btnMasRadios.addEventListener('click', () => {
-  visible = !visible;
-  parrillaExtra.classList.toggle('oculto');
-  iconoMasRadios.textContent = visible ? 'remove' : 'add';
-  btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
+  // ----------------------------
+  // Botón Más Radios: alternar parrillas
+  // ----------------------------
+  const btnMasRadios = document.getElementById('btnMasRadios');
+  const iconoMasRadios = document.getElementById('iconoMasRadios');
+  const parrillaExtra = document.getElementById('parrillaExtra');
+  const parrillaPrincipal = document.getElementById('parrillaPrincipal');
+  let visible = false;
+
+  if (btnMasRadios && iconoMasRadios && parrillaExtra && parrillaPrincipal) {
+    btnMasRadios.addEventListener('click', () => {
+      visible = !visible;
+      parrillaExtra.classList.toggle('oculto');       // mostrar/ocultar segunda parrilla
+      parrillaPrincipal.classList.toggle('oculto');   // alternar primera parrilla
+      iconoMasRadios.textContent = visible ? 'remove' : 'add';
+      btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
+    });
+  }
+
 });
+
 
 // Agregar etiquetas "Radio" a cada item de la segunda parrilla
 document.addEventListener("DOMContentLoaded", function () {
