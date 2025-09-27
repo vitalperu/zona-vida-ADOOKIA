@@ -163,7 +163,6 @@ function draw() {
     x += sliceWidth;
   }
 
-  ctx.lineTo(canvas.width, canvas.height / 2);
   ctx.stroke();
 }
 draw();
