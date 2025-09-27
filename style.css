@@ -510,8 +510,4 @@ html, body {
   font-size: 28px;
 }
 
-#parrillaExtra {
-  position: relative;
-  z-index: 10;       /* sobre otros elementos */
-  margin-top: 20px;  /* separa del reproductor */
-}
+
