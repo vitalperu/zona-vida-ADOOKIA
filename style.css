@@ -1,127 +1,30 @@
-/* =============================== */
-/* 🌌 FONDO GENERAL Y ESTRUCTURA  */
-/* =============================== */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  font-family: 'Montserrat', sans-serif;
-  background-image: url('https://blogger.googleusercontent.com/img/a/AVvXsEigvHKs8xEiJY7NjyNY8i69ey_86W5oPtqUUbXfQsWOQRQa-YXf9cZLlZ1PHG5m3EmBAURzSkx67GDzR1Fs8Q8wAi4MS-aQc7IkIvvA0Kr34_I5m_hjWzUgYDnsbcvGYO1NQfV4w9PJ2yq6w66TirqjvzwOz82wSc40b7IN1Fv82qkdBPVGvY_LFVmb8Tc=s16000');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-
-
-/* =============================== */
-/* 🧩 CONTENEDORES PRINCIPALES    */
-/* =============================== */
-.main-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding-top: 50px;
-  padding-bottom: 2px;
-}
-
-.player-app-container {
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  max-width: 500px;
-  margin: 32px auto 0 auto;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 0;
-}
-
-/* =============================== */
-/* 🔊 PLAYER REDONDO CENTRAL      */
-/* =============================== */
-.circle-player {
-  width: 220px;
-  height: 220px;
-  border-radius: 50%; /* 🔹 hace un círculo perfecto */
-  background: rgba(255,255,255,0); /* fondo transparente */
-  margin: 20px auto;
-  border: 3px solid #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
-  transition: all 0.3s ease;
-}
-
-
-.circle-player img {
-  width: 90%;
-  height: 90%;
-  border-radius: 50px;
-  transition: transform 0.2s ease;
-}
-
-.circle-player.playing {
-  animation: pulse 1.2s infinite;
-  border-color: #00ffd9;
-  box-shadow: 0 0 20px #ffffff,
-}
-
-.circle-player.playing {
-  animation: pulse 1.2s infinite;
-  border-color: #00ffd9;
-  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
-  background: rgba(255,255,255,0); /* fondo completamente transparente */
-}
-
-
-@keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 20px #5205e3, 0 0 60px #03fcc2 inset; }
-  50% { transform: scale(1.05); box-shadow: 0 0 30px #009dff, 0 0 80px #fcfcfc inset; }
-  100% { transform: scale(1); box-shadow: 0 0 20px #fc05f0, 0 0 60px #f7f9fa inset; }
-}
-
-
-/* =============================== */
-/* 📝 INFO DE CANCIÓN             */
-/* =============================== */
-.song-info { text-align: center; margin-top: 18px; }
-.song-title { font-weight: bold; font-size: 1.15rem; color: #4527a0; }
-.song-artist { font-size: 1rem; color: #5e35b1; margin-top: 2px; }
-
 /* ============================= */
-/* 🔊 INICIO DE NUEVO REPRODUCTOR*/
+/* 🔊 PLAYER CONTENEDOR PRINCIPAL */
 /* ============================= */
-
-/* 🎶 NUEVO REPRODUCTOR - LUNA   */
 .player-container {
+  position: relative;   /* contenedor relativo para visualizer */
   width: 100%;
   max-width: 700px;
-  text-align: center;
   margin: 50px auto;
+  text-align: center;
 }
 
-/* Asegurar transparencia del visualizer */
+/* Canvas del visualizer */
 #visualizer {
-  display: block;
+  position: absolute;   /* encima de barra de volumen */
+  top: 0;
+  left: 0;
   width: 100%;
   height: 120px;
-  background: transparent !important;
   pointer-events: none;
+  z-index: 5;           /* sobre otros elementos */
 }
 
-/* ============================= */
-/* 🔊 BARRA DE VOLUMEN           */
-/* ============================= */
+/* Barra de volumen estilo Luna Player */
 .volume-section {
+  position: relative;    /* para que quede debajo del canvas */
   width: 100%;
-  margin: 10px 0;
+  margin: 130px 0 10px 0; /* separa del visualizer */
   padding: 0 10px;
   box-sizing: border-box;
 }
@@ -156,6 +59,7 @@ html, body {
   cursor: pointer;
 }
 
+/* Íconos de volumen */
 .volume-icons {
   display: flex;
   justify-content: space-between;
@@ -187,206 +91,20 @@ html, body {
 #muteIcon.active svg { fill: #ff4d4d; }
 
 /* ============================= */
-/* ▶️ BOTÓN PLAY/PAUSE           */
+/* 🔘 PARRILLA EXTRA HORIZONTAL  */
 /* ============================= */
-.controls {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#playBtn {
-  position: relative;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: none;
-  background: #fafcfc;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
-  box-shadow: 0 0 20px #018c6c, 0 0 40px #0044b5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#playBtn:hover {
-  transform: scale(1.1);
-  background: #f5fafa;
-  box-shadow: 0 0 2px #02fafa, 0 0 20px #02fafa;
-}
-
-#playBtn:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 15px #e102fa, 0 0 30px #e102fa;
-}
-
-#playBtn.play::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-40%, -50%);
-  width: 0;
-  height: 0;
-  border-left: 20px solid #04c4de;
-  border-top: 14px solid transparent;
-  border-bottom: 14px solid transparent;
-}
-
-#playBtn.pause::before,
-#playBtn.pause::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 28px;
-  background: #04c4de;
-  border-radius: 2px;
-}
-
-#playBtn.pause::before { left: 35%; }
-#playBtn.pause::after { right: 35%; }
-
-/* ============================= */
-/* 🔊 FIN DE NUEVO REPRODUCTOR   */
-/* ============================= */
-
-/* =============================== */
-/* 🎧 PARRILLA PRINCIPAL          */
-/* =============================== */
-.radio-grid-scroll {
-  max-height: none;
-  overflow-y: visible;
-  padding: 4px 0 0 0; /* Más compacto */
-  margin-bottom: 10px; /* Elimina espacio inferior excesivo */
-}
-
-.radio-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px; /* Reducido espacio entre radios */
-  justify-items: center;
-}
-
-.radio-grid-background {
-  background-color: rgba(255, 255, 255, 0.45);
-  padding: 8px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-  max-width: 340px;   /* 👈 Añade esta línea */
-  margin: 0 auto;     /* 👈 Centra horizontalmente */
-}
-
-.radio-container {
-  background-color: #020742;
-  border-radius: 10px;
-  padding: 6px 8px; /* Cuadro más pequeño */
-  text-align: center;
-  max-width: 120px; /* Más estrecho */
-  cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s;
-}
-
-.radio-container:hover {
-  box-shadow: 0 0 10px #7c4dffaa;
-  transform: scale(1.05);
-}
-
-.radio-item img {
-  border-radius: 50%;
-  width: 52px; /* Más pequeño */
-  height: 52px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px #5e35b122;
-  border: 2px solid #e0e0e0;
-  transition: border-color 0.15s;
-  display: block;
-  margin: 0 auto;
-}
-
-.radio-item.selected img,
-.radio-item:hover img {
-  border-color: #7c4dff;
-  box-shadow: 0 0 0 3px #d1c4e9;
-  background: #fff;
-}
-
-.radio-name {
-  margin-top: 4px;
-  font-size: 0.85rem;
-  color: white;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* =============================== */
-/* 🔘 BOTONES Y CONTROLES EXTRA   */
-/* =============================== */
-.play-btn {
-  background: #020c4d;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-  padding: 2px 12px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.play-btn:hover { background: #008bf5; }
-
-.play-btn:active,
-.play-btn:focus {
-  background: #06b8ac;
-  box-shadow: none;
-  outline: none;
-}
-
-#volIcon { cursor: pointer; font-size: 24px; color:#2e0104; }
-#volIcon:hover { color: #fa2802; }
-
-#volumeBar { vertical-align: middle; width: 80px; margin: 0 10px; }
-#volValue { font-weight: 600; margin-left: 8px; color: #05012e }
-
-.install-btn {
-  padding: 6px 12px;
-  background: #ff9800;
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
-}
-
-.install-btn:hover { background: #f57c00; }
-
-.install-button-wrapper {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-/* =============================== */
-/* 🎛️ SEGUNDA PARRILLA EXTRA     */
-/* =============================== */
 #parrillaExtra {
   display: flex;
   overflow-x: auto;
   background-color: rgba(255, 255, 255, 0.6);
-  padding: 0.7rem; /*espacio bordes*/
-  gap: 0.7rem; /*espacio entre radios*/
-  border-radius: 7px; /*squinas fondo*/
-  margin: 1rem auto;
+  padding: 0.7rem; /* espacio bordes */
+  gap: 0.7rem;     /* espacio entre radios */
+  border-radius: 7px;
+  margin: 10px auto 20px auto; /* separa del player */
   width: 95%;
+  max-width: 340px; 
   scroll-behavior: smooth;
-  max-width: 340px; /* ancho parrilla */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 10;     /* sobre otros elementos si es necesario */
 }
 
 #parrillaExtra::-webkit-scrollbar {
@@ -400,8 +118,8 @@ html, body {
 
 #parrillaExtra .radio-item {
   flex: 0 0 auto;
-  width: 65px; /* ancho de cuadrito */
-  min-height: 80px; /* alto de cuadrito */
+  width: 65px; 
+  min-height: 80px; 
   text-align: center;
   background: #fafeff;
   padding: 0.1rem;
@@ -416,33 +134,27 @@ html, body {
   align-items: center;
   justify-content: flex-start;
 }
-/* editar tamaño logo */
+
 #parrillaExtra .radio-item img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border: 2px solid #e3f2fd;
-  transition: border-color 0.3s ease;
   background: white;
   padding: 2px;
-  margin-bottom: 0 rem;
+  margin-bottom: 0;
 }
 
-
-/* palabra "Radio" debajo del logo */
 #parrillaExtra .radio-item .etiqueta-radio {
   font-size: 0.6rem;
   font-weight: 600;
-  color: #d32f2f; 
+  color: #d32f2f;
   text-transform: uppercase;
   margin-bottom: -1px;
-  opacity: 1;
   letter-spacing: 1.5px;
 }
 
-
-/* Nombre de la radio */
 #parrillaExtra .radio-item p {
   margin: 0;
   font-size: 0.7rem;
@@ -464,50 +176,3 @@ html, body {
 #parrillaExtra .radio-item:hover img {
   border-color: #42a5f5;
 }
-
-
-<div class="radio-item">
-  <img src="logo.png" alt="Nombre">
-  <p>La Vida</p> <!-- tú solo pones el nombre -->
-</div>
-
-
-/* =============================== */
-/* 🚫 UTILIDADES GLOBALES         */
-/* =============================== */
-.oculto {
-  display: none !important;
-}
-
-#parrillaExtra.oculto {
-  display: none !important;
-}
-
-
-.sidenav-trigger:hover {
-  transform: scale(1.15);
-}
-
-#btnMenuFlotante {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 999;
-  background-color: #FF4081; /* color del botón */
-  color: white;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-#btnMenuFlotante i {
-  font-size: 28px;
-}
-
-
