@@ -28,71 +28,8 @@ document.querySelectorAll('.radio-item').forEach(function(item) {
 
 
  <!-- 🔊 INICIO DE NUEVO REPRODUCTOR --> 
-// 🎵 NUEVO VISUALIZER (Ondas suaves y limpias)
-const canvas = document.getElementById("visualizer");
-const ctx = canvas.getContext("2d");
-const audio = document.getElementById("audio");
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioCtx.createAnalyser();
-const source = audioCtx.createMediaElementSource(audio);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
 
-analyser.fftSize = 1024;
-const bufferLength = analyser.fftSize;
-const dataArray = new Uint8Array(bufferLength);
-
-function resizeCanvas() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-
-function draw() {
-  requestAnimationFrame(draw);
-  analyser.getByteTimeDomainData(dataArray);
-
-  // ✅ limpiar sin fondo
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  if (audio.paused || audio.muted || audio.volume === 0) {
-    return;
-  }
-
-  ctx.lineWidth = 2;
-
-  // 🔹 Gradiente de color azul eléctrico
-  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-  gradient.addColorStop(0, "#00e5ff");
-  gradient.addColorStop(0.5, "#00b3ff");
-  gradient.addColorStop(1, "#0044b5");
-
-  ctx.strokeStyle = gradient;
-  ctx.beginPath();
-
-  const sliceWidth = canvas.width / bufferLength;
-  let x = 0;
-
-  for (let i = 0; i < bufferLength; i++) {
-    const v = dataArray[i] / 128.0;
-    const y = (v * canvas.height) / 2;
-
-    if (i === 0) {
-      ctx.moveTo(x, y);
-    } else {
-      ctx.lineTo(x, y);
-    }
-
-    x += sliceWidth;
-  }
-
-  ctx.lineTo(canvas.width, canvas.height / 2);
-  ctx.stroke();
-}
-
-draw();
 
 
 
