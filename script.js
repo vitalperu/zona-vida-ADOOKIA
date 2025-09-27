@@ -197,6 +197,8 @@ function closeApp() {
   }
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+
 // Inicializar menú hamburguesa (Materialize)
 document.addEventListener('DOMContentLoaded', function() {
   var sidenavs = document.querySelectorAll('.sidenav');
@@ -204,8 +206,6 @@ document.addEventListener('DOMContentLoaded', function() {
     M.Sidenav.init(sidenavs);
   }
 });
-
-
   
 // Botón Más Radios: alternar parrilla secundaria
 const btnMasRadios = document.getElementById('btnMasRadios');
