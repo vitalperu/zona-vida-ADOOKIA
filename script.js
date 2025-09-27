@@ -1,39 +1,80 @@
+// ===============================
 // script.js - Zona Vida Radio
+// ===============================
 
-function activarRadioItem(item) {
-  document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
-  item.classList.add('selected');
-  const logo = document.getElementById('logoRadioActual');
-  const player = document.getElementById('player');
-  const radioUrl = item.getAttribute('data-radio');
-  const logoUrl = item.getAttribute('data-logo');
+// Esperar a que el DOM esté cargado
+document.addEventListener("DOMContentLoaded", function() {
 
-  if (logo && logoUrl) logo.src = logoUrl;
-  if (player && radioUrl) {
-    player.src = radioUrl;
-    player.load();
-    player.play();
-    document.getElementById('playPauseIcon').textContent = 'pause';
-    document.querySelector('.circle-player').classList.add('playing');
+  // ----------------------------
+  // Inicializar menú hamburguesa (Materialize)
+  // ----------------------------
+  var sidenavs = document.querySelectorAll('.sidenav');
+  if (sidenavs.length) {
+    M.Sidenav.init(sidenavs);
   }
-}
 
-// Aplicar a TODAS las radios (ambas parrillas)
-document.querySelectorAll('.radio-item').forEach(function(item) {
-  item.addEventListener('click', function() {
-    activarRadioItem(item);
+  // ----------------------------
+  // Botón Más Radios: alternar parrillas
+  // ----------------------------
+  const btnMasRadios = document.getElementById('btnMasRadios');
+  const iconoMasRadios = document.getElementById('iconoMasRadios');
+  const parrillaExtra = document.getElementById('parrillaExtra');
+  const parrillaPrincipal = document.getElementById('parrillaPrincipal');
+  let visible = false;
+
+  if (btnMasRadios && iconoMasRadios && parrillaExtra && parrillaPrincipal) {
+    btnMasRadios.addEventListener('click', () => {
+      visible = !visible;
+      parrillaExtra.classList.toggle('oculto');       // mostrar/ocultar segunda parrilla
+      parrillaPrincipal.classList.toggle('oculto');   // alternar primera parrilla
+      iconoMasRadios.textContent = visible ? 'remove' : 'add';
+      btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
+    });
+  }
+
+  // ----------------------------
+  // Función para activar radio
+  // ----------------------------
+  function activarRadioItem(item) {
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
+
+    const logo = document.getElementById('logoRadioActual');
+    const player = document.getElementById('audio');
+    const radioUrl = item.getAttribute('data-radio');
+    const logoUrl = item.getAttribute('data-logo');
+
+    if (logo && logoUrl) logo.src = logoUrl;
+    if (player && radioUrl) {
+      player.src = radioUrl;
+      player.load();
+      player.play();
+      document.getElementById('playBtn').classList.remove('play');
+      document.getElementById('playBtn').classList.add('pause');
+      document.querySelector('.circle-player').classList.add('playing');
+    }
+  }
+
+  // ----------------------------
+  // Aplicar evento click a TODAS las radios
+  // ----------------------------
+  document.querySelectorAll('.radio-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      activarRadioItem(item);
+    });
   });
-});
 
-/* ============================= */
-/* 🔊 INICIO DE NUEVO REPRODUCTOR*/
-/* ============================= */
+});
+  
+// =============================
+// 🔊 INICIO DE NUEVO REPRODUCTOR
+// =============================
 
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
 const muteIcon = document.getElementById("muteIcon");
 const soundIcon = document.getElementById("soundIcon");
-const volumeSlider = document.getElementById("volumeSlider");
+const volumeSlider = document.getElementById("volumeControl");
 const volumePercent = document.getElementById("volumePercent");
 const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
@@ -43,9 +84,11 @@ let isPlaying = false;
 // 🎵 Inicializar contexto de audio
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
-const source = audioCtx.createMediaElementSource(audio);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
+const source = audioCtx ? audioCtx.createMediaElementSource(audio) : null;
+if(source){
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+}
 
 analyser.fftSize = 512;
 const bufferLength = analyser.frequencyBinCount;
@@ -85,7 +128,6 @@ volumeSlider.addEventListener("input", (e) => {
   const value = e.target.value;
   audio.volume = value / 100;
   volumePercent.textContent = `${value}%`;
-
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
@@ -102,7 +144,6 @@ function draw() {
   analyser.getByteTimeDomainData(dataArray);
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   ctx.lineWidth = 2;
   ctx.strokeStyle = "#00e5ff";
   ctx.beginPath();
@@ -127,12 +168,9 @@ function draw() {
 }
 draw();
 
-/* ============================= */
-/* 🔊 FIN DE NUEVO REPRODUCTOR   */
-/* ============================= */
-
-
-
+// =============================
+// 🔊 FIN DE NUEVO REPRODUCTOR
+// =============================
 
 // Registro de Service Worker
 if ('serviceWorker' in navigator) {
@@ -196,47 +234,3 @@ function closeApp() {
     window.close();
   }
 }
-
-
-document.addEventListener("DOMContentLoaded", function() {
-
-  // ----------------------------
-  // Inicializar menú hamburguesa (Materialize)
-  // ----------------------------
-  var sidenavs = document.querySelectorAll('.sidenav');
-  if (sidenavs.length) {
-    M.Sidenav.init(sidenavs);
-  }
-
-  // ----------------------------
-  // Botón Más Radios: alternar parrillas
-  // ----------------------------
-  const btnMasRadios = document.getElementById('btnMasRadios');
-  const iconoMasRadios = document.getElementById('iconoMasRadios');
-  const parrillaExtra = document.getElementById('parrillaExtra');
-  const parrillaPrincipal = document.getElementById('parrillaPrincipal');
-  let visible = false;
-
-  if (btnMasRadios && iconoMasRadios && parrillaExtra && parrillaPrincipal) {
-    btnMasRadios.addEventListener('click', () => {
-      visible = !visible;
-      parrillaExtra.classList.toggle('oculto');       // mostrar/ocultar segunda parrilla
-      parrillaPrincipal.classList.toggle('oculto');   // alternar primera parrilla
-      iconoMasRadios.textContent = visible ? 'remove' : 'add';
-      btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
-    });
-  }
-
-});
-
-
-// Agregar etiquetas "Radio" a cada item de la segunda parrilla
-document.addEventListener("DOMContentLoaded", function () {
-  const radios = document.querySelectorAll("#parrillaExtra .radio-item");
-  radios.forEach(radio => {
-    const etiqueta = document.createElement("div");
-    etiqueta.className = "etiqueta-radio";
-    etiqueta.textContent = "Radio";
-    radio.insertBefore(etiqueta, radio.querySelector("p"));
-  });
-});
