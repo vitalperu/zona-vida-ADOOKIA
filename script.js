@@ -25,55 +25,114 @@ document.querySelectorAll('.radio-item').forEach(function(item) {
   });
 });
 
-// Botón Play/Pause
-const playPauseBtn = document.getElementById('playPauseBtn');
-const playPauseIcon = document.getElementById('playPauseIcon');
-const player = document.getElementById('player');
+/* ============================= */
+/* 🔊 INICIO DE NUEVO REPRODUCTOR*/
+/* ============================= */
 
-if (playPauseBtn && playPauseIcon && player) {
-  playPauseBtn.addEventListener('click', function() {
-    if (player.paused) {
-      player.play();
-      playPauseIcon.textContent = 'pause';
-      document.querySelector('.circle-player').classList.add('playing');
-    } else {
-      player.pause();
-      playPauseIcon.textContent = 'play_arrow';
-      document.querySelector('.circle-player').classList.remove('playing');
-    }
-  });
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const muteIcon = document.getElementById("muteIcon");
+const soundIcon = document.getElementById("soundIcon");
+const volumeSlider = document.getElementById("volumeSlider");
+const volumePercent = document.getElementById("volumePercent");
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d");
+
+let isPlaying = false;
+
+// 🎵 Inicializar contexto de audio
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+const source = audioCtx.createMediaElementSource(audio);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+analyser.fftSize = 512;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+// 🎛️ Play / Pause
+playBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    audioCtx.resume();
+    audio.play();
+    playBtn.classList.remove("play");
+    playBtn.classList.add("pause");
+    isPlaying = true;
+  } else {
+    audio.pause();
+    playBtn.classList.remove("pause");
+    playBtn.classList.add("play");
+    isPlaying = false;
+  }
+});
+
+// 🔇 Mute / Unmute
+muteIcon.addEventListener("click", () => {
+  audio.muted = true;
+  muteIcon.classList.add("active");
+  soundIcon.classList.remove("active");
+});
+
+soundIcon.addEventListener("click", () => {
+  audio.muted = false;
+  muteIcon.classList.remove("active");
+  soundIcon.classList.add("active");
+});
+
+// 🔊 Control de volumen
+volumeSlider.addEventListener("input", (e) => {
+  const value = e.target.value;
+  audio.volume = value / 100;
+  volumePercent.textContent = `${value}%`;
+
+  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+});
+
+// 🎶 Visualizer simple con ondas
+function resizeCanvas() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
 }
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-// Control de volumen y mute
-const volumeBar = document.getElementById('volumeBar');
-const volIcon = document.getElementById('muteIcon');
-const volValue = document.getElementById('volValue');
+function draw() {
+  requestAnimationFrame(draw);
+  analyser.getByteTimeDomainData(dataArray);
 
-if (volumeBar && volIcon && volValue) {
-  volIcon.addEventListener('click', () => {
-    player.muted = !player.muted;
-    if (player.muted) {
-      volIcon.textContent = 'volume_off';
-      volumeBar.value = 0;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#00e5ff";
+  ctx.beginPath();
+
+  const sliceWidth = canvas.width / bufferLength;
+  let x = 0;
+
+  for (let i = 0; i < bufferLength; i++) {
+    const v = dataArray[i] / 128.0;
+    const y = (v * canvas.height) / 2;
+
+    if (i === 0) {
+      ctx.moveTo(x, y);
     } else {
-      volIcon.textContent = 'volume_up';
-      volumeBar.value = player.volume || 1;
+      ctx.lineTo(x, y);
     }
-    volValue.textContent = Math.round(volumeBar.value * 100) + '%';
-  });
+    x += sliceWidth;
+  }
 
-  volumeBar.addEventListener('input', () => {
-    player.volume = volumeBar.value;
-    if (player.volume == 0) {
-      player.muted = true;
-      volIcon.textContent = 'volume_off';
-    } else {
-      player.muted = false;
-      volIcon.textContent = 'volume_up';
-    }
-    volValue.textContent = Math.round(volumeBar.value * 100) + '%';
-  });
+  ctx.lineTo(canvas.width, canvas.height / 2);
+  ctx.stroke();
 }
+draw();
+
+/* ============================= */
+/* 🔊 FIN DE NUEVO REPRODUCTOR   */
+/* ============================= */
+
+
+
 
 // Registro de Service Worker
 if ('serviceWorker' in navigator) {
