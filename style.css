@@ -32,14 +32,16 @@ html, body {
   background: transparent;
   box-shadow: none;
   border-radius: 0;
-  max-width: 500px;
-  margin: 32px auto 0 auto;
+  width: 100%;       /* ✅ ancho completo */
+  margin: 0;         /* ✅ quita centrado */
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 0;
+  box-sizing: border-box;
 }
+
 
 /* =============================== */
 /* 🔊 PLAYER REDONDO CENTRAL      */
@@ -102,10 +104,13 @@ html, body {
 /* 🎶 NUEVO REPRODUCTOR - LUNA   */
 .player-container {
   width: 100%;
-  max-width: 700px;
+  max-width: 100%;   /* 🔹 elimina el límite */
   text-align: center;
-  margin: 50px auto;
+  margin: 20px 0;    /* 🔹 quita centrado automático */
+  padding: 0 10px;   /* 🔹 respiro lateral para móviles */
+  box-sizing: border-box;
 }
+
 
 /* Asegurar transparencia del visualizer */
 #visualizer {
@@ -122,20 +127,20 @@ html, body {
 /* ============================= */
 .volume-section {
   width: 100%;
-  margin: 10px 0;
-  padding: 0 10px;
+  padding: 10px;
   box-sizing: border-box;
 }
 
+/* Barra ocupa todo el ancho */
 .volume-section input[type="range"] {
   width: 100%;
   appearance: none;
-  height: 4px;
+  height: 6px;
   border-radius: 4px;
   background: linear-gradient(to right, #00e5ff 70%, #444 70%);
   outline: none;
   cursor: pointer;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .volume-section input[type="range"]::-webkit-slider-thumb {
@@ -147,7 +152,6 @@ html, body {
   cursor: pointer;
   border: none;
 }
-
 .volume-section input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
@@ -157,24 +161,14 @@ html, body {
   cursor: pointer;
 }
 
+/* Iconos y porcentaje */
 .volume-icons {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* 👈 Mute a la izquierda, % al medio, Sonido a la derecha */
   align-items: center;
   color: white;
   font-size: 16px;
-}
-
-#muteIcon { order: 1; }
-#volumePercent { order: 2; margin-left: auto; padding: 0 10px; }
-#soundIcon { order: 3; }
-
-.volume-icons .icon {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease, fill 0.3s ease;
 }
 
 .volume-icons svg {
@@ -186,6 +180,9 @@ html, body {
 
 .volume-icons .icon:hover svg { fill: #00e5ff; }
 #muteIcon.active svg { fill: #ff4d4d; }
+
+
+
 
 /* ============================= */
 /* ▶️ BOTÓN PLAY/PAUSE           */
@@ -501,4 +498,3 @@ html, body {
 #btnMenuFlotante i {
   font-size: 28px;
 }
-
