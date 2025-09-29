@@ -2,38 +2,54 @@
 // script.js - Zona Vida Radio
 // ===============================
 
-// Esperar a que el DOM esté cargado
+// ===============================
+// 🔹 SEGUNDA PARRILLA VERTICAL - Botón MÁS RADIOS
+// ===============================
 document.addEventListener("DOMContentLoaded", function() {
 
-  // ----------------------------
   // Inicializar menú hamburguesa (Materialize)
-  // ----------------------------
   var sidenavs = document.querySelectorAll('.sidenav');
   if (sidenavs.length) {
     M.Sidenav.init(sidenavs);
   }
 
   // ----------------------------
-  // Botón Más Radios: alternar parrillas
+  // Referencias del DOM
   // ----------------------------
   const btnMasRadios = document.getElementById('btnMasRadios');
   const iconoMasRadios = document.getElementById('iconoMasRadios');
-  const parrillaExtra = document.getElementById('parrillaExtra');
-  const parrillaPrincipal = document.getElementById('parrillaPrincipal');
+  const contenedorParrillaExtra = document.getElementById('contenedorParrillaExtra');
   let visible = false;
 
-  if (btnMasRadios && iconoMasRadios && parrillaExtra && parrillaPrincipal) {
+  // Configuración inicial del contenedor
+  if (contenedorParrillaExtra) {
+    contenedorParrillaExtra.style.maxHeight = "0px";
+    contenedorParrillaExtra.style.overflow = "hidden";
+    contenedorParrillaExtra.style.transition = "max-height 0.3s ease";
+  }
+
+  // ----------------------------
+  // Botón "Más Radios" - mostrar/ocultar
+  // ----------------------------
+  if (btnMasRadios && contenedorParrillaExtra) {
     btnMasRadios.addEventListener('click', () => {
       visible = !visible;
-      parrillaExtra.classList.toggle('oculto');       // mostrar/ocultar segunda parrilla
-      parrillaPrincipal.classList.toggle('oculto');   // alternar primera parrilla
+
+      // Cambiar icono y color del botón
       iconoMasRadios.textContent = visible ? 'remove' : 'add';
       btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
+
+      // Animar contenedor vertical
+      if (visible) {
+        contenedorParrillaExtra.style.maxHeight = contenedorParrillaExtra.scrollHeight + "px";
+      } else {
+        contenedorParrillaExtra.style.maxHeight = "0px";
+      }
     });
   }
 
   // ----------------------------
-  // Función para activar radio
+  // Función para activar radio seleccionada
   // ----------------------------
   function activarRadioItem(item) {
     document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
@@ -49,22 +65,28 @@ document.addEventListener("DOMContentLoaded", function() {
       player.src = radioUrl;
       player.load();
       player.play();
-      document.getElementById('playBtn').classList.remove('play');
-      document.getElementById('playBtn').classList.add('pause');
-      document.querySelector('.circle-player').classList.add('playing');
+      const playBtn = document.getElementById('playBtn');
+      if(playBtn){
+        playBtn.classList.remove('play');
+        playBtn.classList.add('pause');
+      }
+      const circle = document.querySelector('.circle-player');
+      if(circle) circle.classList.add('playing');
     }
   }
 
   // ----------------------------
   // Aplicar evento click a TODAS las radios
   // ----------------------------
-  document.querySelectorAll('.radio-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-      activarRadioItem(item);
-    });
+  document.querySelectorAll('.radio-item').forEach(item => {
+    item.addEventListener('click', () => activarRadioItem(item));
   });
 
 });
+// ===============================
+// 🔹 FIN SEGUNDA PARRILLA VERTICAL
+// ===============================
+
   
 // =============================
 // 🔊 INICIO DE NUEVO REPRODUCTOR
