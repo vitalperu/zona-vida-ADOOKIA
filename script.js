@@ -90,7 +90,7 @@ if(source){
   analyser.connect(audioCtx.destination);
 }
 
-analyser.fftSize = 512;
+analyser.fftSize = 4096;
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 
@@ -144,8 +144,16 @@ function draw() {
   analyser.getByteTimeDomainData(dataArray);
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = "#00e5ff";
+
+  // 🎨 Degradado lineal de izquierda a derecha
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+  gradient.addColorStop(0, "#00e5ff"); // celeste
+  gradient.addColorStop(1, "#9c27b0"); // violeta
+
+  ctx.lineWidth = 1;           // más fina
+  ctx.lineJoin = "round";      // suaviza uniones
+  ctx.lineCap = "round";       // suaviza extremos
+  ctx.strokeStyle = gradient;  // aplicar degradado
   ctx.beginPath();
 
   const sliceWidth = canvas.width / bufferLength;
@@ -166,6 +174,7 @@ function draw() {
   ctx.stroke();
 }
 draw();
+
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
