@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR (volumen natural + espectro real)
+// 🔊 INICIO DE NUEVO REPRODUCTOR (volumen 100% real sin atenuación en móvil)
 // =============================
 
 const audio = document.getElementById("audio");
@@ -102,7 +102,8 @@ const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
-let sourceConnected = false;
+let analyser, audioCtx, source;
+let streamForViz;
 
 // 🎧 Volumen inicial 95%
 audio.volume = 0.95;
@@ -110,25 +111,24 @@ volumeSlider.value = 95;
 volumePercent.textContent = "95%";
 volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
 
-// 🎵 Crear contexto solo para análisis visual (no afecta el volumen)
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioCtx.createAnalyser();
-
 // 🎛️ Play / Pause
 playBtn.addEventListener("click", async () => {
   if (!isPlaying) {
-    await audioCtx.resume();
-    audio.play();
+    await audio.play();
     playBtn.classList.remove("play");
     playBtn.classList.add("pause");
     isPlaying = true;
 
-    // conectar el analizador solo una vez
-    if (!sourceConnected) {
-      const src = audioCtx.createMediaElementSource(audio);
-      src.connect(analyser);
-      analyser.connect(audioCtx.destination); // deja pasar el sonido sin alterar
-      sourceConnected = true;
+    // 🔍 Crear contexto de análisis separado del sonido real
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      streamForViz = audio.captureStream ? audio.captureStream() : audio.mozCaptureStream();
+      if (streamForViz) {
+        const source = audioCtx.createMediaStreamSource(streamForViz);
+        source.connect(analyser);
+      }
+      startVisualizer();
     }
 
   } else {
@@ -160,45 +160,44 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎶 Configurar el analizador
-analyser.fftSize = 512;
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
+// 🎨 Visualizador
+function startVisualizer() {
+  analyser.fftSize = 1024;
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
 
-// 🎨 Canvas visualizer (barras dinámicas)
-function resizeCanvas() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-
-function draw() {
-  requestAnimationFrame(draw);
-  analyser.getByteFrequencyData(dataArray);
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const barWidth = (canvas.width / bufferLength) * 2.5;
-  let x = 0;
-
-  for (let i = 0; i < bufferLength; i++) {
-    const barHeight = dataArray[i];
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, "#00e5ff");
-    gradient.addColorStop(1, "#9c27b0");
-
-    ctx.fillStyle = gradient;
-    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-    x += barWidth + 1;
+  function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
   }
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  function draw() {
+    requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(dataArray);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const barWidth = (canvas.width / bufferLength) * 2.5;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const barHeight = dataArray[i];
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, "#00e5ff");
+      gradient.addColorStop(1, "#9c27b0");
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+      x += barWidth + 1;
+    }
+  }
+  draw();
 }
-draw();
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
-
-
 
 
 
