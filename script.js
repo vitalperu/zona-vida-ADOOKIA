@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR (CORREGIDO VOLUMEN MÓVILES)
+// 🔊 INICIO DE NUEVO REPRODUCTOR (SIN LIMITACIÓN DE VOLUMEN)
 // =============================
 
 const audio = document.getElementById("audio");
@@ -103,34 +103,9 @@ const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
 
-// 🎵 Crear AudioContext solo si es necesario (para evitar pérdida de volumen)
-let audioCtx;
-let analyser;
-let source;
-
-function initAudioContext() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser();
-    source = audioCtx.createMediaElementSource(audio);
-
-    // 🔗 Conectar el flujo correctamente
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-  }
-}
-
-// 🔊 Volumen inicial natural al 95 %
-audio.volume = 0.95;
-volumeSlider.value = 95;
-volumePercent.textContent = "95%";
-volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
-
-// 🎛️ Play / Pause
+// 🎵 Play / Pause normal
 playBtn.addEventListener("click", () => {
-  initAudioContext(); // inicializar aquí, no antes
   if (!isPlaying) {
-    audioCtx.resume();
     audio.play();
     playBtn.classList.remove("play");
     playBtn.classList.add("pause");
@@ -156,7 +131,7 @@ soundIcon.addEventListener("click", () => {
   soundIcon.classList.add("active");
 });
 
-// 🔊 Control de volumen
+// 🔊 Control de volumen (natural)
 volumeSlider.addEventListener("input", (e) => {
   const value = e.target.value;
   audio.volume = value / 100;
@@ -164,7 +139,13 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎶 Visualizer simple con ondas
+// 🧠 Nivel inicial de volumen
+volumeSlider.value = 95;
+audio.volume = 0.95;
+volumePercent.textContent = "95%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
+
+// 🎶 Visualizador simulado (sin audioContext)
 function resizeCanvas() {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
@@ -172,44 +153,35 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
+let pulse = 0;
 function draw() {
   requestAnimationFrame(draw);
-  if (!analyser) return; // evitar error antes del play
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-  analyser.getByteTimeDomainData(dataArray);
-
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Simulación visual tipo ondas suaves (no afecta el sonido)
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
   gradient.addColorStop(0, "#00e5ff");
   gradient.addColorStop(1, "#9c27b0");
-
-  ctx.lineWidth = 1;
-  ctx.lineJoin = "round";
-  ctx.lineCap = "round";
   ctx.strokeStyle = gradient;
+  ctx.lineWidth = 2;
   ctx.beginPath();
 
-  const sliceWidth = canvas.width / bufferLength;
-  let x = 0;
-
-  for (let i = 0; i < bufferLength; i++) {
-    const v = dataArray[i] / 128.0;
-    const y = (v * canvas.height) / 2;
-
-    if (i === 0) ctx.moveTo(x, y);
+  const amplitude = Math.sin(Date.now() / 300) * 10 + 20;
+  const step = canvas.width / 40;
+  for (let x = 0; x <= canvas.width; x += step) {
+    const y = canvas.height / 2 + Math.sin(x / 25 + pulse) * amplitude;
+    if (x === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
-    x += sliceWidth;
   }
-
   ctx.stroke();
+  pulse += 0.1;
 }
 draw();
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
+
 
 
 
