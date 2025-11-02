@@ -102,7 +102,7 @@ function activarRadioItem(item) {
 // ===============================
 
 // =============================
-// 🔊 NUEVO REPRODUCTOR DEFINITIVO
+// 🔊 NUEVO REPRODUCTOR - AUDIO DIRECTO CON VISUALIZADOR
 // =============================
 
 const audio = document.getElementById("audio");
@@ -116,11 +116,14 @@ const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
 let audioCtx, analyser, source;
-let previousWave = [];
 
-// 🎧 Volumen máximo inicial
-audio.volume = 1.0;
+// 🎧 Volumen inicial
+audio.volume = 0.95;
+volumeSlider.value = 95;
+volumePercent.textContent = "95%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
 
+// 🎛️ Play / Pause
 playBtn.addEventListener("click", async () => {
     if (!isPlaying) {
         await audio.play();
@@ -128,14 +131,15 @@ playBtn.addEventListener("click", async () => {
         playBtn.classList.add("pause");
         isPlaying = true;
 
+        // 🔹 Inicializar AudioContext y Analyser solo una vez
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             analyser = audioCtx.createAnalyser();
 
-            // Conectar el audio directo al altavoz y al visualizador
+            // Conectar audio directo al altavoz y al visualizador
             source = audioCtx.createMediaElementSource(audio);
-            source.connect(audioCtx.destination); // altavoz
-            source.connect(analyser);             // visualizador
+            source.connect(audioCtx.destination); // audio directo
+            source.connect(analyser);             // solo para visualizador
 
             startVisualizer();
         }
@@ -153,6 +157,7 @@ muteIcon.addEventListener("click", () => {
     muteIcon.classList.add("active");
     soundIcon.classList.remove("active");
 });
+
 soundIcon.addEventListener("click", () => {
     audio.muted = false;
     muteIcon.classList.remove("active");
@@ -167,50 +172,37 @@ volumeSlider.addEventListener("input", (e) => {
     volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador
+// 🎨 Visualizador tipo barras neón
 function startVisualizer() {
-    analyser.fftSize = 1024;
+    analyser.fftSize = 256;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
-
-    previousWave = new Array(bufferLength).fill(canvas.height / 2);
 
     function resizeCanvas() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
-        previousWave.fill(canvas.height / 2);
     }
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
     function draw() {
         requestAnimationFrame(draw);
-        analyser.getByteTimeDomainData(dataArray);
+        analyser.getByteFrequencyData(dataArray);
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.strokeStyle = 'rgba(0,255,255,0.8)';
-        ctx.lineWidth = 1;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = 'rgba(0,255,255,0.6)';
-
-        ctx.beginPath();
+        const barWidth = (canvas.width / bufferLength) * 1.5;
         let x = 0;
-        const sliceWidth = canvas.width / bufferLength;
 
         for (let i = 0; i < bufferLength; i++) {
-            const v = dataArray[i] / 128.0;
-            const y = previousWave[i] = previousWave[i] * 0.9 + (v * canvas.height / 2) * 0.1;
+            const barHeight = (dataArray[i] / 255) * canvas.height;
+            const hue = (i * 4 + Date.now() / 10) % 360;
 
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
+            ctx.fillStyle = `hsl(${hue}, 100%, 60%)`;
+            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
 
-            x += sliceWidth;
+            x += barWidth + 0.5;
         }
-
-        ctx.lineTo(canvas.width, canvas.height / 2);
-        ctx.stroke();
-        ctx.shadowBlur = 0;
     }
 
     draw();
