@@ -160,9 +160,9 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador tipo ondas suaves
+// 🎨 Visualizador tipo barras finas parpadeantes (más delgadas)
 function startVisualizer() {
-  analyser.fftSize = 2048; // más detalle en frecuencias
+  analyser.fftSize = 256; // menos resolución = barras más visibles
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
@@ -175,39 +175,28 @@ function startVisualizer() {
 
   function draw() {
     requestAnimationFrame(draw);
-    analyser.getByteTimeDomainData(dataArray);
+    analyser.getByteFrequencyData(dataArray);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const sliceWidth = canvas.width / bufferLength;
+    const barWidth = (canvas.width / bufferLength) * 0.7; // barras más delgadas
     let x = 0;
 
-    ctx.lineWidth = 2;
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    gradient.addColorStop(0, "#00e5ff");
-    gradient.addColorStop(1, "#9c27b0");
-    ctx.strokeStyle = gradient;
-    ctx.beginPath();
-
     for (let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 128.0; // Normalizar entre 0 y 2
-      const y = (v * canvas.height) / 2;
+      const barHeight = (dataArray[i] / 255) * canvas.height * 1.2;
+      const hue = (i * 4 + Date.now() / 10) % 360;
 
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
+      // color tipo neón
+      ctx.fillStyle = `hsl(${hue}, 100%, 60%)`;
+      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
 
-      x += sliceWidth;
+      x += barWidth + 0.2; // separación mínima
     }
-
-    ctx.lineTo(canvas.width, canvas.height / 2);
-    ctx.stroke();
   }
 
   draw();
 }
+
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
