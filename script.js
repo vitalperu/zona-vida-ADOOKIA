@@ -102,16 +102,17 @@ const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
+let sourceConnected = false;
 
-// 🎧 Volumen inicial al 90%
-audio.volume = 0.9;
-volumeSlider.value = 90;
-volumePercent.textContent = "90%";
+// 🎧 Volumen inicial 95%
+audio.volume = 0.95;
+volumeSlider.value = 95;
+volumePercent.textContent = "95%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
 
-// 🎵 Crear contexto solo para analizar
+// 🎵 Crear contexto solo para análisis visual (no afecta el volumen)
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
-let sourceConnected = false;
 
 // 🎛️ Play / Pause
 playBtn.addEventListener("click", async () => {
@@ -122,12 +123,13 @@ playBtn.addEventListener("click", async () => {
     playBtn.classList.add("pause");
     isPlaying = true;
 
-// Conectar el analizador (sin reenviar el sonido)
-if (!sourceConnected) {
-  const src = audioCtx.createMediaElementSource(audio);
-  src.connect(analyser); // solo analizar
-  sourceConnected = true;
-}
+    // conectar el analizador solo una vez
+    if (!sourceConnected) {
+      const src = audioCtx.createMediaElementSource(audio);
+      src.connect(analyser);
+      analyser.connect(audioCtx.destination); // deja pasar el sonido sin alterar
+      sourceConnected = true;
+    }
 
   } else {
     audio.pause();
@@ -158,12 +160,12 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎶 Configurar analizador
-analyser.fftSize = 1024;
+// 🎶 Configurar el analizador
+analyser.fftSize = 512;
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 
-// 🎨 Canvas visualizer (ondas reales)
+// 🎨 Canvas visualizer (barras dinámicas)
 function resizeCanvas() {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
@@ -176,12 +178,11 @@ function draw() {
   analyser.getByteFrequencyData(dataArray);
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   const barWidth = (canvas.width / bufferLength) * 2.5;
   let x = 0;
 
   for (let i = 0; i < bufferLength; i++) {
-    const barHeight = dataArray[i] * 0.7;
+    const barHeight = dataArray[i];
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, "#00e5ff");
     gradient.addColorStop(1, "#9c27b0");
