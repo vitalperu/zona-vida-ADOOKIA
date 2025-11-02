@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR (SIN LIMITACIÓN DE VOLUMEN)
+// 🔊 INICIO DE NUEVO REPRODUCTOR (potente + espectro real)
 // =============================
 
 const audio = document.getElementById("audio");
@@ -103,13 +103,32 @@ const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
 
-// 🎵 Play / Pause normal
-playBtn.addEventListener("click", () => {
+// 🎧 Inicializar audio con volumen al 90%
+audio.volume = 0.9;
+volumeSlider.value = 90;
+volumePercent.textContent = "90%";
+
+// 🎵 Crear contexto solo para analizar (sin alterar volumen)
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+let sourceConnected = false;
+
+// 🎛️ Play / Pause
+playBtn.addEventListener("click", async () => {
   if (!isPlaying) {
+    await audioCtx.resume();
     audio.play();
     playBtn.classList.remove("play");
     playBtn.classList.add("pause");
     isPlaying = true;
+
+    // Conectar el analizador una sola vez
+    if (!sourceConnected) {
+      const src = audioCtx.createMediaElementSource(audio);
+      src.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      sourceConnected = true;
+    }
   } else {
     audio.pause();
     playBtn.classList.remove("pause");
@@ -131,7 +150,7 @@ soundIcon.addEventListener("click", () => {
   soundIcon.classList.add("active");
 });
 
-// 🔊 Control de volumen (natural)
+// 🔊 Control de volumen
 volumeSlider.addEventListener("input", (e) => {
   const value = e.target.value;
   audio.volume = value / 100;
@@ -139,13 +158,12 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🧠 Nivel inicial de volumen
-volumeSlider.value = 95;
-audio.volume = 0.95;
-volumePercent.textContent = "95%";
-volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
+// 🎶 Configurar analizador
+analyser.fftSize = 1024;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
 
-// 🎶 Visualizador simulado (sin audioContext)
+// 🎨 Canvas visualizer (ondas reales)
 function resizeCanvas() {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
@@ -153,34 +171,33 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-let pulse = 0;
 function draw() {
   requestAnimationFrame(draw);
+  analyser.getByteFrequencyData(dataArray);
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Simulación visual tipo ondas suaves (no afecta el sonido)
-  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-  gradient.addColorStop(0, "#00e5ff");
-  gradient.addColorStop(1, "#9c27b0");
-  ctx.strokeStyle = gradient;
-  ctx.lineWidth = 2;
-  ctx.beginPath();
+  const barWidth = (canvas.width / bufferLength) * 2.5;
+  let x = 0;
 
-  const amplitude = Math.sin(Date.now() / 300) * 10 + 20;
-  const step = canvas.width / 40;
-  for (let x = 0; x <= canvas.width; x += step) {
-    const y = canvas.height / 2 + Math.sin(x / 25 + pulse) * amplitude;
-    if (x === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+  for (let i = 0; i < bufferLength; i++) {
+    const barHeight = dataArray[i] * 0.7;
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, "#00e5ff");
+    gradient.addColorStop(1, "#9c27b0");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+    x += barWidth + 1;
   }
-  ctx.stroke();
-  pulse += 0.1;
 }
 draw();
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
+
 
 
 
