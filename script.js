@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 REPRODUCTOR FINAL REAL (volumen 100% + espectro sensible real)
+// 🔊 INICIO DE NUEVO REPRODUCTOR COMPLETO
 // =============================
 
 const audio = document.getElementById("audio");
@@ -102,13 +102,12 @@ const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
-let audioCtx, analyser;
 
-// 🎧 Volumen inicial 100 %
-audio.volume = 1.0;
-volumeSlider.value = 100;
-volumePercent.textContent = "100%";
-volumeSlider.style.background = `linear-gradient(to right, #00e5ff 100%, #444 100%)`;
+// 🎧 Volumen inicial 95%
+audio.volume = 0.95;
+volumeSlider.value = 95;
+volumePercent.textContent = "95%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
 
 // 🎛️ Play / Pause
 playBtn.addEventListener("click", async () => {
@@ -118,18 +117,7 @@ playBtn.addEventListener("click", async () => {
     playBtn.classList.add("pause");
     isPlaying = true;
 
-    // 🎵 Crear analizador solo visual (sin afectar audio)
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioCtx.createAnalyser();
-
-      const stream = audio.captureStream ? audio.captureStream() : audio.mozCaptureStream?.();
-      if (stream) {
-        const source = audioCtx.createMediaStreamSource(stream);
-        source.connect(analyser);
-        startVisualizer();
-      }
-    }
+    if (!audioCtx) initVisualizer(); // iniciar visualizador si no está
   } else {
     audio.pause();
     playBtn.classList.remove("pause");
@@ -159,9 +147,17 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador real
-function startVisualizer() {
-  analyser.fftSize = 1024;
+// 🎨 Visualizador tipo barras finas
+let audioCtx, analyser;
+
+function initVisualizer() {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  const source = audioCtx.createMediaElementSource(audio);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  analyser.fftSize = 2048;
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
@@ -172,47 +168,33 @@ function startVisualizer() {
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
 
-  let hue = 200;
-
   function draw() {
     requestAnimationFrame(draw);
     analyser.getByteFrequencyData(dataArray);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 🌈 Color animado
-    hue = (hue + 0.5) % 360;
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    gradient.addColorStop(0, `hsl(${hue}, 100%, 60%)`);
-    gradient.addColorStop(1, `hsl(${(hue + 60) % 360}, 100%, 60%)`);
-
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = gradient;
-    ctx.beginPath();
-
-    const sliceWidth = canvas.width / bufferLength;
+    const barWidth = (canvas.width / bufferLength) * 2; // barras finas
     let x = 0;
+
     for (let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 255;
-      const y = canvas.height / 2 - (v * canvas.height) / 2.2 * Math.sin(i * 0.1);
+      const barHeight = dataArray[i] * 0.7; // altura de barra
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, "#00e5ff");
+      gradient.addColorStop(1, "#9c27b0");
 
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-      x += sliceWidth;
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+      x += barWidth + 1; // espacio entre barras
     }
-
-    ctx.lineTo(canvas.width, canvas.height / 2);
-    ctx.stroke();
   }
 
   draw();
 }
 
 // =============================
-// 🔊 FIN REPRODUCTOR
+// 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
 
 
