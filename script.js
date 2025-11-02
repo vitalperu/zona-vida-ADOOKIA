@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR (potente + espectro real)
+// 🔊 INICIO DE NUEVO REPRODUCTOR (volumen natural + espectro real)
 // =============================
 
 const audio = document.getElementById("audio");
@@ -103,12 +103,12 @@ const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
 
-// 🎧 Inicializar audio con volumen al 90%
+// 🎧 Volumen inicial al 90%
 audio.volume = 0.9;
 volumeSlider.value = 90;
 volumePercent.textContent = "90%";
 
-// 🎵 Crear contexto solo para analizar (sin alterar volumen)
+// 🎵 Crear contexto solo para analizar
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
 let sourceConnected = false;
@@ -122,11 +122,10 @@ playBtn.addEventListener("click", async () => {
     playBtn.classList.add("pause");
     isPlaying = true;
 
-    // Conectar el analizador una sola vez
+    // Conectar el analizador (sin reenviar el sonido)
     if (!sourceConnected) {
       const src = audioCtx.createMediaElementSource(audio);
-      src.connect(analyser);
-      analyser.connect(audioCtx.destination);
+      src.connect(analyser); // solo analizar
       sourceConnected = true;
     }
   } else {
@@ -188,7 +187,6 @@ function draw() {
 
     ctx.fillStyle = gradient;
     ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-
     x += barWidth + 1;
   }
 }
@@ -197,6 +195,7 @@ draw();
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
+
 
 
 
