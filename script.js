@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR (volumen 100% real sin atenuación en móvil)
+// 🔊 INICIO DE NUEVO REPRODUCTOR (Corrección de Espectro y Volumen)
 // =============================
 
 const audio = document.getElementById("audio");
@@ -103,7 +103,8 @@ const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
 let analyser, audioCtx, source;
-let streamForViz;
+let gainNode; // DECLARADO: Nodo de ganancia para controlar el volumen del espectro
+// let streamForViz; // Eliminado: Ya no se usa captureStream()
 
 // 🎧 Volumen inicial 95%
 audio.volume = 0.95;
@@ -113,108 +114,120 @@ volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%
 
 // 🎛️ Play / Pause
 playBtn.addEventListener("click", async () => {
-  if (!isPlaying) {
-    await audio.play();
-    playBtn.classList.remove("play");
-    playBtn.classList.add("pause");
-    isPlaying = true;
+    if (!isPlaying) {
+        // Inicializar el contexto de audio ANTES de reproducir (para evitar problemas de permisos en móvil)
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            gainNode = audioCtx.createGain(); // Nodo de Ganancia para volumen
 
-    // 🔍 Crear contexto de análisis separado del sonido real
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioCtx.createAnalyser();
-      streamForViz = audio.captureStream ? audio.captureStream() : audio.mozCaptureStream();
-      if (streamForViz) {
-        const source = audioCtx.createMediaStreamSource(streamForViz);
-        source.connect(analyser);
-      }
-      startVisualizer();
+            // 1. Crear nodo fuente desde el elemento <audio>
+            source = audioCtx.createMediaElementSource(audio);
+            
+            // 2. CONEXIONES CLAVE: El audio pasa por la Ganancia (Volumen) antes del Analizador (Espectro)
+            source.connect(gainNode);      // Fuente --> Ganancia
+            gainNode.connect(analyser);    // Ganancia --> Analizador (Espectro)
+            analyser.connect(audioCtx.destination); // Analizador --> Salida de Audio
+            
+            // 3. Inicializar el valor del GainNode con el volumen actual de la app
+            gainNode.gain.value = audio.volume; 
+            
+            // Iniciar el visualizador
+            startVisualizer();
+        }
+
+        await audio.play();
+        playBtn.classList.remove("play");
+        playBtn.classList.add("pause");
+        isPlaying = true;
+
+    } else {
+        audio.pause();
+        playBtn.classList.remove("pause");
+        playBtn.classList.add("play");
+        isPlaying = false;
     }
-
-  } else {
-    audio.pause();
-    playBtn.classList.remove("pause");
-    playBtn.classList.add("play");
-    isPlaying = false;
-  }
 });
 
 // 🔇 Mute / Unmute
 muteIcon.addEventListener("click", () => {
-  audio.muted = true;
-  muteIcon.classList.add("active");
-  soundIcon.classList.remove("active");
+    audio.muted = true;
+    if (gainNode) gainNode.gain.value = 0; // Silenciar el espectro
+    muteIcon.classList.add("active");
+    soundIcon.classList.remove("active");
 });
 
 soundIcon.addEventListener("click", () => {
-  audio.muted = false;
-  muteIcon.classList.remove("active");
-  soundIcon.classList.add("active");
+    audio.muted = false;
+    if (gainNode) gainNode.gain.value = audio.volume; // Restaurar el volumen del espectro
+    muteIcon.classList.remove("active");
+    soundIcon.classList.add("active");
 });
 
 // 🔊 Control de volumen
 volumeSlider.addEventListener("input", (e) => {
-  const value = e.target.value;
-  audio.volume = value / 100;
-  volumePercent.textContent = `${value}%`;
-  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+    const value = e.target.value;
+    const volumeFactor = value / 100;
+    
+    audio.volume = volumeFactor; // Control nativo
+    
+    // CLAVE: Controlar el nodo de ganancia para que el espectro baje con el deslizador
+    if (gainNode) gainNode.gain.value = volumeFactor;
+    
+    volumePercent.textContent = `${value}%`;
+    volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🔊 Control de volumen
-volumeSlider.addEventListener("input", (e) => {
-  const value = e.target.value;
-  audio.volume = value / 100;
-  volumePercent.textContent = `${value}%`;
-  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
-});
-
-// 🌊 Visualizador de Onda Sinusoidal Neón (Recreado)
+// 🌊 Visualizador de Onda Sinusoidal Neón (Modelo de espectro final)
 function startVisualizer() {
-    // Más resolución (puntos de datos) para una línea de onda más fina y detallada
     analyser.fftSize = 2048; 
-    const bufferLength = analyser.frequencyBinCount; // 1024 puntos de datos
-    // Usaremos getByteTimeDomainData para la forma de onda (más notorio que FFT)
+    const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength); 
+    
+    // Inicializa el array para el suavizado de la onda (Movimiento Lento y Suave)
+    let previousWave = new Array(bufferLength).fill(canvas.height / 2); 
 
     function resizeCanvas() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
+        // Reajustar la posición inicial de previousWave al redimensionar
+        previousWave.fill(canvas.height / 2); 
     }
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Parámetros del efecto Neón y Parpadeo
-    const NEON_COLOR = 'rgba(0, 255, 255, 1)'; // Azul Cyan Neón
-    const BASE_SHADOW_BLUR = 20; // Intensidad base del resplandor
+    // Parámetros del efecto Neón
+    const NEON_COLOR = 'rgba(0, 255, 255, 1)'; 
+    const BASE_SHADOW_BLUR = 20;
     
     // Función de Dibujo
     function draw() {
         requestAnimationFrame(draw);
-        // Obtener datos de la forma de onda (dibujo de onda notorio)
         analyser.getByteTimeDomainData(dataArray); 
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // --- 1. Aplicar Efecto Neón y Parpadeo ---
-        // Genera un parpadeo aleatorio en la intensidad del brillo (simula fallo de neón)
-        // La intensidad base siempre es > 0, pero a veces baja para el "flicker".
-        const flickerFactor = Math.random() > 0.98 ? 0.3 : 1; // 2% de probabilidad de bajada de brillo
+        const flickerFactor = Math.random() > 0.98 ? 0.3 : 1; 
         ctx.shadowBlur = BASE_SHADOW_BLUR * flickerFactor;
         ctx.shadowColor = NEON_COLOR;
         
-        ctx.strokeStyle = NEON_COLOR; // Color de la línea de onda
-        ctx.lineWidth = 0.8; // Línea ligeramente fina
+        ctx.strokeStyle = NEON_COLOR; 
+        ctx.lineWidth = 0.8; 
 
-        // --- 2. Dibujar la Forma de Onda (Dibujo de Ondas Notorio) ---
+        // --- 2. Dibujar la Forma de Onda (Movimiento Lento aplicado) ---
         ctx.beginPath();
-        const sliceWidth = canvas.width * 1.0 / bufferLength; // Borde a Borde
+        const sliceWidth = canvas.width * 1.0 / bufferLength;
         let x = 0;
 
         for (let i = 0; i < bufferLength; i++) {
-            // dataArray[i] va de 0 a 255. 
-            // Normalizar a 0-1 y luego centrar y escalar para que se vea en el canvas.
-            const v = dataArray[i] / 128.0; // Normalizar a 0..2
-            const y = v * canvas.height / 2; // Escalar y posicionar
+            // Valor objetivo (posición real del audio)
+            const v = dataArray[i] / 128.0; 
+            const targetY = v * canvas.height / 2; 
+
+            // Aplicar el Suavizado Lento: 95% inercia + 5% respuesta
+            previousWave[i] = previousWave[i] * 0.95 + targetY * 0.05;
+            const y = previousWave[i]; // Usar el valor suavizado
 
             if (i === 0) {
                 ctx.moveTo(x, y);
@@ -222,21 +235,17 @@ function startVisualizer() {
                 ctx.lineTo(x, y);
             }
 
-            // Moverse al siguiente punto (Borde a Borde)
             x += sliceWidth;
         }
 
-        // Conectar el último punto al borde derecho
         ctx.lineTo(canvas.width, canvas.height / 2); 
         ctx.stroke();
         
-        // Resetear el shadowBlur para no afectar otros elementos de tu aplicación
         ctx.shadowBlur = 0;
     }
 
     draw();
 }
-
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
