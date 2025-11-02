@@ -160,41 +160,81 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador tipo barras finas parpadeantes (más delgadas)
+// 🔊 Control de volumen
+volumeSlider.addEventListener("input", (e) => {
+  const value = e.target.value;
+  audio.volume = value / 100;
+  volumePercent.textContent = `${value}%`;
+  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+});
+
+// 🌊 Visualizador de Onda Sinusoidal Neón (Recreado)
 function startVisualizer() {
-  analyser.fftSize = 256; // menos resolución = barras más visibles
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
+    // Más resolución (puntos de datos) para una línea de onda más fina y detallada
+    analyser.fftSize = 2048; 
+    const bufferLength = analyser.frequencyBinCount; // 1024 puntos de datos
+    // Usaremos getByteTimeDomainData para la forma de onda (más notorio que FFT)
+    const dataArray = new Uint8Array(bufferLength); 
 
-  function resizeCanvas() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-  }
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
-
-  function draw() {
-    requestAnimationFrame(draw);
-    analyser.getByteFrequencyData(dataArray);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const barWidth = (canvas.width / bufferLength) * 0.7; // barras más delgadas
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-      const barHeight = (dataArray[i] / 255) * canvas.height * 1.2;
-      const hue = (i * 4 + Date.now() / 10) % 360;
-
-      // color tipo neón
-      ctx.fillStyle = `hsl(${hue}, 100%, 60%)`;
-      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-
-      x += barWidth + 0.2; // separación mínima
+    function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
     }
-  }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-  draw();
+    // Parámetros del efecto Neón y Parpadeo
+    const NEON_COLOR = 'rgba(0, 255, 255, 1)'; // Azul Cyan Neón
+    const BASE_SHADOW_BLUR = 20; // Intensidad base del resplandor
+    
+    // Función de Dibujo
+    function draw() {
+        requestAnimationFrame(draw);
+        // Obtener datos de la forma de onda (dibujo de onda notorio)
+        analyser.getByteTimeDomainData(dataArray); 
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // --- 1. Aplicar Efecto Neón y Parpadeo ---
+        // Genera un parpadeo aleatorio en la intensidad del brillo (simula fallo de neón)
+        // La intensidad base siempre es > 0, pero a veces baja para el "flicker".
+        const flickerFactor = Math.random() > 0.98 ? 0.3 : 1; // 2% de probabilidad de bajada de brillo
+        ctx.shadowBlur = BASE_SHADOW_BLUR * flickerFactor;
+        ctx.shadowColor = NEON_COLOR;
+        
+        ctx.strokeStyle = NEON_COLOR; // Color de la línea de onda
+        ctx.lineWidth = 0.8; // Línea ligeramente fina
+
+        // --- 2. Dibujar la Forma de Onda (Dibujo de Ondas Notorio) ---
+        ctx.beginPath();
+        const sliceWidth = canvas.width * 1.0 / bufferLength; // Borde a Borde
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+            // dataArray[i] va de 0 a 255. 
+            // Normalizar a 0-1 y luego centrar y escalar para que se vea en el canvas.
+            const v = dataArray[i] / 128.0; // Normalizar a 0..2
+            const y = v * canvas.height / 2; // Escalar y posicionar
+
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+
+            // Moverse al siguiente punto (Borde a Borde)
+            x += sliceWidth;
+        }
+
+        // Conectar el último punto al borde derecho
+        ctx.lineTo(canvas.width, canvas.height / 2); 
+        ctx.stroke();
+        
+        // Resetear el shadowBlur para no afectar otros elementos de tu aplicación
+        ctx.shadowBlur = 0;
+    }
+
+    draw();
 }
 
 
