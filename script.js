@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR (volumen 100% real sin atenuación en móvil)
+// 🔊 INICIO DE NUEVO REPRODUCTOR (volumen natural + espectro sensible)
 // =============================
 
 const audio = document.getElementById("audio");
@@ -103,9 +103,8 @@ const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
 let analyser, audioCtx, source;
-let streamForViz;
 
-// 🎧 Volumen inicial 95%
+// 🎧 Volumen inicial 95 %
 audio.volume = 0.95;
 volumeSlider.value = 95;
 volumePercent.textContent = "95%";
@@ -119,15 +118,12 @@ playBtn.addEventListener("click", async () => {
     playBtn.classList.add("pause");
     isPlaying = true;
 
-    // 🔍 Crear contexto de análisis separado del sonido real
     if (!audioCtx) {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       analyser = audioCtx.createAnalyser();
-      streamForViz = audio.captureStream ? audio.captureStream() : audio.mozCaptureStream();
-      if (streamForViz) {
-        const source = audioCtx.createMediaStreamSource(streamForViz);
-        source.connect(analyser);
-      }
+      const src = audioCtx.createMediaElementSource(audio);
+      src.connect(analyser);
+      analyser.connect(audioCtx.destination); // conexión natural
       startVisualizer();
     }
 
@@ -160,7 +156,7 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador
+// 🎨 Visualizador sensible al volumen
 function startVisualizer() {
   analyser.fftSize = 1024;
   const bufferLength = analyser.frequencyBinCount;
@@ -181,8 +177,11 @@ function startVisualizer() {
     const barWidth = (canvas.width / bufferLength) * 2.5;
     let x = 0;
 
+    // Escala según volumen real (más sensible)
+    const scale = audio.volume * 1.5; // multiplica levemente para visual
+
     for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i];
+      const barHeight = dataArray[i] * scale;
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
       gradient.addColorStop(0, "#00e5ff");
       gradient.addColorStop(1, "#9c27b0");
@@ -198,7 +197,6 @@ function startVisualizer() {
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
-
 
 
 
