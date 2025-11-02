@@ -47,46 +47,47 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   }
-  
-// ----------------------------
-// Función para activar radio seleccionada con visualizador
-// ----------------------------
+
+  // ----------------------------
+  // Función para activar radio seleccionada
+  // ----------------------------
 function activarRadioItem(item) {
-  document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
-  item.classList.add('selected');
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
 
-  const logo = document.getElementById('logoRadioActual');
-  const radioUrl = item.getAttribute('data-radio');
-  const logoUrl = item.getAttribute('data-logo');
+    const logo = document.getElementById('logoRadioActual');
+    const player = document.getElementById('audio');
+    const radioUrl = item.getAttribute('data-radio');
+    const logoUrl = item.getAttribute('data-logo');
 
-  if (logo && logoUrl) logo.src = logoUrl;
-  if (audio && radioUrl) {
-    audio.src = radioUrl;
-    audio.load();
-    audio.play();
+    if (logo && logoUrl) logo.src = logoUrl;
+    if (player && radioUrl) {
+        player.src = radioUrl;
+        player.load();
+        player.play();
 
-    const playBtn = document.getElementById('playBtn');
-    if (playBtn) {
-      playBtn.classList.remove('play');
-      playBtn.classList.add('pause');
+        // Reconectar AudioContext al nuevo stream
+        if (audioCtx && analyser) {
+            try {
+                const newStream = player.captureStream ? player.captureStream() : player.mozCaptureStream();
+                if (newStream) {
+                    const newSource = audioCtx.createMediaStreamSource(newStream);
+                    newSource.connect(analyser);
+                }
+            } catch (e) {
+                console.error("Error al reconectar visualizador:", e);
+            }
+        }
+
+        const playBtn = document.getElementById('playBtn');
+        if(playBtn){
+            playBtn.classList.remove('play');
+            playBtn.classList.add('pause');
+        }
+        const circle = document.querySelector('.circle-player');
+        if(circle) circle.classList.add('playing');
     }
-
-    const circle = document.querySelector('.circle-player');
-    if (circle) circle.classList.add('playing');
-
-    // 🔹 Reconectar audio al visualizador para que siga funcionando
-    if (audioCtx && analyser) {
-      try {
-        analyser.disconnect(); // desconectar conexiones anteriores
-      } catch(e) {}
-
-      let newSource = audioCtx.createMediaElementSource(audio);
-      newSource.connect(analyser);
-      analyser.connect(audioCtx.destination);
-    }
-  }
 }
-
 
   // ----------------------------
   // Aplicar evento click a TODAS las radios
@@ -100,7 +101,6 @@ function activarRadioItem(item) {
 // 🔹 FIN SEGUNDA PARRILLA VERTICAL
 // ===============================
 
-  
 // =============================
 // 🔊 NUEVO REPRODUCTOR + VISUALIZADOR NEÓN
 // =============================
@@ -266,6 +266,7 @@ function startVisualizer() {
     }
     draw();
 }
+
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
