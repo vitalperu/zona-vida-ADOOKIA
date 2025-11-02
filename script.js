@@ -89,9 +89,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR COMPLETO
+// 🔊 NUEVO REPRODUCTOR COMPLETO (volumen natural + visualizador barras finas)
 // =============================
 
+// Referencias DOM
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
 const muteIcon = document.getElementById("muteIcon");
@@ -102,8 +103,9 @@ const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
+let audioCtx, analyser;
 
-// 🎧 Volumen inicial 95%
+// 🎧 Volumen inicial al 95%
 audio.volume = 0.95;
 volumeSlider.value = 95;
 volumePercent.textContent = "95%";
@@ -117,7 +119,18 @@ playBtn.addEventListener("click", async () => {
     playBtn.classList.add("pause");
     isPlaying = true;
 
-    if (!audioCtx) initVisualizer(); // iniciar visualizador si no está
+    if (!audioCtx) {
+      // Inicializar AudioContext y Analizador
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      const source = audioCtx.createMediaElementSource(audio);
+
+      // Conectar audio al destino y al analizador
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+
+      startVisualizer();
+    }
   } else {
     audio.pause();
     playBtn.classList.remove("pause");
@@ -147,17 +160,9 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador tipo barras finas
-let audioCtx, analyser;
-
-function initVisualizer() {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  analyser = audioCtx.createAnalyser();
-  const source = audioCtx.createMediaElementSource(audio);
-  source.connect(analyser);
-  analyser.connect(audioCtx.destination);
-
-  analyser.fftSize = 2048;
+// 🎨 Visualizador de barras finas tipo Luna Player
+function startVisualizer() {
+  analyser.fftSize = 1024;
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
@@ -174,19 +179,22 @@ function initVisualizer() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const barWidth = (canvas.width / bufferLength) * 2; // barras finas
+    const barWidth = (canvas.width / bufferLength) * 2;
+    const centerY = canvas.height / 2;
     let x = 0;
 
     for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i] * 0.7; // altura de barra
+      const barHeight = dataArray[i] * 0.8; // altura de pico equilibrada
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
       gradient.addColorStop(0, "#00e5ff");
       gradient.addColorStop(1, "#9c27b0");
 
       ctx.fillStyle = gradient;
-      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+      // Barras simétricas arriba y abajo
+      ctx.fillRect(x, centerY - barHeight, barWidth, barHeight);
+      ctx.fillRect(x, centerY, barWidth, barHeight);
 
-      x += barWidth + 1; // espacio entre barras
+      x += barWidth + 1;
     }
   }
 
@@ -194,8 +202,9 @@ function initVisualizer() {
 }
 
 // =============================
-// 🔊 FIN DE NUEVO REPRODUCTOR
+// 🔊 FIN NUEVO REPRODUCTOR
 // =============================
+
 
 
 
