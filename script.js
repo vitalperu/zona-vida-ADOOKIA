@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 REPRODUCTOR FINAL (volumen 100% natural + espectro sensible)
+// 🔊 REPRODUCTOR FINAL REAL (volumen 100% + espectro sensible real)
 // =============================
 
 const audio = document.getElementById("audio");
@@ -102,13 +102,13 @@ const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
-let analyser, audioCtx;
+let audioCtx, analyser;
 
-// 🎧 Volumen inicial 95 %
-audio.volume = 0.95;
-volumeSlider.value = 95;
-volumePercent.textContent = "95%";
-volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
+// 🎧 Volumen inicial 100 %
+audio.volume = 1.0;
+volumeSlider.value = 100;
+volumePercent.textContent = "100%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 100%, #444 100%)`;
 
 // 🎛️ Play / Pause
 playBtn.addEventListener("click", async () => {
@@ -118,17 +118,18 @@ playBtn.addEventListener("click", async () => {
     playBtn.classList.add("pause");
     isPlaying = true;
 
-    // 🎵 Solo para análisis (no altera audio real)
+    // 🎵 Crear analizador solo visual (sin afectar audio)
     if (!audioCtx) {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       analyser = audioCtx.createAnalyser();
-      const src = audioCtx.createMediaElementSource(audio);
-      src.connect(analyser);
-      analyser.connect(audioCtx.destination); // analizar sin duplicar
-      src.disconnect(audioCtx.destination); // evita doble mezcla (causa bajo volumen)
-      startVisualizer();
-    }
 
+      const stream = audio.captureStream ? audio.captureStream() : audio.mozCaptureStream?.();
+      if (stream) {
+        const source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        startVisualizer();
+      }
+    }
   } else {
     audio.pause();
     playBtn.classList.remove("pause");
@@ -158,9 +159,9 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador sensible
+// 🎨 Visualizador real
 function startVisualizer() {
-  analyser.fftSize = 1024;
+  analyser.fftSize = 512;
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
@@ -176,29 +177,26 @@ function startVisualizer() {
     analyser.getByteFrequencyData(dataArray);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const barWidth = (canvas.width / bufferLength) * 2.5;
+    const barWidth = (canvas.width / bufferLength) * 2.2;
     let x = 0;
 
-    const scale = audio.volume * 1.3;
-
     for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i] * scale;
+      const barHeight = dataArray[i] * 1.2; // más sensible
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
       gradient.addColorStop(0, "#00e5ff");
       gradient.addColorStop(1, "#9c27b0");
 
       ctx.fillStyle = gradient;
       ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-      x += barWidth + 1;
+      x += barWidth + 0.5;
     }
   }
   draw();
 }
 
 // =============================
-// 🔊 FIN DE REPRODUCTOR
+// 🔊 FIN REPRODUCTOR
 // =============================
-
 
 
 
