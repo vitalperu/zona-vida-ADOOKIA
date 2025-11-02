@@ -102,7 +102,7 @@ function activarRadioItem(item) {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR (Corrección de Espectro y Volumen)
+// 🔊 NUEVO REPRODUCTOR + VISUALIZADOR NEÓN
 // =============================
 
 const audio = document.getElementById("audio");
@@ -113,11 +113,13 @@ const volumeSlider = document.getElementById("volumeControl");
 const volumePercent = document.getElementById("volumePercent");
 const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
+const logoCentral = document.getElementById("logoRadioActual");
 
 let isPlaying = false;
-let analyser, audioCtx, source;
-let gainNode; // DECLARADO: Nodo de ganancia para controlar el volumen del espectro
-// let streamForViz; // Eliminado: Ya no se usa captureStream()
+let audioCtx = null;
+let analyser = null;
+let sourceNode = null;
+let previousHeights = [];
 
 // 🎧 Volumen inicial 95%
 audio.volume = 0.95;
@@ -125,35 +127,38 @@ volumeSlider.value = 95;
 volumePercent.textContent = "95%";
 volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
 
-// 🎛️ Play / Pause
+// =============================
+// Inicialización AudioContext y Analizador
+// =============================
+function initAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+
+        sourceNode = audioCtx.createMediaElementSource(audio);
+        sourceNode.connect(analyser);
+        analyser.connect(audioCtx.destination);
+
+        previousHeights = new Array(analyser.frequencyBinCount).fill(0);
+        startVisualizer();
+    }
+}
+
+// =============================
+// Play / Pause
+// =============================
 playBtn.addEventListener("click", async () => {
     if (!isPlaying) {
-        // Inicializar el contexto de audio ANTES de reproducir (para evitar problemas de permisos en móvil)
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioCtx.createAnalyser();
-            gainNode = audioCtx.createGain(); // Nodo de Ganancia para volumen
-
-            // 1. Crear nodo fuente desde el elemento <audio>
-            source = audioCtx.createMediaElementSource(audio);
-            
-            // 2. CONEXIONES CLAVE: El audio pasa por la Ganancia (Volumen) antes del Analizador (Espectro)
-            source.connect(gainNode);      // Fuente --> Ganancia
-            gainNode.connect(analyser);    // Ganancia --> Analizador (Espectro)
-            analyser.connect(audioCtx.destination); // Analizador --> Salida de Audio
-            
-            // 3. Inicializar el valor del GainNode con el volumen actual de la app
-            gainNode.gain.value = audio.volume; 
-            
-            // Iniciar el visualizador
-            startVisualizer();
-        }
-
         await audio.play();
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        } else {
+            initAudioContext();
+        }
         playBtn.classList.remove("play");
         playBtn.classList.add("pause");
         isPlaying = true;
-
     } else {
         audio.pause();
         playBtn.classList.remove("pause");
@@ -162,101 +167,103 @@ playBtn.addEventListener("click", async () => {
     }
 });
 
-// 🔇 Mute / Unmute
+// =============================
+// Mute / Unmute
+// =============================
 muteIcon.addEventListener("click", () => {
     audio.muted = true;
-    if (gainNode) gainNode.gain.value = 0; // Silenciar el espectro
     muteIcon.classList.add("active");
     soundIcon.classList.remove("active");
 });
 
 soundIcon.addEventListener("click", () => {
     audio.muted = false;
-    if (gainNode) gainNode.gain.value = audio.volume; // Restaurar el volumen del espectro
     muteIcon.classList.remove("active");
     soundIcon.classList.add("active");
 });
 
-// 🔊 Control de volumen
+// =============================
+// Control de Volumen
+// =============================
 volumeSlider.addEventListener("input", (e) => {
     const value = e.target.value;
-    const volumeFactor = value / 100;
-    
-    audio.volume = volumeFactor; // Control nativo
-    
-    // CLAVE: Controlar el nodo de ganancia para que el espectro baje con el deslizador
-    if (gainNode) gainNode.gain.value = volumeFactor;
-    
+    audio.volume = value / 100;
     volumePercent.textContent = `${value}%`;
     volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🌊 Visualizador de Onda Sinusoidal Neón (Modelo de espectro final)
-function startVisualizer() {
-    analyser.fftSize = 2048; 
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength); 
-    
-    // Inicializa el array para el suavizado de la onda (Movimiento Lento y Suave)
-    let previousWave = new Array(bufferLength).fill(canvas.height / 2); 
+// =============================
+// Activar Radio
+// =============================
+function activarRadioItem(item) {
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
 
+    const radioUrl = item.getAttribute('data-radio');
+    const logoUrl = item.getAttribute('data-logo');
+
+    if (logoUrl) logoCentral.src = logoUrl;
+    if (radioUrl) {
+        audio.src = radioUrl;
+        audio.load();
+
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        } else {
+            initAudioContext();
+        }
+
+        audio.play();
+        playBtn.classList.remove("play");
+        playBtn.classList.add("pause");
+    }
+}
+
+// =============================
+// Aplicar evento click a TODAS las radios
+// =============================
+document.querySelectorAll('.radio-item').forEach(item => {
+    item.addEventListener('click', () => activarRadioItem(item));
+});
+
+// =============================
+// Visualizador tipo barras neón
+// =============================
+function startVisualizer() {
+    const bufferLength = analyser.frequencyBinCount;
     function resizeCanvas() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
-        // Reajustar la posición inicial de previousWave al redimensionar
-        previousWave.fill(canvas.height / 2); 
     }
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Parámetros del efecto Neón
-    const NEON_COLOR = 'rgba(0, 255, 255, 1)'; 
-    const BASE_SHADOW_BLUR = 20;
-    
-    // Función de Dibujo
     function draw() {
         requestAnimationFrame(draw);
-        analyser.getByteTimeDomainData(dataArray); 
+        const dataArray = new Uint8Array(bufferLength);
+        analyser.getByteFrequencyData(dataArray);
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // --- 1. Aplicar Efecto Neón y Parpadeo ---
-        const flickerFactor = Math.random() > 0.98 ? 0.3 : 1; 
-        ctx.shadowBlur = BASE_SHADOW_BLUR * flickerFactor;
-        ctx.shadowColor = NEON_COLOR;
-        
-        ctx.strokeStyle = NEON_COLOR; 
-        ctx.lineWidth = 0.8; 
-
-        // --- 2. Dibujar la Forma de Onda (Movimiento Lento aplicado) ---
-        ctx.beginPath();
-        const sliceWidth = canvas.width * 1.0 / bufferLength;
+        const barWidth = (canvas.width / bufferLength) * 1; // barras delgadas
         let x = 0;
 
         for (let i = 0; i < bufferLength; i++) {
-            // Valor objetivo (posición real del audio)
-            const v = dataArray[i] / 128.0; 
-            const targetY = v * canvas.height / 2; 
+            // suavizado lento para parpadeo
+            previousHeights[i] = previousHeights[i] * 0.8 + dataArray[i] * 0.2;
+            const barHeight = previousHeights[i] / 255 * canvas.height;
 
-            // Aplicar el Suavizado Lento: 95% inercia + 5% respuesta
-            previousWave[i] = previousWave[i] * 0.95 + targetY * 0.05;
-            const y = previousWave[i]; // Usar el valor suavizado
+            // degradado neón
+            const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
+            gradient.addColorStop(0, "#00f0ff");
+            gradient.addColorStop(1, "#ff00ff");
 
-            if (i === 0) {
-                ctx.moveTo(x, y);
-            } else {
-                ctx.lineTo(x, y);
-            }
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
 
-            x += sliceWidth;
+            x += barWidth + 0.5; // espacio mínimo
         }
-
-        ctx.lineTo(canvas.width, canvas.height / 2); 
-        ctx.stroke();
-        
-        ctx.shadowBlur = 0;
     }
-
     draw();
 }
 
