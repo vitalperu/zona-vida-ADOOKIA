@@ -161,7 +161,7 @@ volumeSlider.addEventListener("input", (e) => {
 
 // 🎨 Visualizador real
 function startVisualizer() {
-  analyser.fftSize = 512;
+  analyser.fftSize = 1024;
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
@@ -172,25 +172,42 @@ function startVisualizer() {
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
 
+  let hue = 200;
+
   function draw() {
     requestAnimationFrame(draw);
     analyser.getByteFrequencyData(dataArray);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const barWidth = (canvas.width / bufferLength) * 2.2;
+
+    // 🌈 Color animado
+    hue = (hue + 0.5) % 360;
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop(0, `hsl(${hue}, 100%, 60%)`);
+    gradient.addColorStop(1, `hsl(${(hue + 60) % 360}, 100%, 60%)`);
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = gradient;
+    ctx.beginPath();
+
+    const sliceWidth = canvas.width / bufferLength;
     let x = 0;
-
     for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i] * 1.2; // más sensible
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, "#00e5ff");
-      gradient.addColorStop(1, "#9c27b0");
+      const v = dataArray[i] / 255;
+      const y = canvas.height / 2 - (v * canvas.height) / 2.2 * Math.sin(i * 0.1);
 
-      ctx.fillStyle = gradient;
-      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-      x += barWidth + 0.5;
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+      x += sliceWidth;
     }
+
+    ctx.lineTo(canvas.width, canvas.height / 2);
+    ctx.stroke();
   }
+
   draw();
 }
 
