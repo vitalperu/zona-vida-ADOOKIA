@@ -160,9 +160,9 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador
+// 🎨 Visualizador tipo ondas suaves
 function startVisualizer() {
-  analyser.fftSize = 1024;
+  analyser.fftSize = 2048; // más detalle en frecuencias
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
@@ -175,23 +175,37 @@ function startVisualizer() {
 
   function draw() {
     requestAnimationFrame(draw);
-    analyser.getByteFrequencyData(dataArray);
+    analyser.getByteTimeDomainData(dataArray);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const barWidth = (canvas.width / bufferLength) * 2.5;
+
+    const sliceWidth = canvas.width / bufferLength;
     let x = 0;
 
-    for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i];
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, "#00e5ff");
-      gradient.addColorStop(1, "#9c27b0");
+    ctx.lineWidth = 2;
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop(0, "#00e5ff");
+    gradient.addColorStop(1, "#9c27b0");
+    ctx.strokeStyle = gradient;
+    ctx.beginPath();
 
-      ctx.fillStyle = gradient;
-      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-      x += barWidth + 1;
+    for (let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128.0; // Normalizar entre 0 y 2
+      const y = (v * canvas.height) / 2;
+
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+
+      x += sliceWidth;
     }
+
+    ctx.lineTo(canvas.width, canvas.height / 2);
+    ctx.stroke();
   }
+
   draw();
 }
 
