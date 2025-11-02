@@ -93,14 +93,10 @@ document.addEventListener("DOMContentLoaded", function() {
 // =============================
 
 const audio = document.getElementById("audio");
-audio.volume = 1.0; // 🔊 volumen máximo inicial
 const playBtn = document.getElementById("playBtn");
 const muteIcon = document.getElementById("muteIcon");
 const soundIcon = document.getElementById("soundIcon");
 const volumeSlider = document.getElementById("volumeControl");
-volumeSlider.value = 90;
-audio.volume = 0.9;
-volumePercent.textContent = "90%";
 const volumePercent = document.getElementById("volumePercent");
 const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
