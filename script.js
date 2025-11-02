@@ -102,7 +102,7 @@ function activarRadioItem(item) {
 // ===============================
 
 // =============================
-// 🔊 NUEVO REPRODUCTOR + VISUALIZADOR NEÓN
+// 🔊 NUEVO REPRODUCTOR DEFINITIVO
 // =============================
 
 const audio = document.getElementById("audio");
@@ -116,157 +116,156 @@ const ctx = canvas.getContext("2d");
 const logoCentral = document.getElementById("logoRadioActual");
 
 let isPlaying = false;
-let audioCtx = null;
-let analyser = null;
-let sourceNode = null;
-let previousHeights = [];
+let audioCtx, analyser, source;
+let previousWave = [];
 
-// 🎧 Volumen inicial 95%
-audio.volume = 0.95;
-volumeSlider.value = 95;
-volumePercent.textContent = "95%";
-volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
+// 🎧 Volumen inicial
+audio.volume = 1.0; // 100% real
+volumeSlider.value = 100;
+volumePercent.textContent = "100%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 100%, #444 100%)`;
 
-// =============================
-// Inicialización AudioContext y Analizador
-// =============================
+// Inicializar AudioContext y Visualizador (solo 1 vez)
 function initAudioContext() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 256;
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
 
-        sourceNode = audioCtx.createMediaElementSource(audio);
-        sourceNode.connect(analyser);
-        analyser.connect(audioCtx.destination);
-
-        previousHeights = new Array(analyser.frequencyBinCount).fill(0);
-        startVisualizer();
-    }
+    previousWave = new Array(analyser.frequencyBinCount).fill(canvas.height / 2);
+    startVisualizer();
+  }
 }
 
-// =============================
-// Play / Pause
-// =============================
+// 🎛️ Play / Pause
 playBtn.addEventListener("click", async () => {
-    if (!isPlaying) {
-        await audio.play();
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        } else {
-            initAudioContext();
-        }
-        playBtn.classList.remove("play");
-        playBtn.classList.add("pause");
-        isPlaying = true;
-    } else {
-        audio.pause();
-        playBtn.classList.remove("pause");
-        playBtn.classList.add("play");
-        isPlaying = false;
+  if (!isPlaying) {
+    if (audioCtx && audioCtx.state === "suspended") {
+      await audioCtx.resume(); // desbloquear audio en móviles
     }
+    await audio.play();
+    playBtn.classList.remove("play");
+    playBtn.classList.add("pause");
+    isPlaying = true;
+
+    initAudioContext();
+  } else {
+    audio.pause();
+    playBtn.classList.remove("pause");
+    playBtn.classList.add("play");
+    isPlaying = false;
+  }
 });
 
-// =============================
-// Mute / Unmute
-// =============================
+// 🔇 Mute / Unmute
 muteIcon.addEventListener("click", () => {
-    audio.muted = true;
-    muteIcon.classList.add("active");
-    soundIcon.classList.remove("active");
+  audio.muted = true;
+  muteIcon.classList.add("active");
+  soundIcon.classList.remove("active");
 });
 
 soundIcon.addEventListener("click", () => {
-    audio.muted = false;
-    muteIcon.classList.remove("active");
-    soundIcon.classList.add("active");
+  audio.muted = false;
+  muteIcon.classList.remove("active");
+  soundIcon.classList.add("active");
 });
 
-// =============================
-// Control de Volumen
-// =============================
+// 🔊 Control de volumen
 volumeSlider.addEventListener("input", (e) => {
-    const value = e.target.value;
-    audio.volume = value / 100;
-    volumePercent.textContent = `${value}%`;
-    volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+  const value = e.target.value;
+  audio.volume = value / 100;
+  volumePercent.textContent = `${value}%`;
+  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// =============================
-// Activar Radio
-// =============================
-function activarRadioItem(item) {
-    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
-    item.classList.add('selected');
-
-    const radioUrl = item.getAttribute('data-radio');
-    const logoUrl = item.getAttribute('data-logo');
-
-    if (logoUrl) logoCentral.src = logoUrl;
-    if (radioUrl) {
-        audio.src = radioUrl;
-        audio.load();
-
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        } else {
-            initAudioContext();
-        }
-
-        audio.play();
-        playBtn.classList.remove("play");
-        playBtn.classList.add("pause");
-    }
-}
-
-// =============================
-// Aplicar evento click a TODAS las radios
-// =============================
-document.querySelectorAll('.radio-item').forEach(item => {
-    item.addEventListener('click', () => activarRadioItem(item));
-});
-
-// =============================
-// Visualizador tipo barras neón
-// =============================
+// 🎨 Visualizador tipo onda neón
 function startVisualizer() {
-    const bufferLength = analyser.frequencyBinCount;
-    function resizeCanvas() {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+  analyser.fftSize = 1024;
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    previousWave = new Array(bufferLength).fill(canvas.height / 2);
+  }
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  function draw() {
+    requestAnimationFrame(draw);
+    analyser.getByteTimeDomainData(dataArray);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const sliceWidth = canvas.width / bufferLength;
+    let x = 0;
+    ctx.beginPath();
+
+    for (let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128.0; // valor entre 0 y 2
+      const yTarget = v * canvas.height / 2;
+
+      // suavizado para movimiento lento
+      previousWave[i] = previousWave[i] * 0.9 + yTarget * 0.1;
+      const y = previousWave[i];
+
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+      x += sliceWidth;
     }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
 
-    function draw() {
-        requestAnimationFrame(draw);
-        const dataArray = new Uint8Array(bufferLength);
-        analyser.getByteFrequencyData(dataArray);
+    // efecto neón
+    ctx.strokeStyle = "#00ffff";
+    ctx.lineWidth = 1.2;
+    ctx.shadowColor = "#00ffff";
+    ctx.shadowBlur = 15;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        const barWidth = (canvas.width / bufferLength) * 1; // barras delgadas
-        let x = 0;
-
-        for (let i = 0; i < bufferLength; i++) {
-            // suavizado lento para parpadeo
-            previousHeights[i] = previousHeights[i] * 0.8 + dataArray[i] * 0.2;
-            const barHeight = previousHeights[i] / 255 * canvas.height;
-
-            // degradado neón
-            const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
-            gradient.addColorStop(0, "#00f0ff");
-            gradient.addColorStop(1, "#ff00ff");
-
-            ctx.fillStyle = gradient;
-            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-
-            x += barWidth + 0.5; // espacio mínimo
-        }
-    }
-    draw();
+  draw();
 }
 
+// ----------------------------
+// Función para cambiar de radio
+// ----------------------------
+function activarRadioItem(item) {
+  document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+  item.classList.add('selected');
+
+  const radioUrl = item.getAttribute('data-radio');
+  const logoUrl = item.getAttribute('data-logo');
+
+  if (logoCentral && logoUrl) logoCentral.src = logoUrl;
+  if (audio && radioUrl) {
+    audio.src = radioUrl;
+    audio.load();
+
+    // Aseguramos desbloqueo en móviles
+    if (audioCtx && audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
+
+    audio.play().catch(err => console.log("Error al reproducir:", err));
+
+    const playBtn = document.getElementById('playBtn');
+    if(playBtn){
+      playBtn.classList.remove('play');
+      playBtn.classList.add('pause');
+    }
+  }
+}
+
+// Aplicar evento click a todas las radios
+document.querySelectorAll('.radio-item').forEach(item => {
+  item.addEventListener('click', () => activarRadioItem(item));
+});
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
