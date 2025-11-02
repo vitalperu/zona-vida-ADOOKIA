@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 INICIO DE NUEVO REPRODUCTOR
+// 🔊 INICIO DE NUEVO REPRODUCTOR (CORREGIDO VOLUMEN MÓVILES)
 // =============================
 
 const audio = document.getElementById("audio");
@@ -103,20 +103,24 @@ const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
 
-// 🎵 Inicializar contexto de audio
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioCtx.createAnalyser();
-const source = audioCtx ? audioCtx.createMediaElementSource(audio) : null;
-if (source) {
-  source.connect(analyser);
-  analyser.connect(audioCtx.destination);
+// 🎵 Crear AudioContext solo si es necesario (para evitar pérdida de volumen)
+let audioCtx;
+let analyser;
+let source;
+
+function initAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    source = audioCtx.createMediaElementSource(audio);
+
+    // 🔗 Conectar el flujo correctamente
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  }
 }
 
-analyser.fftSize = 4096;
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
-
-// 🔊 Volumen inicial al 95 %
+// 🔊 Volumen inicial natural al 95 %
 audio.volume = 0.95;
 volumeSlider.value = 95;
 volumePercent.textContent = "95%";
@@ -124,6 +128,7 @@ volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%
 
 // 🎛️ Play / Pause
 playBtn.addEventListener("click", () => {
+  initAudioContext(); // inicializar aquí, no antes
   if (!isPlaying) {
     audioCtx.resume();
     audio.play();
@@ -169,6 +174,9 @@ window.addEventListener("resize", resizeCanvas);
 
 function draw() {
   requestAnimationFrame(draw);
+  if (!analyser) return; // evitar error antes del play
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
   analyser.getByteTimeDomainData(dataArray);
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -202,6 +210,7 @@ draw();
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
+
 
 
 // Registro de Service Worker
