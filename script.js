@@ -113,159 +113,145 @@ const volumeSlider = document.getElementById("volumeControl");
 const volumePercent = document.getElementById("volumePercent");
 const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
-const logoCentral = document.getElementById("logoRadioActual");
 
 let isPlaying = false;
 let audioCtx, analyser, source;
-let previousWave = [];
+let previousWave;
 
-// 🎧 Volumen inicial
-audio.volume = 1.0; // 100% real
-volumeSlider.value = 100;
-volumePercent.textContent = "100%";
-volumeSlider.style.background = `linear-gradient(to right, #00e5ff 100%, #444 100%)`;
-
-// Inicializar AudioContext y Visualizador (solo 1 vez)
-function initAudioContext() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser();
-    source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-
-    previousWave = new Array(analyser.frequencyBinCount).fill(canvas.height / 2);
-    startVisualizer();
-  }
-}
+// 🎧 Volumen inicial al 95%
+audio.volume = 0.95;
+volumeSlider.value = 95;
+volumePercent.textContent = "95%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
 
 // 🎛️ Play / Pause
 playBtn.addEventListener("click", async () => {
-  if (!isPlaying) {
-    if (audioCtx && audioCtx.state === "suspended") {
-      await audioCtx.resume(); // desbloquear audio en móviles
-    }
-    await audio.play();
-    playBtn.classList.remove("play");
-    playBtn.classList.add("pause");
-    isPlaying = true;
+    if (!isPlaying) {
+        await audio.play();
+        playBtn.classList.remove("play");
+        playBtn.classList.add("pause");
+        isPlaying = true;
 
-    initAudioContext();
-  } else {
-    audio.pause();
-    playBtn.classList.remove("pause");
-    playBtn.classList.add("play");
-    isPlaying = false;
-  }
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            source = audioCtx.createMediaElementSource(audio);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+
+            startVisualizer();
+        }
+    } else {
+        audio.pause();
+        playBtn.classList.remove("pause");
+        playBtn.classList.add("play");
+        isPlaying = false;
+    }
 });
 
 // 🔇 Mute / Unmute
 muteIcon.addEventListener("click", () => {
-  audio.muted = true;
-  muteIcon.classList.add("active");
-  soundIcon.classList.remove("active");
+    audio.muted = true;
+    muteIcon.classList.add("active");
+    soundIcon.classList.remove("active");
 });
 
 soundIcon.addEventListener("click", () => {
-  audio.muted = false;
-  muteIcon.classList.remove("active");
-  soundIcon.classList.add("active");
+    audio.muted = false;
+    muteIcon.classList.remove("active");
+    soundIcon.classList.add("active");
 });
 
 // 🔊 Control de volumen
 volumeSlider.addEventListener("input", (e) => {
-  const value = e.target.value;
-  audio.volume = value / 100;
-  volumePercent.textContent = `${value}%`;
-  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+    const value = e.target.value;
+    audio.volume = value / 100;
+    volumePercent.textContent = `${value}%`;
+    volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador tipo onda neón
-function startVisualizer() {
-  analyser.fftSize = 1024;
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-
-  function resizeCanvas() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    previousWave = new Array(bufferLength).fill(canvas.height / 2);
-  }
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
-
-  function draw() {
-    requestAnimationFrame(draw);
-    analyser.getByteTimeDomainData(dataArray);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const sliceWidth = canvas.width / bufferLength;
-    let x = 0;
-    ctx.beginPath();
-
-    for (let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 128.0; // valor entre 0 y 2
-      const yTarget = v * canvas.height / 2;
-
-      // suavizado para movimiento lento
-      previousWave[i] = previousWave[i] * 0.9 + yTarget * 0.1;
-      const y = previousWave[i];
-
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-      x += sliceWidth;
-    }
-
-    // efecto neón
-    ctx.strokeStyle = "#00ffff";
-    ctx.lineWidth = 1.2;
-    ctx.shadowColor = "#00ffff";
-    ctx.shadowBlur = 15;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  draw();
-}
-
 // ----------------------------
-// Función para cambiar de radio
+// Activar radio y mantener visualizador
 // ----------------------------
 function activarRadioItem(item) {
-  document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
-  item.classList.add('selected');
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
 
-  const radioUrl = item.getAttribute('data-radio');
-  const logoUrl = item.getAttribute('data-logo');
+    const logo = document.getElementById('logoRadioActual');
+    const radioUrl = item.getAttribute('data-radio');
+    const logoUrl = item.getAttribute('data-logo');
 
-  if (logoCentral && logoUrl) logoCentral.src = logoUrl;
-  if (audio && radioUrl) {
-    audio.src = radioUrl;
-    audio.load();
+    if (logo && logoUrl) logo.src = logoUrl;
 
-    // Aseguramos desbloqueo en móviles
-    if (audioCtx && audioCtx.state === "suspended") {
-      audioCtx.resume();
+    if (radioUrl) {
+        const currentTime = audio.currentTime;
+        audio.src = radioUrl;
+        audio.load();
+        audio.currentTime = currentTime;
+        audio.play();
+
+        // Play button update
+        playBtn.classList.remove("play");
+        playBtn.classList.add("pause");
+
+        const circle = document.querySelector('.circle-player');
+        if(circle) circle.classList.add('playing');
     }
-
-    audio.play().catch(err => console.log("Error al reproducir:", err));
-
-    const playBtn = document.getElementById('playBtn');
-    if(playBtn){
-      playBtn.classList.remove('play');
-      playBtn.classList.add('pause');
-    }
-  }
 }
 
-// Aplicar evento click a todas las radios
-document.querySelectorAll('.radio-item').forEach(item => {
-  item.addEventListener('click', () => activarRadioItem(item));
-});
+// ----------------------------
+// Visualizador neón
+// ----------------------------
+function startVisualizer() {
+    analyser.fftSize = 1024;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    previousWave = new Array(bufferLength).fill(canvas.height / 2);
+
+    function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        previousWave.fill(canvas.height / 2);
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    const NEON_COLOR = 'rgba(0,255,255,1)';
+    const SHADOW_BLUR = 20;
+
+    function draw() {
+        requestAnimationFrame(draw);
+        analyser.getByteTimeDomainData(dataArray);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.shadowBlur = SHADOW_BLUR;
+        ctx.shadowColor = NEON_COLOR;
+        ctx.strokeStyle = NEON_COLOR;
+        ctx.lineWidth = 0.8;
+
+        ctx.beginPath();
+        let x = 0;
+        const sliceWidth = canvas.width / bufferLength;
+
+        for (let i = 0; i < bufferLength; i++) {
+            const v = dataArray[i] / 128.0;
+            const y = previousWave[i] * 0.95 + (v * canvas.height / 2) * 0.05;
+            previousWave[i] = y;
+
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+
+            x += sliceWidth;
+        }
+
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+    }
+
+    draw();
+}
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
