@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // =============================
 
 const audio = document.getElementById("audio");
+audio.volume = 1.0; // 🔊 volumen máximo inicial
 const playBtn = document.getElementById("playBtn");
 const muteIcon = document.getElementById("muteIcon");
 const soundIcon = document.getElementById("soundIcon");
