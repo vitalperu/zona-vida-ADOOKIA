@@ -89,11 +89,79 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🌙 VISUALIZADOR SUAVE TIPO LUNA PLAYER
+// 🔊 REPRODUCTOR FINAL REAL (volumen 100% + espectro sensible real)
 // =============================
 
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const muteIcon = document.getElementById("muteIcon");
+const soundIcon = document.getElementById("soundIcon");
+const volumeSlider = document.getElementById("volumeControl");
+const volumePercent = document.getElementById("volumePercent");
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d");
+
+let isPlaying = false;
+let audioCtx, analyser;
+
+// 🎧 Volumen inicial 100 %
+audio.volume = 1.0;
+volumeSlider.value = 100;
+volumePercent.textContent = "100%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 100%, #444 100%)`;
+
+// 🎛️ Play / Pause
+playBtn.addEventListener("click", async () => {
+  if (!isPlaying) {
+    await audio.play();
+    playBtn.classList.remove("play");
+    playBtn.classList.add("pause");
+    isPlaying = true;
+
+    // 🎵 Crear analizador solo visual (sin afectar audio)
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+
+      const stream = audio.captureStream ? audio.captureStream() : audio.mozCaptureStream?.();
+      if (stream) {
+        const source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        startVisualizer();
+      }
+    }
+  } else {
+    audio.pause();
+    playBtn.classList.remove("pause");
+    playBtn.classList.add("play");
+    isPlaying = false;
+  }
+});
+
+// 🔇 Mute / Unmute
+muteIcon.addEventListener("click", () => {
+  audio.muted = true;
+  muteIcon.classList.add("active");
+  soundIcon.classList.remove("active");
+});
+
+soundIcon.addEventListener("click", () => {
+  audio.muted = false;
+  muteIcon.classList.remove("active");
+  soundIcon.classList.add("active");
+});
+
+// 🔊 Control de volumen
+volumeSlider.addEventListener("input", (e) => {
+  const value = e.target.value;
+  audio.volume = value / 100;
+  volumePercent.textContent = `${value}%`;
+  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+});
+
+// 🎨 Visualizador real
 function startVisualizer() {
-  analyser.fftSize = 1024;
+  analyser.fftSize = 512;
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
@@ -104,49 +172,31 @@ function startVisualizer() {
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
 
-  let hue = 200;
-
   function draw() {
     requestAnimationFrame(draw);
     analyser.getByteFrequencyData(dataArray);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // 🌈 Color animado
-    hue = (hue + 0.5) % 360;
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    gradient.addColorStop(0, `hsl(${hue}, 100%, 60%)`);
-    gradient.addColorStop(1, `hsl(${(hue + 60) % 360}, 100%, 60%)`);
-
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = gradient;
-    ctx.beginPath();
-
-    const sliceWidth = canvas.width / bufferLength;
+    const barWidth = (canvas.width / bufferLength) * 2.2;
     let x = 0;
+
     for (let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 255;
-      const y = canvas.height / 2 - (v * canvas.height) / 2.2 * Math.sin(i * 0.1);
+      const barHeight = dataArray[i] * 1.2; // más sensible
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, "#00e5ff");
+      gradient.addColorStop(1, "#9c27b0");
 
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-      x += sliceWidth;
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+      x += barWidth + 0.5;
     }
-
-    ctx.lineTo(canvas.width, canvas.height / 2);
-    ctx.stroke();
   }
-
   draw();
 }
 
 // =============================
-// 🌙 FIN VISUALIZADOR
+// 🔊 FIN REPRODUCTOR
 // =============================
-
 
 
 
