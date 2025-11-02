@@ -89,10 +89,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
   
 // =============================
-// 🔊 NUEVO REPRODUCTOR COMPLETO (volumen natural + visualizador barras finas)
+// 🔊 INICIO DE NUEVO REPRODUCTOR (volumen 100% real sin atenuación en móvil)
 // =============================
 
-// Referencias DOM
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
 const muteIcon = document.getElementById("muteIcon");
@@ -103,9 +102,10 @@ const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
-let audioCtx, analyser;
+let analyser, audioCtx, source;
+let streamForViz;
 
-// 🎧 Volumen inicial al 95%
+// 🎧 Volumen inicial 95%
 audio.volume = 0.95;
 volumeSlider.value = 95;
 volumePercent.textContent = "95%";
@@ -119,18 +119,18 @@ playBtn.addEventListener("click", async () => {
     playBtn.classList.add("pause");
     isPlaying = true;
 
+    // 🔍 Crear contexto de análisis separado del sonido real
     if (!audioCtx) {
-      // Inicializar AudioContext y Analizador
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       analyser = audioCtx.createAnalyser();
-      const source = audioCtx.createMediaElementSource(audio);
-
-      // Conectar audio al destino y al analizador
-      source.connect(analyser);
-      analyser.connect(audioCtx.destination);
-
+      streamForViz = audio.captureStream ? audio.captureStream() : audio.mozCaptureStream();
+      if (streamForViz) {
+        const source = audioCtx.createMediaStreamSource(streamForViz);
+        source.connect(analyser);
+      }
       startVisualizer();
     }
+
   } else {
     audio.pause();
     playBtn.classList.remove("pause");
@@ -160,7 +160,7 @@ volumeSlider.addEventListener("input", (e) => {
   volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
-// 🎨 Visualizador de barras finas tipo Luna Player
+// 🎨 Visualizador
 function startVisualizer() {
   analyser.fftSize = 1024;
   const bufferLength = analyser.frequencyBinCount;
@@ -178,33 +178,26 @@ function startVisualizer() {
     analyser.getByteFrequencyData(dataArray);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const barWidth = (canvas.width / bufferLength) * 2;
-    const centerY = canvas.height / 2;
+    const barWidth = (canvas.width / bufferLength) * 2.5;
     let x = 0;
 
     for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i] * 0.8; // altura de pico equilibrada
+      const barHeight = dataArray[i];
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
       gradient.addColorStop(0, "#00e5ff");
       gradient.addColorStop(1, "#9c27b0");
 
       ctx.fillStyle = gradient;
-      // Barras simétricas arriba y abajo
-      ctx.fillRect(x, centerY - barHeight, barWidth, barHeight);
-      ctx.fillRect(x, centerY, barWidth, barHeight);
-
+      ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
       x += barWidth + 1;
     }
   }
-
   draw();
 }
 
 // =============================
-// 🔊 FIN NUEVO REPRODUCTOR
+// 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
-
 
 
 
