@@ -109,154 +109,166 @@ html, body {
 /* 🔊 INICIO DE NUEVO REPRODUCTOR*/
 /* ============================= */
 
-const audio = document.getElementById("audio");
-const playBtn = document.getElementById("playBtn");
-const muteIcon = document.getElementById("muteIcon");
-const soundIcon = document.getElementById("soundIcon");
-const volumeSlider = document.getElementById("volumeControl");
-const volumePercent = document.getElementById("volumePercent");
-const canvas = document.getElementById("visualizer");
-const ctx = canvas.getContext("2d");
-
-let isPlaying = false;
-let audioCtx, analyser, source;
-let previousWave;
-
-// 🎧 Volumen inicial al 95%
-audio.volume = 0.95;
-volumeSlider.value = 95;
-volumePercent.textContent = "95%";
-volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
-
-// 🎛️ Play / Pause
-playBtn.addEventListener("click", async () => {
-    if (!isPlaying) {
-        await audio.play();
-        playBtn.classList.remove("play");
-        playBtn.classList.add("pause");
-        isPlaying = true;
-
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioCtx.createAnalyser();
-            source = audioCtx.createMediaElementSource(audio);
-            source.connect(analyser);
-            analyser.connect(audioCtx.destination);
-
-            startVisualizer();
-        }
-    } else {
-        audio.pause();
-        playBtn.classList.remove("pause");
-        playBtn.classList.add("play");
-        isPlaying = false;
-    }
-});
-
-// 🔇 Mute / Unmute
-muteIcon.addEventListener("click", () => {
-    audio.muted = true;
-    muteIcon.classList.add("active");
-    soundIcon.classList.remove("active");
-});
-
-soundIcon.addEventListener("click", () => {
-    audio.muted = false;
-    muteIcon.classList.remove("active");
-    soundIcon.classList.add("active");
-});
-
-// 🔊 Control de volumen
-volumeSlider.addEventListener("input", (e) => {
-    const value = e.target.value;
-    audio.volume = value / 100;
-    volumePercent.textContent = `${value}%`;
-    volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
-});
-
-// ----------------------------
-// Activar radio y mantener visualizador
-// ----------------------------
-function activarRadioItem(item) {
-    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
-    item.classList.add('selected');
-
-    const logo = document.getElementById('logoRadioActual');
-    const radioUrl = item.getAttribute('data-radio');
-    const logoUrl = item.getAttribute('data-logo');
-
-    if (logo && logoUrl) logo.src = logoUrl;
-
-    if (radioUrl) {
-        const currentTime = audio.currentTime;
-        audio.src = radioUrl;
-        audio.load();
-        audio.currentTime = currentTime;
-        audio.play();
-
-        // Play button update
-        playBtn.classList.remove("play");
-        playBtn.classList.add("pause");
-
-        const circle = document.querySelector('.circle-player');
-        if(circle) circle.classList.add('playing');
-    }
+/* 🎶 NUEVO REPRODUCTOR - LUNA */
+.player-container {
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
-// ----------------------------
-// Visualizador neón
-// ----------------------------
-function startVisualizer() {
-    analyser.fftSize = 1024;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    previousWave = new Array(bufferLength).fill(canvas.height / 2);
-
-    function resizeCanvas() {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        previousWave.fill(canvas.height / 2);
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
-    const NEON_COLOR = 'rgba(0,255,255,1)';
-    const SHADOW_BLUR = 20;
-
-    function draw() {
-        requestAnimationFrame(draw);
-        analyser.getByteTimeDomainData(dataArray);
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.shadowBlur = SHADOW_BLUR;
-        ctx.shadowColor = NEON_COLOR;
-        ctx.strokeStyle = NEON_COLOR;
-        ctx.lineWidth = 0.8;
-
-        ctx.beginPath();
-        let x = 0;
-        const sliceWidth = canvas.width / bufferLength;
-
-        for (let i = 0; i < bufferLength; i++) {
-            const v = dataArray[i] / 128.0;
-            const y = previousWave[i] * 0.95 + (v * canvas.height / 2) * 0.05;
-            previousWave[i] = y;
-
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-
-            x += sliceWidth;
-        }
-
-        ctx.lineTo(canvas.width, canvas.height / 2);
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-    }
-
-    draw();
+/* Asegurar transparencia del visualizer */
+#visualizer {
+  display: block;
+  width: 100%;
+  height: 120px; 
+  background: transparent !important;
+  pointer-events: none;
+  margin-bottom: -85px;
 }
 
+/* ============================= */
+/* 🔊 BARRA DE VOLUMEN           */
+/* ============================= */
+.volume-section {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Barra ocupa todo el ancho */
+.volume-section input[type="range"] {
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #00e5ff 70%, #444 70%);
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.volume-section input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00e5ff;
+  cursor: pointer;
+  border: none;
+}
+.volume-section input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00e5ff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Iconos y porcentaje */
+.volume-icons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* mute izquierda, altavoz derecha */
+  align-items: center;
+  color: white;
+  font-size: 16px;
+}
+
+/* Iconos */
+.volume-icons svg {
+  width: 28px;
+  height: 28px;
+  fill: #ffffff;
+  transition: fill 0.3s ease, transform 0.2s ease;
+}
+
+.volume-icons .icon:hover svg { fill: #00e5ff; }
+#muteIcon.active svg { fill: #ff4d4d; }
+
+/* Agrupamos altavoz + porcentaje */
+#soundWrapper {
+  display: flex;
+  align-items: center; /* centrar verticalmente */
+  justify-content: flex-end; /* altavoz al canto derecho */
+  gap: var(--gap-horizontal, 6px); /* espacio entre altavoz y porcentaje */
+}
+
+/* Porcentaje de volumen */
+#volumePercent {
+  font-size: var(--percent-font-size, 0.9rem);
+  font-weight: bold;
+  color: #ffffff;
+  margin-top: var(--percent-vertical, -4px); /* ajusta para subir/bajar */
+  margin-left: var(--percent-horizontal, 6px); /* ajusta espacio horizontal del altavoz */
+}
+
+/* ============================= */
+/* ▶️ BOTÓN PLAY/PAUSE           */
+/* ============================= */
+.controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#playBtn {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  background: #fafcfc;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 0 20px #018c6c, 0 0 40px #0044b5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#playBtn:hover {
+  transform: scale(1.1);
+  background: #f5fafa;
+  box-shadow: 0 0 2px #02fafa, 0 0 20px #02fafa;
+}
+
+#playBtn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 15px #e102fa, 0 0 30px #e102fa;
+}
+
+#playBtn.play::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-40%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid #04c4de;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+}
+
+#playBtn.pause::before,
+#playBtn.pause::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 28px;
+  background: #04c4de;
+  border-radius: 2px;
+}
+
+#playBtn.pause::before { left: 35%; }
+#playBtn.pause::after { right: 35%; }
 /* ============================= */
 /* 🔊 FIN DE NUEVO REPRODUCTOR   */
 /* ============================= */
