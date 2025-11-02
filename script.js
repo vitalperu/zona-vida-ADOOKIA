@@ -122,12 +122,14 @@ playBtn.addEventListener("click", async () => {
     playBtn.classList.add("pause");
     isPlaying = true;
 
-    // Conectar el analizador (sin reenviar el sonido)
-    if (!sourceConnected) {
-      const src = audioCtx.createMediaElementSource(audio);
-      src.connect(analyser); // solo analizar
-      sourceConnected = true;
-    }
+  // Conectar el analizador y permitir que el sonido se escuche
+if (!sourceConnected) {
+  const src = audioCtx.createMediaElementSource(audio);
+  src.connect(analyser);
+  analyser.connect(audioCtx.destination); // 🔊 reenvía el audio al destino
+  sourceConnected = true;
+}
+
   } else {
     audio.pause();
     playBtn.classList.remove("pause");
