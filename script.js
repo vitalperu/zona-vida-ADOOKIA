@@ -107,7 +107,7 @@ let isPlaying = false;
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
 const source = audioCtx ? audioCtx.createMediaElementSource(audio) : null;
-if(source){
+if (source) {
   source.connect(analyser);
   analyser.connect(audioCtx.destination);
 }
@@ -115,6 +115,12 @@ if(source){
 analyser.fftSize = 4096;
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
+
+// 🔊 Volumen inicial al 95 %
+audio.volume = 0.95;
+volumeSlider.value = 95;
+volumePercent.textContent = "95%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
 
 // 🎛️ Play / Pause
 playBtn.addEventListener("click", () => {
@@ -167,15 +173,14 @@ function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // 🎨 Degradado lineal de izquierda a derecha
   const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-  gradient.addColorStop(0, "#00e5ff"); // celeste
-  gradient.addColorStop(1, "#9c27b0"); // violeta
+  gradient.addColorStop(0, "#00e5ff");
+  gradient.addColorStop(1, "#9c27b0");
 
-  ctx.lineWidth = 1;           // más fina
-  ctx.lineJoin = "round";      // suaviza uniones
-  ctx.lineCap = "round";       // suaviza extremos
-  ctx.strokeStyle = gradient;  // aplicar degradado
+  ctx.lineWidth = 1;
+  ctx.lineJoin = "round";
+  ctx.lineCap = "round";
+  ctx.strokeStyle = gradient;
   ctx.beginPath();
 
   const sliceWidth = canvas.width / bufferLength;
@@ -185,11 +190,8 @@ function draw() {
     const v = dataArray[i] / 128.0;
     const y = (v * canvas.height) / 2;
 
-    if (i === 0) {
-      ctx.moveTo(x, y);
-    } else {
-      ctx.lineTo(x, y);
-    }
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
     x += sliceWidth;
   }
 
@@ -197,11 +199,9 @@ function draw() {
 }
 draw();
 
-
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
 // =============================
-
 
 
 // Registro de Service Worker
