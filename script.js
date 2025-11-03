@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ===============================
 
   
+  
 // =============================
 // 🔊 INICIO DE NUEVO REPRODUCTOR
 // =============================
@@ -167,15 +168,23 @@ function animateVisualizer() {
   animationId = requestAnimationFrame(animateVisualizer);
 }
 
-// 🎵 Visual fijo cuando está en pausa
+// 🎵 Visual fijo cuando está en pausa (nuevo efecto suave)
 function drawStaticVisualizer() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const centerY = canvas.height / 2;
-  ctx.fillStyle = "rgba(255,255,255,0.3)";
-  ctx.fillRect(0, centerY - 2, canvas.width, 4);
+  const barCount = 50;
+  const barWidth = canvas.width / barCount;
+
+  for (let i = 0; i < barCount; i++) {
+    const height = 20; // 🔹 barras más pequeñas en pausa
+    const x = i * barWidth;
+    const color = `rgba(255, 255, 255, 0.3)`;
+    ctx.fillStyle = color;
+    ctx.fillRect(x, centerY - height / 2, barWidth - 2, height);
+  }
 }
 
-// Dibuja una línea inicial
+// Dibuja una vista inicial
 drawStaticVisualizer();
 
 // =============================
