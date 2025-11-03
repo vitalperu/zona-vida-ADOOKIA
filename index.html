@@ -108,10 +108,6 @@
 </div>
 <!-- 🔘 FIN PARRILLA EXTRA VERTICAL -->
 
-
-
-
-
 <!-- PLAYER Y PARRILLA -->
 <div class="player-app-container">
     
@@ -131,49 +127,26 @@
   </div>
 
   <!-- 🔊 INICIO DE NUEVO REPRODUCTOR -->
-  <div class="player-container">
-    <!-- Canvas del espectro -->
-    <canvas id="visualizer"></canvas>
+<div class="player-container">
+  <img id="logoRadioActual" src="img/default-logo.png" alt="Logo Radio" class="radio-logo">
 
-    <!-- Bloque de volumen -->
-    <div class="volume-section">
-      <!-- Barra de volumen -->
-      <input type="range" id="volumeControl" min="0" max="100" step="1" value="95">
+  <div class="controls">
+    <button id="playBtn" class="play-btn play"></button>
 
-      <!-- Iconos y porcentaje -->
-      <div class="volume-icons">
-        <!-- Icono Mute -->
-        <span id="muteIcon" class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-            <rect x="17" y="9" width="2" height="6" transform="rotate(45 18 12)"></rect>
-            <rect x="17" y="9" width="2" height="6" transform="rotate(-45 18 12)"></rect>
-          </svg>
-        </span>
-
-        <!-- Icono Sonido + Porcentaje -->
-        <span id="soundWrapper" style="display: flex; align-items: center; gap: 6px;">
-          <span id="volumePercent">70%</span>
-          <span id="soundIcon" class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-              <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-              <path d="M15 9a4 4 0 0 1 0 6"></path>
-              <path d="M18 7a7 7 0 0 1 0 10"></path>
-              <path d="M21 5a10 10 0 0 1 0 14"></path>
-            </svg>
-          </span>
-        </span>
-      </div>
+    <div class="volume-container">
+      <i id="muteIcon" class="material-icons">volume_off</i>
+      <input type="range" id="volumeControl" min="0" max="100" value="100">
+      <i id="soundIcon" class="material-icons active">volume_up</i>
+      <span id="volumePercent">100%</span>
     </div>
-
-    <!-- Botón Play/Pause -->
-    <div class="controls">
-      <button id="playBtn" class="play"></button>
-    </div>
-
-    <!-- Audio oculto -->
-    <audio id="audio" src="https://radio.zonavidahd.online/listen/hd/radio.mp3" crossorigin="anonymous"></audio>
   </div>
+
+  <canvas id="visualizer"></canvas>
+
+  <!-- 🔊 Elemento de audio real -->
+  <audio id="audio" preload="none" crossorigin="anonymous"></audio>
+</div>
+
   <!-- 🔊 FIN DE NUEVO REPRODUCTOR -->
 
  <!-- PARRILLA DE RADIOS PRINCIPAL-->
