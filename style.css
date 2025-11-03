@@ -44,7 +44,7 @@ html, body {
 
 
 /* =============================== */
-/* 🔊 PLAYER REDONDO CENTRAL      */
+/* 🔊 PLAYER REDONDO CENTRAL       */
 /* =============================== */
 .circle-player {
   width: 220px;
@@ -62,12 +62,20 @@ html, body {
 }
 
 
+/* 🟢 MODIFICACIÓN CLAVE AQUÍ 🟢 */
 .circle-player img {
   width: 90%;
   height: 90%;
-  border-radius: 50px;
+  /* 1. Aseguramos que la imagen siempre sea un círculo */
+  border-radius: 50%; 
+  /* 2. EVITAMOS que la imagen se estire/achate */
+  object-fit: cover; 
+  /* 3. Nos aseguramos de que no haya distorsión */
+  aspect-ratio: 1 / 1; 
+
   transition: transform 0.2s ease;
 }
+
 
 .circle-player.playing {
   animation: pulse 1.2s infinite;
@@ -387,100 +395,110 @@ html, body {
 }
 
 /* =============================== */
-/* 🎛️ SEGUNDA PARRILLA EXTRA     */
+/* 🎛️ INICIO SEGUNDA PARRILLA EXTRA (VERTICAL) */
 /* =============================== */
+#contenedorParrillaExtra {
+  max-height: 0;                 /* Comienza oculto */
+  overflow: hidden;              /* Oculta radios mientras está cerrado */
+  transition: max-height 0.3s ease;
+  margin-top: 0.8rem;
+}
+
 #parrillaExtra {
   display: flex;
-  overflow-x: auto;
+  flex-direction: column;        /* Vertical */
+  gap: 0.6rem;
   background-color: rgba(255, 255, 255, 0.6);
-  padding: 0.7rem;
-  gap: 0.7rem;
+  padding: 0.6rem;
   border-radius: 7px;
-  margin: 1rem auto;
   width: 95%;
-  scroll-behavior: smooth;
   max-width: 340px;
+  margin: 0 auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  position: relative;
-  z-index: 10; /* añadido para sobreponer reproductor */
+  overflow-y: auto;              /* Scroll vertical */
+  max-height: 300px;             /* Altura máxima visible */
 }
 
 #parrillaExtra::-webkit-scrollbar {
-  height: 8px;
+  width: 6px;                    /* Scroll vertical finito */
 }
-
 #parrillaExtra::-webkit-scrollbar-thumb {
   background-color: #90caf9;
   border-radius: 10px;
 }
 
+/* 🎵 Cada radio */
 #parrillaExtra .radio-item {
   flex: 0 0 auto;
-  width: 65px;
-  min-height: 80px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   background: #fafeff;
-  padding: 0.1rem;
+  padding: 0.4rem;
   border-radius: 7px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border: 1px solid #bbdefb;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: transform 0.22s ease, box-shadow 0.22s ease;
-  backdrop-filter: blur(4px);
-  border: 1px solid #bbdefb;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
 }
 
 #parrillaExtra .radio-item img {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   border: 2px solid #e3f2fd;
-  transition: border-color 0.3s ease;
   background: white;
-  padding: 2px;
-  margin-bottom: 0 rem;
-}
-
-#parrillaExtra .radio-item .etiqueta-radio {
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: #d32f2f; 
-  text-transform: uppercase;
-  margin-bottom: -1px;
-  opacity: 1;
-  letter-spacing: 1.5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: border-color 0.3s ease;
+  flex-shrink: 0;
 }
 
 #parrillaExtra .radio-item p {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #222;
-  max-height: 2.4em;
-  overflow: hidden;
   line-height: 1.2em;
-  text-align: center;
+  text-align: left;
   text-shadow: 0 1px 1px #fff;
 }
 
+/* Hover */
 #parrillaExtra .radio-item:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  transform: scale(1.03);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
   border-color: #42a5f5;
 }
-
 #parrillaExtra .radio-item:hover img {
   border-color: #42a5f5;
 }
 
-<div class="radio-item">
-  <img src="logo.png" alt="Nombre">
-  <p>La Vida</p> <!-- tú solo pones el nombre -->
-</div>
+/* -------------------------------
+   📱 Responsivo
+-------------------------------- */
+@media (max-width: 768px) {
+  #parrillaExtra {
+    max-width: 100%;
+    max-height: 240px;
+    padding: 0.4rem;
+  }
+
+  #parrillaExtra .radio-item img {
+    width: 38px;
+    height: 38px;
+  }
+
+  #parrillaExtra .radio-item p {
+    font-size: 0.65rem;
+  }
+}
+
+/* =============================== */
+/* 🎛️ FIN SEGUNDA PARRILLA EXTRA (VERTICAL) */
+/* =============================== */
+
+
+
 
 /* =============================== */
 /* 🚫 UTILIDADES GLOBALES         */
