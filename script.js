@@ -104,101 +104,110 @@ function activarRadioItem(item) {
 // =============================
 // 🔊 NUEVO REPRODUCTOR - AUDIO DIRECTO CON VISUALIZADOR
 // =============================
+
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
-const volumeControl = document.getElementById("volumeControl");
+const muteIcon = document.getElementById("muteIcon");
+const soundIcon = document.getElementById("soundIcon");
+const volumeSlider = document.getElementById("volumeControl");
 const volumePercent = document.getElementById("volumePercent");
-const logoRadioActual = document.getElementById("logoRadioActual");
-const visualizer = document.getElementById("visualizer");
-const ctx = visualizer.getContext("2d");
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
-let currentStream = audio.src;
+let audioCtx, analyser, source;
 
-// 🎚 Control de volumen (sin restricción)
-volumeControl.addEventListener("input", () => {
-  const volume = volumeControl.value / 100;
-  audio.volume = volume;
-  volumePercent.textContent = `${volumeControl.value}%`;
-});
+// 🎧 Volumen inicial
+audio.volume = 0.95;
+volumeSlider.value = 95;
+volumePercent.textContent = "95%";
+volumeSlider.style.background = `linear-gradient(to right, #00e5ff 95%, #444 95%)`;
 
-// ▶ Control Play/Pause
-playBtn.addEventListener("click", () => {
-  if (!isPlaying) {
-    audio.play().catch(console.error);
-  } else {
-    audio.pause();
-  }
-});
+// 🎛️ Play / Pause
+playBtn.addEventListener("click", async () => {
+    if (!isPlaying) {
+        await audio.play();
+        playBtn.classList.remove("play");
+        playBtn.classList.add("pause");
+        isPlaying = true;
 
-audio.addEventListener("play", () => {
-  isPlaying = true;
-  playBtn.classList.remove("play");
-  playBtn.classList.add("pause");
-  document.getElementById("player-visual").classList.add("playing");
-});
+        // 🔹 Inicializar AudioContext y Analyser solo una vez
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
 
-audio.addEventListener("pause", () => {
-  isPlaying = false;
-  playBtn.classList.remove("pause");
-  playBtn.classList.add("play");
-  document.getElementById("player-visual").classList.remove("playing");
-});
+            // Conectar audio directo al altavoz y al visualizador
+            source = audioCtx.createMediaElementSource(audio);
+            source.connect(audioCtx.destination); // audio directo
+            source.connect(analyser);             // solo para visualizador
 
-// 🎧 Cambio de radio al hacer clic
-document.querySelectorAll(".radio-item").forEach(item => {
-  item.addEventListener("click", () => {
-    const newStream = item.getAttribute("data-radio");
-    const newLogo = item.getAttribute("data-logo");
-
-    document.querySelectorAll(".radio-item").forEach(el => el.classList.remove("selected"));
-    item.classList.add("selected");
-
-    if (newStream !== currentStream) {
-      currentStream = newStream;
-      audio.src = newStream;
-      logoRadioActual.src = newLogo;
-      audio.play().catch(console.error);
+            startVisualizer();
+        }
+    } else {
+        audio.pause();
+        playBtn.classList.remove("pause");
+        playBtn.classList.add("play");
+        isPlaying = false;
     }
-  });
 });
 
-// 🎵 Espectro visual básico (no afecta volumen real)
-const analyserContext = new (window.AudioContext || window.webkitAudioContext)();
-const source = analyserContext.createMediaElementSource(audio);
-const analyser = analyserContext.createAnalyser();
-source.connect(analyser);
-analyser.connect(analyserContext.destination);
+// 🔇 Mute / Unmute
+muteIcon.addEventListener("click", () => {
+    audio.muted = true;
+    muteIcon.classList.add("active");
+    soundIcon.classList.remove("active");
+});
 
-analyser.fftSize = 256;
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
+soundIcon.addEventListener("click", () => {
+    audio.muted = false;
+    muteIcon.classList.remove("active");
+    soundIcon.classList.add("active");
+});
 
-function drawVisualizer() {
-  requestAnimationFrame(drawVisualizer);
+// 🔊 Control de volumen
+volumeSlider.addEventListener("input", (e) => {
+    const value = e.target.value;
+    audio.volume = value / 100;
+    volumePercent.textContent = `${value}%`;
+    volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+});
 
-  analyser.getByteFrequencyData(dataArray);
-  ctx.clearRect(0, 0, visualizer.width, visualizer.height);
+// 🎨 Visualizador tipo barras neón
+function startVisualizer() {
+    analyser.fftSize = 256;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
 
-  const barWidth = (visualizer.width / bufferLength) * 2.5;
-  let x = 0;
+    function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-  for (let i = 0; i < bufferLength; i++) {
-    const barHeight = dataArray[i] / 2;
-    ctx.fillStyle = `rgba(0, 255, 255, ${barHeight / 255})`;
-    ctx.fillRect(x, visualizer.height - barHeight, barWidth, barHeight);
-    x += barWidth + 1;
-  }
+    function draw() {
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const barWidth = (canvas.width / bufferLength) * 1.5;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+            const barHeight = (dataArray[i] / 255) * canvas.height;
+            const hue = (i * 4 + Date.now() / 10) % 360;
+
+            ctx.fillStyle = `hsl(${hue}, 100%, 60%)`;
+            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+            x += barWidth + 0.5;
+        }
+    }
+
+    draw();
 }
 
-// Ajustar canvas al tamaño del contenedor
-function resizeCanvas() {
-  visualizer.width = visualizer.clientWidth;
-  visualizer.height = visualizer.clientHeight;
-}
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-drawVisualizer();
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
