@@ -2,38 +2,54 @@
 // script.js - Zona Vida Radio
 // ===============================
 
-// Esperar a que el DOM esté cargado
+// ===============================
+// 🔹 SEGUNDA PARRILLA VERTICAL - Botón MÁS RADIOS
+// ===============================
 document.addEventListener("DOMContentLoaded", function() {
 
-  // ----------------------------
   // Inicializar menú hamburguesa (Materialize)
-  // ----------------------------
   var sidenavs = document.querySelectorAll('.sidenav');
   if (sidenavs.length) {
     M.Sidenav.init(sidenavs);
   }
 
   // ----------------------------
-  // Botón Más Radios: alternar parrillas
+  // Referencias del DOM
   // ----------------------------
   const btnMasRadios = document.getElementById('btnMasRadios');
   const iconoMasRadios = document.getElementById('iconoMasRadios');
-  const parrillaExtra = document.getElementById('parrillaExtra');
-  const parrillaPrincipal = document.getElementById('parrillaPrincipal');
+  const contenedorParrillaExtra = document.getElementById('contenedorParrillaExtra');
   let visible = false;
 
-  if (btnMasRadios && iconoMasRadios && parrillaExtra && parrillaPrincipal) {
+  // Configuración inicial del contenedor
+  if (contenedorParrillaExtra) {
+    contenedorParrillaExtra.style.maxHeight = "0px";
+    contenedorParrillaExtra.style.overflow = "hidden";
+    contenedorParrillaExtra.style.transition = "max-height 0.3s ease";
+  }
+
+  // ----------------------------
+  // Botón "Más Radios" - mostrar/ocultar
+  // ----------------------------
+  if (btnMasRadios && contenedorParrillaExtra) {
     btnMasRadios.addEventListener('click', () => {
       visible = !visible;
-      parrillaExtra.classList.toggle('oculto');       // mostrar/ocultar segunda parrilla
-      parrillaPrincipal.classList.toggle('oculto');   // alternar primera parrilla
+
+      // Cambiar icono y color del botón
       iconoMasRadios.textContent = visible ? 'remove' : 'add';
       btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
+
+      // Animar contenedor vertical
+      if (visible) {
+        contenedorParrillaExtra.style.maxHeight = contenedorParrillaExtra.scrollHeight + "px";
+      } else {
+        contenedorParrillaExtra.style.maxHeight = "0px";
+      }
     });
   }
 
   // ----------------------------
-  // Función para activar radio
+  // Función para activar radio seleccionada
   // ----------------------------
   function activarRadioItem(item) {
     document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
@@ -49,128 +65,77 @@ document.addEventListener("DOMContentLoaded", function() {
       player.src = radioUrl;
       player.load();
       player.play();
-      document.getElementById('playBtn').classList.remove('play');
-      document.getElementById('playBtn').classList.add('pause');
-      document.querySelector('.circle-player').classList.add('playing');
+      const playBtn = document.getElementById('playBtn');
+      if(playBtn){
+        playBtn.classList.remove('play');
+        playBtn.classList.add('pause');
+      }
+      const circle = document.querySelector('.circle-player');
+      if(circle) circle.classList.add('playing');
     }
   }
 
   // ----------------------------
   // Aplicar evento click a TODAS las radios
   // ----------------------------
-  document.querySelectorAll('.radio-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-      activarRadioItem(item);
-    });
+  document.querySelectorAll('.radio-item').forEach(item => {
+    item.addEventListener('click', () => activarRadioItem(item));
   });
 
 });
+// ===============================
+// 🔹 FIN SEGUNDA PARRILLA VERTICAL
+// ===============================
+
   
-<!-- 🔊 INICIO DE NUEVO REPRODUCTOR --> 
-// 🎵 Nuevo Reproductor - Zona Vida Radio
+// =============================
+// 🔊 INICIO DE NUEVO REPRODUCTOR
+// =============================
 
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
-const volumeControl = document.getElementById("volumeControl");
-const volumePercent = document.getElementById("volumePercent");
 const muteIcon = document.getElementById("muteIcon");
 const soundIcon = document.getElementById("soundIcon");
+const volumeSlider = document.getElementById("volumeControl");
+const volumePercent = document.getElementById("volumePercent");
 const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
-// Ajustar tamaño del canvas según pantalla
-function resizeCanvas() {
-  const dpr = window.devicePixelRatio || 1;
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  canvas.width = canvas.clientWidth * dpr;
-  canvas.height = canvas.clientHeight * dpr;
-  ctx.scale(dpr, dpr);
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+let isPlaying = false;
 
-// 🎶 Web Audio API
+// 🎵 Inicializar contexto de audio
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
-const source = audioCtx.createMediaElementSource(audio);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
-analyser.fftSize = 2048;
-const bufferLength = analyser.fftSize;
-const dataArray = new Uint8Array(bufferLength);
-
-// Dibujar onda
-function draw() {
-  requestAnimationFrame(draw);
-  analyser.getByteTimeDomainData(dataArray);
-
-  // limpiar canvas
-  ctx.fillStyle = "rgba(10,10,26,1)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // ✅ si está en pausa, muteado o sin volumen, no dibujar nada
-  if (audio.paused || audio.muted || audio.volume === 0) {
-    return;
-  }
-
-  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-  gradient.addColorStop(0, "rgba(0,229,255,0)");
-  gradient.addColorStop(0.05, "rgba(0,229,255,1)");
-  gradient.addColorStop(0.95, "rgba(0,229,255,1)");
-  gradient.addColorStop(1, "rgba(0,229,255,0)");
-
-  ctx.strokeStyle = gradient;
-  ctx.lineWidth = 1;
-
-  ctx.beginPath();
-  const step = 8;
-  const sliceWidth = canvas.width / (bufferLength / step);
-  let x = 0;
-
-  for (let i = 0; i < bufferLength; i += step) {
-    const v = dataArray[i] / 128.0;
-    const y = (v * canvas.height / 2) + 45;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-    x += sliceWidth;
-  }
-
-  ctx.stroke();
+const source = audioCtx ? audioCtx.createMediaElementSource(audio) : null;
+if(source){
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
 }
 
-draw();
+analyser.fftSize = 4096;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
 
-
-// ▶️ Play / ⏸ Pause
-playBtn.addEventListener("click", async () => {
-  if (audioCtx.state === "suspended") {
-    await audioCtx.resume(); // 🔹 Necesario para navegadores modernos
-  }
-
-  if (audio.paused) {
+// 🎛️ Play / Pause
+playBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    audioCtx.resume();
     audio.play();
     playBtn.classList.remove("play");
     playBtn.classList.add("pause");
+    isPlaying = true;
   } else {
     audio.pause();
     playBtn.classList.remove("pause");
     playBtn.classList.add("play");
+    isPlaying = false;
   }
-});
-
-// 🔊 Volumen dinámico
-volumeControl.addEventListener("input", () => {
-  const value = volumeControl.value;
-  audio.volume = value / 100;
-  volumePercent.textContent = value + "%";
-
-  volumeControl.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
 });
 
 // 🔇 Mute / Unmute
 muteIcon.addEventListener("click", () => {
   audio.muted = true;
-  muteIcon.classList.add("active");   // 🔴 rojo en mute
+  muteIcon.classList.add("active");
   soundIcon.classList.remove("active");
 });
 
@@ -180,7 +145,62 @@ soundIcon.addEventListener("click", () => {
   soundIcon.classList.add("active");
 });
 
-<!-- 🔊 FIN DE NUEVO REPRODUCTOR -->
+// 🔊 Control de volumen
+volumeSlider.addEventListener("input", (e) => {
+  const value = e.target.value;
+  audio.volume = value / 100;
+  volumePercent.textContent = `${value}%`;
+  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+});
+
+// 🎶 Visualizer simple con ondas
+function resizeCanvas() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+function draw() {
+  requestAnimationFrame(draw);
+  analyser.getByteTimeDomainData(dataArray);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 🎨 Degradado lineal de izquierda a derecha
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+  gradient.addColorStop(0, "#00e5ff"); // celeste
+  gradient.addColorStop(1, "#9c27b0"); // violeta
+
+  ctx.lineWidth = 1;           // más fina
+  ctx.lineJoin = "round";      // suaviza uniones
+  ctx.lineCap = "round";       // suaviza extremos
+  ctx.strokeStyle = gradient;  // aplicar degradado
+  ctx.beginPath();
+
+  const sliceWidth = canvas.width / bufferLength;
+  let x = 0;
+
+  for (let i = 0; i < bufferLength; i++) {
+    const v = dataArray[i] / 128.0;
+    const y = (v * canvas.height) / 2;
+
+    if (i === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+    x += sliceWidth;
+  }
+
+  ctx.stroke();
+}
+draw();
+
+
+// =============================
+// 🔊 FIN DE NUEVO REPRODUCTOR
+// =============================
 
 
 
