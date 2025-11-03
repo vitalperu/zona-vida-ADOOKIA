@@ -92,111 +92,86 @@ document.addEventListener("DOMContentLoaded", function() {
 // 🔊 INICIO DE NUEVO REPRODUCTOR
 // =============================
 
+// 🎧 Control básico del reproductor
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
-const muteIcon = document.getElementById("muteIcon");
-const soundIcon = document.getElementById("soundIcon");
-const volumeSlider = document.getElementById("volumeControl");
+const volumeControl = document.getElementById("volumeControl");
 const volumePercent = document.getElementById("volumePercent");
 const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
+let animationId;
 
-// 🎵 Inicializar contexto de audio
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioCtx.createAnalyser();
-const source = audioCtx ? audioCtx.createMediaElementSource(audio) : null;
-if(source){
-  source.connect(analyser);
-  analyser.connect(audioCtx.destination);
+// 🔄 Ajustar tamaño del canvas
+function resizeCanvas() {
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
 }
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 
-analyser.fftSize = 4096;
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
-
-// 🎛️ Play / Pause
+// ▶️ Play/Pause
 playBtn.addEventListener("click", () => {
   if (!isPlaying) {
-    audioCtx.resume();
     audio.play();
-    playBtn.classList.remove("play");
-    playBtn.classList.add("pause");
-    isPlaying = true;
   } else {
     audio.pause();
-    playBtn.classList.remove("pause");
-    playBtn.classList.add("play");
-    isPlaying = false;
   }
 });
 
-// 🔇 Mute / Unmute
-muteIcon.addEventListener("click", () => {
-  audio.muted = true;
-  muteIcon.classList.add("active");
-  soundIcon.classList.remove("active");
+audio.addEventListener("play", () => {
+  isPlaying = true;
+  playBtn.classList.add("playing");
+  animateVisualizer();
 });
 
-soundIcon.addEventListener("click", () => {
-  audio.muted = false;
-  muteIcon.classList.remove("active");
-  soundIcon.classList.add("active");
+audio.addEventListener("pause", () => {
+  isPlaying = false;
+  playBtn.classList.remove("playing");
+  cancelAnimationFrame(animationId);
+  drawStaticVisualizer();
 });
 
 // 🔊 Control de volumen
-volumeSlider.addEventListener("input", (e) => {
-  const value = e.target.value;
-  audio.volume = value / 100;
-  volumePercent.textContent = `${value}%`;
-  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+volumeControl.addEventListener("input", () => {
+  audio.volume = volumeControl.value / 100;
+  volumePercent.textContent = `${volumeControl.value}%`;
 });
 
-// 🎶 Visualizer simple con ondas
-function resizeCanvas() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-
-function draw() {
-  requestAnimationFrame(draw);
-  analyser.getByteTimeDomainData(dataArray);
-
+// 💫 Efecto visual (pulso neón animado)
+let pulse = 0;
+function animateVisualizer() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const centerY = canvas.height / 2;
+  const barCount = 50;
+  const barWidth = canvas.width / barCount;
 
-  // 🎨 Degradado lineal de izquierda a derecha
-  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-  gradient.addColorStop(0, "#00e5ff"); // celeste
-  gradient.addColorStop(1, "#9c27b0"); // violeta
+  pulse += 0.05;
 
-  ctx.lineWidth = 1;           // más fina
-  ctx.lineJoin = "round";      // suaviza uniones
-  ctx.lineCap = "round";       // suaviza extremos
-  ctx.strokeStyle = gradient;  // aplicar degradado
-  ctx.beginPath();
-
-  const sliceWidth = canvas.width / bufferLength;
-  let x = 0;
-
-  for (let i = 0; i < bufferLength; i++) {
-    const v = dataArray[i] / 128.0;
-    const y = (v * canvas.height) / 2;
-
-    if (i === 0) {
-      ctx.moveTo(x, y);
-    } else {
-      ctx.lineTo(x, y);
-    }
-    x += sliceWidth;
+  for (let i = 0; i < barCount; i++) {
+    const height = Math.sin(pulse + i * 0.5) * 20 + 40;
+    const x = i * barWidth;
+    const color = `hsl(${(pulse * 50 + i * 10) % 360}, 100%, 60%)`;
+    ctx.fillStyle = color;
+    ctx.fillRect(x, centerY - height / 2, barWidth - 2, height);
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 10;
   }
 
-  ctx.stroke();
+  animationId = requestAnimationFrame(animateVisualizer);
 }
-draw();
 
+// 🎵 Visual fijo cuando está en pausa
+function drawStaticVisualizer() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const centerY = canvas.height / 2;
+  ctx.fillStyle = "rgba(255,255,255,0.3)";
+  ctx.fillRect(0, centerY - 2, canvas.width, 4);
+}
+
+// Dibuja una línea inicial
+drawStaticVisualizer();
 
 // =============================
 // 🔊 FIN DE NUEVO REPRODUCTOR
