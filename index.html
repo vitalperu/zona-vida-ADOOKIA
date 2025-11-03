@@ -1,11 +1,11 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Zona Vida Radio</title>
   
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
   
   <!-- Google Fonts y Material Icons -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700&display=swap" rel="stylesheet" />
@@ -19,160 +19,136 @@
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#5e2760" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  
+
 </head>
 <body> 
-
 <!-- Botón flotante para abrir el menú -->
 <a href="#" id="btnMenuFlotante">
   <i class="material-icons">menu</i>
 </a>
 
-<!-- BOTÓN MÁS RADIOS -->
-<div style="margin: 19px 0 0 16px;">
+<!-- BOTÓN MÁS RADIOS (extra pequeño, alineado a la izquierda) -->
+<div style="margin: 24px 0 0 16px;">
   <button id="btnMasRadios" class="btn" style="background-color:#FF4081; color:white; height: 21px; line-height: 22px; padding: 0 4px; font-size: 11px; border-radius: 16px; min-width: auto;">
     <i id="iconoMasRadios" class="material-icons left" style="font-size: 16px; margin-right: 4px;">add</i> Radios
   </button>
 </div>
 
-<!-- 🔘 INICIO PARRILLA EXTRA VERTICAL -->
-<div id="contenedorParrillaExtra" 
-     style="margin:10px 0 0 16px; 
-            max-height:0; 
-            overflow:hidden; 
-            border-radius:8px; 
-            background:rgba(255,255,255,0.95); 
-            padding:6px; 
-            box-shadow:0 4px 12px rgba(0,0,0,0.12); 
-            transition:max-height 0.4s ease; 
-            max-width:70px; 
-            width:100%;">
 
-  <!-- 🔹 Scroll interno (máx. 4 visibles, luego scroll) -->
-  <div style="max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">
-
-    <div class="radio-item" 
-         data-radio="https://genexservicios.com:8112/stream" 
-         data-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s"
-         style="display:flex;align-items:center;gap:8px;padding:4px;cursor:pointer;">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s" 
-           style="width:36px;height:36px;object-fit:cover;border-radius:4px;">
-      <p style="margin:0;font-size:12px;">Metanoia</p>
-    </div>
-
-    <div class="radio-item" 
-         data-radio="https://tupanel.info:9260/stream" 
-         data-logo="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg"
-         style="display:flex;align-items:center;gap:8px;padding:4px;cursor:pointer;">
-      <img src="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg" 
-           style="width:36px;height:36px;object-fit:cover;border-radius:4px;">
-      <p style="margin:0;font-size:12px;">Río</p>
-    </div>
-
-    <div class="radio-item" 
-         data-radio="https://stream-153.zeno.fm/gnnppwt0mwzuv?zs=nmjPgRExSbucYm0Rfh0pcQ" 
-         data-logo="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png"
-         style="display:flex;align-items:center;gap:8px;padding:4px;cursor:pointer;">
-      <img src="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png" 
-           style="width:36px;height:36px;object-fit:cover;border-radius:4px;">
-      <p style="margin:0;font-size:12px;">Interactiva</p>
-    </div>
-
-    <div class="radio-item" 
-         data-radio="https://stream4.example.com" 
-         data-logo="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg"
-         style="display:flex;align-items:center;gap:8px;padding:4px;cursor:pointer;">
-      <img src="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg" 
-           style="width:36px;height:36px;object-fit:cover;border-radius:4px;">
-      <p style="margin:0;font-size:12px;">Bethel</p>
-    </div>
-
-    <div class="radio-item" 
-         data-radio="https://neptuno-2-audio.mediaserver.digital/79525baf-b0f5-4013-a8bd-3c5c293c6561" 
-         data-logo="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg"
-         style="display:flex;align-items:center;gap:8px;padding:4px;cursor:pointer;">
-      <img src="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg" 
-           style="width:36px;height:36px;object-fit:cover;border-radius:4px;">
-      <p style="margin:0;font-size:12px;">Exitosa</p>
-    </div>
-
-    <div class="radio-item" 
-         data-radio="https://mdstrm.com/audio/5fab3416b5f9ef165cfab6e9/icecast.audio" 
-         data-logo="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png"
-         style="display:flex;align-items:center;gap:8px;padding:4px;cursor:pointer;">
-      <img src="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png" 
-           style="width:36px;height:36px;object-fit:cover;border-radius:4px;">
-      <p style="margin:0;font-size:12px;">RPP</p>
-    </div>
-
-  </div>
-</div>
-<!-- 🔘 FIN PARRILLA EXTRA VERTICAL -->
-
-<!-- PLAYER Y PARRILLA -->
-<div class="player-app-container">
+  <!-- PLAYER Y PARRILLA -->
+  <div class="player-app-container">
     
-  <!-- REPRODUCTOR -->
-<div class="circle-player" id="player-visual">
-  <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
+    
+    <!-- REPRODUCTOR -->
+    <div class="circle-player" id="player-visual">
+      <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
+    </div>
+
+    <!-- BOTÓN INSTALAR APP -->
+<div class="install-button-wrapper">
+  <button id="installBtn" class="install-btn">
+    <i class="fab fa-android" style="color:#A4C639; font-size:20px;"></i>
+    <i class="fab fa-apple" style="color:#999; font-size:20px; margin-left:5px;"></i>
+    Instalar App
+  </button>
 </div>
 
+<!-- 🔊 INICIO DE NUEVO REPRODUCTOR -->
+<!-- CONTROLES (reemplazados con el nuevo Luna Player) -->
+<div class="player-container">
+  <!-- Canvas del espectro -->
+  <canvas id="visualizer"></canvas>
 
-  <!-- BOTÓN INSTALAR APP -->
-  <div class="install-button-wrapper">
-    <button id="installBtn" class="install-btn">
-      <i class="fab fa-android" style="color:#A4C639; font-size:20px;"></i>
-      <i class="fab fa-apple" style="color:#999; font-size:20px; margin-left:5px;"></i>
-      Instalar App
-    </button>
+  <!-- Barra de volumen estilo Luna Player -->
+  <div class="volume-section">
+    <input type="range" id="volumeControl" min="0" max="100" step="1" value="70">
+    <div class="volume-icons">
+      <!-- Icono Mute (sólido) -->
+      <span id="muteIcon" class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+          <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+          <rect x="17" y="9" width="2" height="6" transform="rotate(45 18 12)"></rect>
+          <rect x="17" y="9" width="2" height="6" transform="rotate(-45 18 12)"></rect>
+        </svg>
+      </span>
+
+      <!-- Porcentaje -->
+      <span id="volumePercent">70%</span>
+
+      <!-- Icono Sonido (sólido con ondas) -->
+      <span id="soundIcon" class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+          <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+          <path d="M15 9a4 4 0 0 1 0 6"></path>
+          <path d="M18 7a7 7 0 0 1 0 10"></path>
+          <path d="M21 5a10 10 0 0 1 0 14"></path>
+        </svg>
+      </span>
+    </div>
   </div>
 
-  <!-- 🔊 INICIO DE NUEVO REPRODUCTOR -->
-  <div class="player-container">
-    <!-- Canvas del espectro -->
-    <canvas id="visualizer"></canvas>
-
-    <!-- Bloque de volumen -->
-    <div class="volume-section">
-      <!-- Barra de volumen -->
-      <input type="range" id="volumeControl" min="0" max="100" step="1" value="95">
-
-      <!-- Iconos y porcentaje -->
-      <div class="volume-icons">
-        <!-- Icono Mute -->
-        <span id="muteIcon" class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-            <rect x="17" y="9" width="2" height="6" transform="rotate(45 18 12)"></rect>
-            <rect x="17" y="9" width="2" height="6" transform="rotate(-45 18 12)"></rect>
-          </svg>
-        </span>
-
-        <!-- Icono Sonido + Porcentaje -->
-        <span id="soundWrapper" style="display: flex; align-items: center; gap: 6px;">
-          <span id="volumePercent">70%</span>
-          <span id="soundIcon" class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-              <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-              <path d="M15 9a4 4 0 0 1 0 6"></path>
-              <path d="M18 7a7 7 0 0 1 0 10"></path>
-              <path d="M21 5a10 10 0 0 1 0 14"></path>
-            </svg>
-          </span>
-        </span>
-      </div>
-    </div>
-
-    <!-- Botón Play/Pause -->
-    <div class="controls">
-      <button id="playBtn" class="play"></button>
-    </div>
-
-    <!-- Audio oculto -->
-    <audio id="audio" src="https://radio.zonavidahd.online/listen/hd/radio.mp3" crossorigin="anonymous"></audio>
+  <!-- Botón Play/Pause -->
+  <div class="controls">
+    <button id="playBtn" class="play"></button>
   </div>
-  <!-- 🔊 FIN DE NUEVO REPRODUCTOR -->
 
- <!-- PARRILLA DE RADIOS PRINCIPAL-->
+  <!-- Audio oculto -->
+  <audio id="audio" src="https://radio.zonavidahd.online/listen/hd/radio.mp3" crossorigin="anonymous"></audio>
+</div>
+<!-- 🔊 FIN DE NUEVO REPRODUCTOR -->
+
+
+ <!-- PARRILLA EXTRA HORIZONTAL (OCULTA POR DEFECTO) -->
+<div id="parrillaExtra" class="radio-grid-horizontal oculto">
+
+  <div class="radio-item" 
+    data-radio="https://genexservicios.com:8112/stream" 
+    data-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s" alt="Metanoia">
+    <p>Metanoia</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://tupanel.info:9260/stream" 
+    data-logo="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg">
+    <img src="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg" alt="Rio">
+    <p>Rio</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://stream-153.zeno.fm/gnnppwt0mwzuv?zs=nmjPgRExSbucYm0Rfh0pcQ" 
+    data-logo="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png">
+    <img src="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png" alt="Radio 3">
+    <p>Interactiva</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://stream4.example.com" 
+    data-logo="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg">
+    <img src="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg" alt="Radio 4">
+    <p>Bethel</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://neptuno-2-audio.mediaserver.digital/79525baf-b0f5-4013-a8bd-3c5c293c6561" 
+    data-logo="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg">
+    <img src="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg" alt="Radio 5">
+    <p>Exitosa</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://mdstrm.com/audio/5fab3416b5f9ef165cfab6e9/icecast.audio" 
+    data-logo="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png">
+    <img src="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png" alt="Radio 6">
+    <p>RPP</p>
+  </div>
+
+</div>
+
+  
+    
+    <!-- PARRILLA DE RADIOS PRINCIPAL-->
 <div id="parrillaPrincipal" class="radio-grid-scroll">
   <div class="radio-grid-background">
     <div class="radio-grid">
@@ -184,33 +160,28 @@
         </div>
       </div>
 
-      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino" />
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-
-      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino" />
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>
-
-      <div class="radio-item" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="ZV Latino" />
-          <div class="radio-name">ZV Latino</div>
-        </div>
-      </div>  
-
-    </div>
+<div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
+    <div class="radio-name">ZV Latino</div>
   </div>
 </div>
+      
+ <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
+    <div class="radio-name">ZV Latino</div>
+  </div>
+</div>
+      
+ <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
+    <div class="radio-name">ZV Latino</div>
+  </div>
+</div>     
 
-
-<!-- LIBRERÍAS JS -->
+<!-- LIBRERÍAS JS AL FINAL DEL BODY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="script.js"></script>  
 
