@@ -101,7 +101,7 @@ const canvas = document.getElementById("visualizer");
 const ctx = canvas.getContext("2d");
 
 let isPlaying = false;
-let animationId;
+let animationId = null;
 
 // 🔄 Ajustar tamaño del canvas
 function resizeCanvas() {
@@ -123,13 +123,18 @@ playBtn.addEventListener("click", () => {
 audio.addEventListener("play", () => {
   isPlaying = true;
   playBtn.classList.add("playing");
+
+  // 🛑 Cancelar animaciones previas
+  if (animationId) cancelAnimationFrame(animationId);
+
   animateVisualizer();
 });
 
 audio.addEventListener("pause", () => {
   isPlaying = false;
   playBtn.classList.remove("playing");
-  cancelAnimationFrame(animationId);
+
+  if (animationId) cancelAnimationFrame(animationId);
   drawStaticVisualizer();
 });
 
