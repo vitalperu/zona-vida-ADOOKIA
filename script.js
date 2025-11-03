@@ -1,189 +1,246 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zona Vida Radio</title>
+// ===============================
+// script.js - Zona Vida Radio
+// ===============================
+
+// Esperar a que el DOM esté cargado
+document.addEventListener("DOMContentLoaded", function() {
+
+  // ----------------------------
+  // Inicializar menú hamburguesa (Materialize)
+  // ----------------------------
+  var sidenavs = document.querySelectorAll('.sidenav');
+  if (sidenavs.length) {
+    M.Sidenav.init(sidenavs);
+  }
+
+  // ----------------------------
+  // Botón Más Radios: alternar parrillas
+  // ----------------------------
+  const btnMasRadios = document.getElementById('btnMasRadios');
+  const iconoMasRadios = document.getElementById('iconoMasRadios');
+  const parrillaExtra = document.getElementById('parrillaExtra');
+  const parrillaPrincipal = document.getElementById('parrillaPrincipal');
+  let visible = false;
+
+  if (btnMasRadios && iconoMasRadios && parrillaExtra && parrillaPrincipal) {
+    btnMasRadios.addEventListener('click', () => {
+      visible = !visible;
+      parrillaExtra.classList.toggle('oculto');       // mostrar/ocultar segunda parrilla
+      parrillaPrincipal.classList.toggle('oculto');   // alternar primera parrilla
+      iconoMasRadios.textContent = visible ? 'remove' : 'add';
+      btnMasRadios.style.backgroundColor = visible ? '#4CAF50' : '#FF4081';
+    });
+  }
+
+  // ----------------------------
+  // Función para activar radio
+  // ----------------------------
+  function activarRadioItem(item) {
+    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
+
+    const logo = document.getElementById('logoRadioActual');
+    const player = document.getElementById('audio');
+    const radioUrl = item.getAttribute('data-radio');
+    const logoUrl = item.getAttribute('data-logo');
+
+    if (logo && logoUrl) logo.src = logoUrl;
+    if (player && radioUrl) {
+      player.src = radioUrl;
+      player.load();
+      player.play();
+      document.getElementById('playBtn').classList.remove('play');
+      document.getElementById('playBtn').classList.add('pause');
+      document.querySelector('.circle-player').classList.add('playing');
+    }
+  }
+
+  // ----------------------------
+  // Aplicar evento click a TODAS las radios
+  // ----------------------------
+  document.querySelectorAll('.radio-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      activarRadioItem(item);
+    });
+  });
+
+});
   
-<link rel="stylesheet" href="style.css">
-  
-  <!-- Google Fonts y Material Icons -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+// =============================
+// 🔊 INICIO DE NUEVO REPRODUCTOR
+// =============================
 
-  <!-- Materialize CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const muteIcon = document.getElementById("muteIcon");
+const soundIcon = document.getElementById("soundIcon");
+const volumeSlider = document.getElementById("volumeControl");
+const volumePercent = document.getElementById("volumePercent");
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d");
 
-  <!-- PWA -->
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#5e2760" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  
+let isPlaying = false;
 
-</head>
-<body> 
-<!-- Botón flotante para abrir el menú -->
-<a href="#" id="btnMenuFlotante">
-  <i class="material-icons">menu</i>
-</a>
+// 🎵 Inicializar contexto de audio
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+const source = audioCtx ? audioCtx.createMediaElementSource(audio) : null;
+if(source){
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+}
 
-<!-- BOTÓN MÁS RADIOS (extra pequeño, alineado a la izquierda) -->
-<div style="margin: 24px 0 0 16px;">
-  <button id="btnMasRadios" class="btn" style="background-color:#FF4081; color:white; height: 21px; line-height: 22px; padding: 0 4px; font-size: 11px; border-radius: 16px; min-width: auto;">
-    <i id="iconoMasRadios" class="material-icons left" style="font-size: 16px; margin-right: 4px;">add</i> Radios
-  </button>
-</div>
+analyser.fftSize = 4096;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+// 🎛️ Play / Pause
+playBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    audioCtx.resume();
+    audio.play();
+    playBtn.classList.remove("play");
+    playBtn.classList.add("pause");
+    isPlaying = true;
+  } else {
+    audio.pause();
+    playBtn.classList.remove("pause");
+    playBtn.classList.add("play");
+    isPlaying = false;
+  }
+});
+
+// 🔇 Mute / Unmute
+muteIcon.addEventListener("click", () => {
+  audio.muted = true;
+  muteIcon.classList.add("active");
+  soundIcon.classList.remove("active");
+});
+
+soundIcon.addEventListener("click", () => {
+  audio.muted = false;
+  muteIcon.classList.remove("active");
+  soundIcon.classList.add("active");
+});
+
+// 🔊 Control de volumen
+volumeSlider.addEventListener("input", (e) => {
+  const value = e.target.value;
+  audio.volume = value / 100;
+  volumePercent.textContent = `${value}%`;
+  volumeSlider.style.background = `linear-gradient(to right, #00e5ff ${value}%, #444 ${value}%)`;
+});
+
+// 🎶 Visualizer simple con ondas
+function resizeCanvas() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+function draw() {
+  requestAnimationFrame(draw);
+  analyser.getByteTimeDomainData(dataArray);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 🎨 Degradado lineal de izquierda a derecha
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+  gradient.addColorStop(0, "#00e5ff"); // celeste
+  gradient.addColorStop(1, "#9c27b0"); // violeta
+
+  ctx.lineWidth = 1;           // más fina
+  ctx.lineJoin = "round";      // suaviza uniones
+  ctx.lineCap = "round";       // suaviza extremos
+  ctx.strokeStyle = gradient;  // aplicar degradado
+  ctx.beginPath();
+
+  const sliceWidth = canvas.width / bufferLength;
+  let x = 0;
+
+  for (let i = 0; i < bufferLength; i++) {
+    const v = dataArray[i] / 128.0;
+    const y = (v * canvas.height) / 2;
+
+    if (i === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+    x += sliceWidth;
+  }
+
+  ctx.stroke();
+}
+draw();
 
 
-  <!-- PLAYER Y PARRILLA -->
-  <div class="player-app-container">
-    
-    
-    <!-- REPRODUCTOR -->
-    <div class="circle-player" id="player-visual">
-      <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
-    </div>
-
-    <!-- BOTÓN INSTALAR APP -->
-<div class="install-button-wrapper">
-  <button id="installBtn" class="install-btn">
-    <i class="fab fa-android" style="color:#A4C639; font-size:20px;"></i>
-    <i class="fab fa-apple" style="color:#999; font-size:20px; margin-left:5px;"></i>
-    Instalar App
-  </button>
-</div>
-
-<!-- 🔊 INICIO DE NUEVO REPRODUCTOR -->
-<!-- CONTROLES (reemplazados con el nuevo Luna Player) -->
-<div class="player-container">
-  <!-- Canvas del espectro -->
-  <canvas id="visualizer"></canvas>
-
-  <!-- Barra de volumen estilo Luna Player -->
-  <div class="volume-section">
-    <input type="range" id="volumeControl" min="0" max="100" step="1" value="70">
-    <div class="volume-icons">
-      <!-- Icono Mute (sólido) -->
-      <span id="muteIcon" class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
-          <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-          <rect x="17" y="9" width="2" height="6" transform="rotate(45 18 12)"></rect>
-          <rect x="17" y="9" width="2" height="6" transform="rotate(-45 18 12)"></rect>
-        </svg>
-      </span>
-
-      <!-- Porcentaje -->
-      <span id="volumePercent">70%</span>
-
-      <!-- Icono Sonido (sólido con ondas) -->
-      <span id="soundIcon" class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
-          <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-          <path d="M15 9a4 4 0 0 1 0 6"></path>
-          <path d="M18 7a7 7 0 0 1 0 10"></path>
-          <path d="M21 5a10 10 0 0 1 0 14"></path>
-        </svg>
-      </span>
-    </div>
-  </div>
-
-  <!-- Botón Play/Pause -->
-  <div class="controls">
-    <button id="playBtn" class="play"></button>
-  </div>
-
-  <!-- Audio oculto -->
-  <audio id="audio" src="https://radio.zonavidahd.online/listen/hd/radio.mp3" crossorigin="anonymous"></audio>
-</div>
-<!-- 🔊 FIN DE NUEVO REPRODUCTOR -->
+// =============================
+// 🔊 FIN DE NUEVO REPRODUCTOR
+// =============================
 
 
- <!-- PARRILLA EXTRA HORIZONTAL (OCULTA POR DEFECTO) -->
-<div id="parrillaExtra" class="radio-grid-horizontal oculto">
 
-  <div class="radio-item" 
-    data-radio="https://genexservicios.com:8112/stream" 
-    data-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s" alt="Metanoia">
-    <p>Metanoia</p>
-  </div>
+// Registro de Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('Service Worker registrado con éxito:', registration.scope);
+      })
+      .catch(error => {
+        console.log('Error al registrar Service Worker:', error);
+      });
+  });
+}
 
-  <div class="radio-item" 
-    data-radio="https://tupanel.info:9260/stream" 
-    data-logo="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg">
-    <img src="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg" alt="Rio">
-    <p>Rio</p>
-  </div>
+// Botón de instalación PWA
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
 
-  <div class="radio-item" 
-    data-radio="https://stream-153.zeno.fm/gnnppwt0mwzuv?zs=nmjPgRExSbucYm0Rfh0pcQ" 
-    data-logo="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png" alt="Radio 3">
-    <p>Interactiva</p>
-  </div>
+if (installBtn) {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'inline-block';
+  });
 
-  <div class="radio-item" 
-    data-radio="https://stream4.example.com" 
-    data-logo="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg" alt="Radio 4">
-    <p>Bethel</p>
-  </div>
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('App instalada correctamente');
+        installBtn.textContent = '¡Instalada!';
+      }
+      deferredPrompt = null;
+    } else {
+      alert("Para instalar, usa Chrome, Brave o Edge.");
+    }
+  });
+}
 
-  <div class="radio-item" 
-    data-radio="https://neptuno-2-audio.mediaserver.digital/79525baf-b0f5-4013-a8bd-3c5c293c6561" 
-    data-logo="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg" alt="Radio 5">
-    <p>Exitosa</p>
-  </div>
+// Compartir App
+function shareApp() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Zona Vida Radio',
+      text: 'Escucha Zona Vida Radio en tu dispositivo.',
+      url: window.location.href
+    }).then(() => {
+      console.log('Compartido con éxito');
+    }).catch((error) => {
+      console.error('Error al compartir:', error);
+    });
+  } else {
+    alert("Tu navegador no soporta la función de compartir.");
+  }
+}
 
-  <div class="radio-item" 
-    data-radio="https://mdstrm.com/audio/5fab3416b5f9ef165cfab6e9/icecast.audio" 
-    data-logo="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png" alt="Radio 6">
-    <p>RPP</p>
-  </div>
-
-</div>
-
-  
-    
-    <!-- PARRILLA DE RADIOS PRINCIPAL-->
-<div id="parrillaPrincipal" class="radio-grid-scroll">
-  <div class="radio-grid-background">
-    <div class="radio-grid">
-      
-      <div class="radio-item selected" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
-        <div class="radio-container">
-          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
-          <div class="radio-name">Zona Vida</div>
-        </div>
-      </div>
-
-<div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>
-      
- <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>
-      
- <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
-  <div class="radio-container">
-    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
-    <div class="radio-name">ZV Latino</div>
-  </div>
-</div>     
-
-<!-- LIBRERÍAS JS AL FINAL DEL BODY -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="script.js"></script>  
-
-</body>
-</html>
+// Cerrar App
+function closeApp() {
+  if (confirm("¿Quieres salir de la app?")) {
+    window.close();
+  }
+}
