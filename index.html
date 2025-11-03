@@ -1,10 +1,61 @@
-/* 🔊 INICIO DE BUEVO REPRODUCTOR   */
-<!-- REPRODUCTOR -->
-<div class="circle-player" id="player-visual">
-  <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zona Vida Radio</title>
+  
+<link rel="stylesheet" href="style.css">
+  
+  <!-- Google Fonts y Material Icons -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#5e2760" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  
+
+</head>
+<body> 
+<!-- Botón flotante para abrir el menú -->
+<a href="#" id="btnMenuFlotante">
+  <i class="material-icons">menu</i>
+</a>
+
+<!-- BOTÓN MÁS RADIOS (extra pequeño, alineado a la izquierda) -->
+<div style="margin: 24px 0 0 16px;">
+  <button id="btnMasRadios" class="btn" style="background-color:#FF4081; color:white; height: 21px; line-height: 22px; padding: 0 4px; font-size: 11px; border-radius: 16px; min-width: auto;">
+    <i id="iconoMasRadios" class="material-icons left" style="font-size: 16px; margin-right: 4px;">add</i> Radios
+  </button>
 </div>
 
-<!-- CONTROLES (reemplazados con el nuevo reproductor) -->
+
+  <!-- PLAYER Y PARRILLA -->
+  <div class="player-app-container">
+    
+    
+    <!-- REPRODUCTOR -->
+    <div class="circle-player" id="player-visual">
+      <img src="./img/logo-zona-vida.png" id="logoRadioActual" alt="Zona Vida Radio" />
+    </div>
+
+    <!-- BOTÓN INSTALAR APP -->
+<div class="install-button-wrapper">
+  <button id="installBtn" class="install-btn">
+    <i class="fab fa-android" style="color:#A4C639; font-size:20px;"></i>
+    <i class="fab fa-apple" style="color:#999; font-size:20px; margin-left:5px;"></i>
+    Instalar App
+  </button>
+</div>
+
+<!-- 🔊 INICIO DE NUEVO REPRODUCTOR -->
+<!-- CONTROLES (reemplazados con el nuevo Luna Player) -->
 <div class="player-container">
   <!-- Canvas del espectro -->
   <canvas id="visualizer"></canvas>
@@ -45,4 +96,94 @@
   <!-- Audio oculto -->
   <audio id="audio" src="https://radio.zonavidahd.online/listen/hd/radio.mp3" crossorigin="anonymous"></audio>
 </div>
-/* 🔊 FIN DE BUEVO REPRODUCTOR   */
+<!-- 🔊 FIN DE NUEVO REPRODUCTOR -->
+
+
+ <!-- PARRILLA EXTRA HORIZONTAL (OCULTA POR DEFECTO) -->
+<div id="parrillaExtra" class="radio-grid-horizontal oculto">
+
+  <div class="radio-item" 
+    data-radio="https://genexservicios.com:8112/stream" 
+    data-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s" alt="Metanoia">
+    <p>Metanoia</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://tupanel.info:9260/stream" 
+    data-logo="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg">
+    <img src="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg" alt="Rio">
+    <p>Rio</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://stream-153.zeno.fm/gnnppwt0mwzuv?zs=nmjPgRExSbucYm0Rfh0pcQ" 
+    data-logo="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png">
+    <img src="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png" alt="Radio 3">
+    <p>Interactiva</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://stream4.example.com" 
+    data-logo="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg">
+    <img src="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg" alt="Radio 4">
+    <p>Bethel</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://neptuno-2-audio.mediaserver.digital/79525baf-b0f5-4013-a8bd-3c5c293c6561" 
+    data-logo="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg">
+    <img src="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg" alt="Radio 5">
+    <p>Exitosa</p>
+  </div>
+
+  <div class="radio-item" 
+    data-radio="https://mdstrm.com/audio/5fab3416b5f9ef165cfab6e9/icecast.audio" 
+    data-logo="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png">
+    <img src="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png" alt="Radio 6">
+    <p>RPP</p>
+  </div>
+
+</div>
+
+  
+    
+    <!-- PARRILLA DE RADIOS PRINCIPAL-->
+<div id="parrillaPrincipal" class="radio-grid-scroll">
+  <div class="radio-grid-background">
+    <div class="radio-grid">
+      
+      <div class="radio-item selected" data-logo="img/logo-zona-vida.png" data-radio="https://radio.zonavidahd.online/listen/hd/radio.mp3">
+        <div class="radio-container">
+          <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zona-vida.png" alt="Zona Vida" />
+          <div class="radio-name">Zona Vida</div>
+        </div>
+      </div>
+
+<div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
+    <div class="radio-name">ZV Latino</div>
+  </div>
+</div>
+      
+ <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
+    <div class="radio-name">ZV Latino</div>
+  </div>
+</div>
+      
+ <div class="radio-item selected" data-logo="img/logo-zv-latino.png" data-radio="https://stream.zeno.fm/r4dvb9ienyavv">
+  <div class="radio-container">
+    <img src="https://vitalperu.github.io/zona-vida-ADOOKIA/img/logo-zv-latino.png" alt="Zona Vida" />
+    <div class="radio-name">ZV Latino</div>
+  </div>
+</div>     
+
+<!-- LIBRERÍAS JS AL FINAL DEL BODY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="script.js"></script>  
+
+</body>
+</html>
