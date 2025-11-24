@@ -27,39 +27,27 @@ document.addEventListener("DOMContentLoaded", function() {
     contenedorParrillaExtra.style.overflow = "hidden";
     contenedorParrillaExtra.style.transition = "max-height 0.3s ease";
   }
+ // <<<<<<<<<<<<<<<<<<<<<<<<< CÓDIGO DEL SLIDER AHORA CORREGIDO >>>>>>>>>>>>>>>>>>>>>>
 
-  // <<<<<<<<<<<<<<<<<<<<<<<<< ETIQUETA DE INICIO DEL SLIDER >>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-// ===============================
-// 🖼️ SLIDER DE IMÁGENES AUTOMÁTICO
-// ===============================
-
-document.addEventListener("DOMContentLoaded", function() {
-    // 1. Selecciona todas las etiquetas <img> con la clase 'slide-item'
+    // 🖼️ LÓGICA DEL SLIDER DE IMÁGENES AUTOMÁTICO
+    // NOTA: Eliminamos el segundo 'document.addEventListener'
     const slides = document.querySelectorAll('.slide-item');
     let currentSlide = 0;
     const intervalTime = 5000; // Cambiar imagen cada 5 segundos (5000 ms)
 
-    // Solo ejecuta la lógica si hay más de una imagen para rotar
     if (slides.length > 1) {
         
         function changeSlide() {
-            // 2. Oculta la imagen actual quitando la clase 'active'
             slides[currentSlide].classList.remove('active');
-
-            // 3. Mueve al siguiente índice.
             currentSlide = (currentSlide + 1) % slides.length;
-
-            // 4. Muestra la nueva imagen añadiendo la clase 'active'
             slides[currentSlide].classList.add('active');
         }
 
         // 5. Inicia la rotación automática
         setInterval(changeSlide, intervalTime);
     }
-});
 
-// <<<<<<<<<<<<<<<<<<<<<<<<<<< ETIQUETA DE FINAL DEL SLIDER >>>>>>>>>>>>>>>>>>>>>>>>>
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<< FIN DE LA LÓGICA DEL SLIDER >>>>>>>>>>>>>>>>>>>>>>>>>
 
   // ----------------------------
   // Botón "Más Radios" - mostrar/ocultar
