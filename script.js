@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // NOTA: Eliminamos el segundo 'document.addEventListener'
     const slides = document.querySelectorAll('.slide-item');
     let currentSlide = 0;
-    const intervalTime = 5000; // Cambiar imagen cada 5 segundos (5000 ms)
+    const intervalTime = 5000; // Cambiar imagen cada 5 segundos (20000 ms)
 
     if (slides.length > 1) {
         
