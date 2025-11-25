@@ -289,10 +289,15 @@ html, body {
   margin-bottom: 10px;
 }
 .radio-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  justify-items: center; 
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  justify-items: center;
+
+  /* 🔑 SOLUCIÓN: Limita el ancho interno para que no desborde el fondo */
+  width: 100%; 
+  max-width: 320px; 
+  margin: 0 auto;
 }
 
 .radio-grid-background {
