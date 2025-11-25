@@ -20,12 +20,15 @@ html, body {
 /* 🧩 CONTENEDORES PRINCIPALES    */
 /* =============================== */
 .main-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding-top: 50px;
-  padding-bottom: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding-top: 50px;
+  padding-bottom: 2px;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .player-app-container {
