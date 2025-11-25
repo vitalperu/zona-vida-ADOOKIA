@@ -282,11 +282,7 @@ html, body {
 max-height: none;
   overflow-y: visible;
   padding: 4px 0 0 0;
-  margin-bottom: 10px;
-  
-  /* 🔑 SOLUCIÓN: Usar Flexbox para Centrar horizontalmente */
-  display: flex;
-  justify-content: center; 
+  margin-bottom: 10px; 
 }
 .radio-grid {
   display: grid;
