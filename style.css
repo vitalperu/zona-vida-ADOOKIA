@@ -288,20 +288,21 @@ html, body {
   padding: 4px 0 0 0;
   margin-bottom: 10px;
 }
-.radio-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  justify-items: center; 
-}
-
 .radio-grid-background {
   background-color: rgba(255, 255, 255, 0.45);
-  padding: 8px;
+  padding: 8px 12px;
   border-radius: 12px;
   backdrop-filter: blur(4px);
-  max-width: 340px;
-  margin: 0 auto;
+
+  width: fit-content;   /* Ajusta el tamaño exacto al contenido */
+  margin: 0 auto;       /* Siempre centrado */
+}
+
+.radio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);  /* 4 radios sin estirarse */
+  gap: 8px;
+  justify-content: center;
 }
 
 .radio-container {
