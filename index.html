@@ -57,16 +57,26 @@
 
 <!-- 🔘 INICIO PARRILLA EXTRA VERTICAL -->
 <div id="contenedorParrillaExtra" 
-     style="margin:10px 0 0 16px; 
-            max-height:0; 
-            overflow:hidden; 
-            border-radius:8px; 
-            background:rgba(255,255,255,0.95); 
-            padding:6px; 
-            box-shadow:0 4px 12px rgba(0,0,0,0.12); 
-            transition:max-height 0.4s ease; 
-            max-width:70px; 
-            width:100%;">
+     style="
+        position: absolute;
+        top: 80px;          /* Ajusta según dónde quieras que aparezca */
+        left: 16px;
+
+        max-height: 0; 
+        overflow: hidden;
+
+        border-radius: 8px;
+        background: rgba(255,255,255,0.95);
+        padding: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        transition: max-height 0.4s ease;
+
+        max-width: 150px;
+        width: auto;
+
+        z-index: 9999;   /* Muy importante */
+     ">
+
 
   <!-- 🔹 Scroll interno (máx. 4 visibles, luego scroll) -->
   <div style="max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">
