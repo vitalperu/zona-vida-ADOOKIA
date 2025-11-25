@@ -286,10 +286,11 @@ html, body {
   margin-bottom: 10px;
 }
 .radio-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  justify-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  place-items: center;
+  justify-content: center;
 }
 
 .radio-grid-background {
