@@ -421,7 +421,7 @@ html, body {
 }
 
 #parrillaExtra::-webkit-scrollbar {
-  width: 6px;                    /* Scroll vertical finito */
+  width: 2px;                    /* Scroll vertical finito */
 }
 #parrillaExtra::-webkit-scrollbar-thumb {
   background-color: #90caf9;
@@ -434,7 +434,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: #84e6fa
+  background: #229df5
   padding: 0.4rem;
   border-radius: 7px;
   border: 1px solid #bbdefb;
