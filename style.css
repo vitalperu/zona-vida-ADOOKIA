@@ -47,52 +47,50 @@ html, body {
 
 
 /* =============================== */
-/* 🔊 PLAYER REDONDO CENTRAL       */
+/* 🔊 PLAYER REDONDO CENTRAL       */
 /* =============================== */
 .circle-player {
   width: 220px;
   height: 220px;
-  border-radius: 50%; /* 🔹 hace un círculo perfecto */
-  background: rgba(255,255,255,0); /* fondo transparente */
+  border-radius: 50%; /* círculo perfecto */
+  background: rgba(255,255,255,0);
   margin: 20px auto;
+
   border: 3px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  /* 🔒 EVITA QUE SE APLASTE O ESTIRE */
+  flex-shrink: 0;  
+
   position: relative;
-  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
+  box-shadow: 0 0 10px #00ffcc;
   transition: all 0.3s ease;
 }
 
-
-/* 🟢 MODIFICACIÓN CLAVE AQUÍ 🟢 */
+/* 🟢 Protección total de la imagen del logo */
 .circle-player img {
   width: 90%;
   height: 90%;
-  /* 1. Aseguramos que la imagen siempre sea un círculo */
+
   border-radius: 50%; 
-  /* 2. EVITAMOS que la imagen se estire/achate */
-  object-fit: cover; 
-  /* 3. Nos aseguramos de que no haya distorsión */
-  aspect-ratio: 1 / 1; 
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+
+  /* 🔒 PROTECCIÓN extra */
+  flex-shrink: 0;
 
   transition: transform 0.2s ease;
 }
 
-
+/* Estado "playing" */
 .circle-player.playing {
   animation: pulse 1.2s infinite;
   border-color: #00ffd9;
-  box-shadow: 0 0 20px #ffffff,
+  box-shadow: 0 0 10px #00ffcc;
+  background: rgba(255,255,255,0);
 }
-
-.circle-player.playing {
-  animation: pulse 1.2s infinite;
-  border-color: #00ffd9;
-  box-shadow: 0 0 10px #00ffcc; /* solo resplandor exterior */
-  background: rgba(255,255,255,0); /* fondo completamente transparente */
-}
-
 
 @keyframes pulse {
   0% { transform: scale(1); box-shadow: 0 0 20px #5205e3, 0 0 60px #03fcc2 inset; }
