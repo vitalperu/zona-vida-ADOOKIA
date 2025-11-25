@@ -279,10 +279,11 @@ html, body {
 /* ============================= */
 /* 🎧 PARRILLA PRINCIPAL          */
 /* ============================= */
-max-height: none;
+.radio-grid-scroll {
+  max-height: none;
   overflow-y: visible;
   padding: 4px 0 0 0;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
 }
 .radio-grid {
   display: grid;
