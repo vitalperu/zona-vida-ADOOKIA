@@ -144,7 +144,10 @@ playBtn.addEventListener("click", () => {
 
 audio.addEventListener("play", () => {
   isPlaying = true;
-  playBtn.classList.add("playing");
+
+  // Cambiar a ícono "pause"
+  playBtn.classList.remove("play");
+  playBtn.classList.add("pause");
 
   // 🛑 Cancelar animaciones previas
   if (animationId) cancelAnimationFrame(animationId);
@@ -154,7 +157,10 @@ audio.addEventListener("play", () => {
 
 audio.addEventListener("pause", () => {
   isPlaying = false;
-  playBtn.classList.remove("playing");
+
+  // Cambiar a ícono "play"
+  playBtn.classList.remove("pause");
+  playBtn.classList.add("play");
 
   if (animationId) cancelAnimationFrame(animationId);
   drawStaticVisualizer();
