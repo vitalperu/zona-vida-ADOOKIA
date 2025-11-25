@@ -166,6 +166,29 @@ volumeControl.addEventListener("input", () => {
   volumePercent.textContent = `${volumeControl.value}%`;
 });
 
+// ===============================
+// 🔇 BOTÓN MUTE
+// ===============================
+const muteIcon = document.getElementById("muteIcon");
+
+if (muteIcon) {
+  muteIcon.addEventListener("click", () => {
+    // Cambiar estado de mute
+    audio.muted = !audio.muted;
+
+    // Cambiar color/estilo del icono
+    muteIcon.classList.toggle("active");
+
+    // Actualizar porcentaje visual
+    if (audio.muted) {
+      volumePercent.textContent = "0%";
+    } else {
+      volumePercent.textContent = `${Math.round(audio.volume * 100)}%`;
+    }
+  });
+}
+
+
 // 💫 Efecto visual (pulso neón animado)
 let pulse = 0;
 function animateVisualizer() {
