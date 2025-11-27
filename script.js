@@ -307,7 +307,7 @@ function closeApp() {
 }
 
 // ===================================
-// 📌 FUNCIONALIDAD MENÚ DESPLEGABLE DERECHO
+// 📌 INICIO MENÚ DESPLEGABLE DERECHO
 // ===================================
 
 // Función para mostrar u ocultar el menú
