@@ -305,3 +305,33 @@ function closeApp() {
     window.close();
   }
 }
+
+// ===================================
+// 📌 FUNCIONALIDAD MENÚ DESPLEGABLE DERECHO
+// ===================================
+
+// Función para mostrar u ocultar el menú
+function toggleDropdownMenu() {
+    // Obtiene el elemento del menú desplegable por su ID
+    const menu = document.getElementById('menuDerechoDesplegable');
+    
+    // Cambia el display de 'none' a 'block' o viceversa
+    if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+    } else {
+        menu.style.display = 'block';
+    }
+}
+
+// Agrega el escuchador de eventos (listener) al botón flotante
+document.getElementById('btnMenuFlotante').addEventListener('click', function(event) {
+    // Evita que el enlace recargue la página
+    event.preventDefault(); 
+    
+    // Llama a la función para cambiar la visibilidad
+    toggleDropdownMenu();
+});
+
+// ===================================
+// 🛑 FIN: FUNCIONALIDAD MENÚ DESPLEGABLE DERECHO
+// ===================================
