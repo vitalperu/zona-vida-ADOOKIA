@@ -55,122 +55,73 @@
   </button>
 </div>
 
-
 <!-- 🔘 INICIO PARRILLA EXTRA VERTICAL -->
 <div id="contenedorParrillaExtra"
      style="
         position: absolute;
-        top: 80px;
+        top: 90px;
         left: 16px;
-
-        max-height: 0; 
         overflow: hidden;
         transition: max-height 0.4s ease;
-
         background-color: #9cf0c7;
-        padding: 2px;
-        border-radius: 12px;
+        padding: 0px;
+        border-radius: 10px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-
-        width: 80px;  /* 🔥 ANCHO FIJO DELGADO */
+        width: fit-content;
         z-index: 9999;
      ">
 
-  <!-- 🔹 Scroll interno (máx. 4 visibles) -->
-  <div style="
-      max-height: 220px; 
-      overflow-y: auto;
+  <!-- ❗ AQUÍ SE CORRIGIÓ EL ID: AHORA ES "parrillaExtra" -->
+  <div id="parrillaExtra"
+       style="
+          max-height: 220px;
+          overflow-y: auto;
+       ">
 
-      display: grid;
-      grid-template-columns: 1fr;  /* 🔥 1 CUADROS POR FILA */
-      gap: 4px;
-  ">
-
-    <!-- 🔘 RADIO ITEM — CUADRO VERTICAL -->
-    <div class="radio-item"
-         data-radio="https://genexservicios.com:8112/stream"
-         data-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s"
-         style="
-            display:flex;
-            flex-direction:column;      /* 🔥 Ícono arriba + texto abajo */
-            align-items:center;
-            justify-content:center;
-            padding:2px;
-            background:#f2f2f2;
-            border-radius:10px;
-            cursor:pointer;
-         ">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s"
-           style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
-      <p style="margin:4px 0 0 0;font-size:11px;text-align:center;">Metanoia</p>
+    <div class="radio-item" data-radio="https://genexservicios.com:8112/stream"
+         data-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxG8Zs78EK1--QwCaVgQiVyQdmlU-u7P-Rw&s">
+      <p>Metanoia</p>
     </div>
 
     <div class="radio-item"
          data-radio="https://tupanel.info:9260/stream"
-         data-logo="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg"
-         style="
-            display:flex;flex-direction:column;align-items:center;justify-content:center;
-            padding:6px;background:#f2f2f2;border-radius:10px;cursor:pointer;
-         ">
-      <img src="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg"
-           style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
-      <p style="margin:4px 0 0 0;font-size:11px;text-align:center;">Río</p>
+         data-logo="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg">
+      <img src="https://radiorioperu.com/wp-content/uploads/2025/04/logo-rio.jpg">
+      <p>Río</p>
     </div>
 
     <div class="radio-item"
          data-radio="https://stream-153.zeno.fm/gnnppwt0mwzuv?zs=nmjPgRExSbucYm0Rfh0pcQ"
-         data-logo="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png"
-         style="
-            display:flex;flex-direction:column;align-items:center;justify-content:center;
-            padding:6px;background:#f2f2f2;border-radius:10px;cursor:pointer;
-         ">
-      <img src="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png"
-           style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
-      <p style="margin:4px 0 0 0;font-size:11px;text-align:center;">Interactiva</p>
+         data-logo="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png">
+      <img src="https://static.mytuner.mobi/media/tvos_radios/502/radio-interactiva-online.27df0d7a.png">
+      <p>Interactiva</p>
     </div>
 
     <div class="radio-item"
          data-radio="https://stream4.example.com"
-         data-logo="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg"
-         style="
-            display:flex;flex-direction:column;align-items:center;justify-content:center;
-            padding:6px;background:#f2f2f2;border-radius:10px;cursor:pointer;
-         ">
-      <img src="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg"
-           style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
-      <p style="margin:4px 0 0 0;font-size:11px;text-align:center;">Bethel</p>
+         data-logo="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg">
+      <img src="https://static.mytuner.mobi/media/tvos_radios/774/bethel-radio.702b0ca5.jpg">
+      <p>Bethel</p>
     </div>
 
     <div class="radio-item"
          data-radio="https://neptuno-2-audio.mediaserver.digital/79525baf-b0f5-4013-a8bd-3c5c293c6561"
-         data-logo="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg"
-         style="
-            display:flex;flex-direction:column;align-items:center;justify-content:center;
-            padding:6px;background:#f2f2f2;border-radius:10px;cursor:pointer;
-         ">
-      <img src="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg"
-           style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
-      <p style="margin:4px 0 0 0;font-size:11px;text-align:center;">Exitosa</p>
+         data-logo="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg">
+      <img src="https://static.mytuner.mobi/media/tvos_radios/145/radio-exitosa.f046bec1.jpg">
+      <p>Exitosa</p>
     </div>
 
     <div class="radio-item"
          data-radio="https://mdstrm.com/audio/5fab3416b5f9ef165cfab6e9/icecast.audio"
-         data-logo="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png"
-         style="
-            display:flex;flex-direction:column;align-items:center;justify-content:center;
-            padding:6px;background:#f2f2f2;border-radius:10px;cursor:pointer;
-         ">
-      <img src="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png"
-           style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
-      <p style="margin:4px 0 0 0;font-size:11px;text-align:center;">RPP</p>
+         data-logo="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png">
+      <img src="https://static.mytuner.mobi/media/tvos_radios/827/rpp-noticias-lima.045c7f8f.png">
+      <p>RPP</p>
     </div>
 
   </div>
 </div>
 <!-- 🔘 FIN PARRILLA EXTRA VERTICAL -->
-
-
-
 
 <!-- PLAYER Y PARRILLA -->
 <div class="player-app-container">
