@@ -576,3 +576,61 @@ html, body {
        o hacerlo semitransparente para que el slider se vea. */
 }
 /* --- FIN DE EL SLIDER DE FONDO --- */
+/* INICIO MENÚ DESPLEGABLE */
+
+/* 1. Estilo y Posicionamiento del Botón Flotante (Ajuste menor para referencia) */
+/* Nota: #btnMenuFlotante ya está definido en Utilidades Globales, este es solo un ajuste */
+#btnMenuFlotante {
+    /* Mantenemos el estilo y posición existentes: */
+    /* top: 20px; right: 20px; z-index: 999; etc. */
+    position: fixed; /* Usar fixed o absolute es importante para que el menú se despliegue correctamente */
+}
+
+
+/* 2. Posicionamiento y Visibilidad del Menú (La caja blanca) */
+#menuDerechoDesplegable {
+    position: fixed; /* Para que se mantenga en la esquina aunque el usuario haga scroll */
+    top: 72px; /* ✅ AJUSTADO: Cae justo debajo del botón (#btnMenuFlotante) (20px top + 48px height + 4px de margen) */
+    right: 20px; /* Lo alinea con el botón flotante */
+    
+    /* Apariencia */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    z-index: 9000; /* Alto z-index para estar sobre todo */
+    min-width: 180px;
+    max-width: 250px;
+    
+    /* Estado inicial: OCULTO */
+    display: none; 
+}
+
+/* 3. Estilo y Distribución de Cada Opción (Enlace) */
+.dropdown-menu .menu-item {
+    display: flex; /* Para alinear icono y texto */
+    align-items: center; 
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    white-space: nowrap; 
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Estilo para las Imágenes de los Iconos (.jpg, .png) */
+.dropdown-menu .menu-icon-img {
+    width: 20px; /* Tamaño del icono */
+    height: 20px;
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+    object-fit: contain; 
+}
+
+/* 4. Efectos Finales */
+.dropdown-menu .menu-item:last-child {
+    border-bottom: none;
+}
+.dropdown-menu .menu-item:hover {
+    background-color: #f1f1f1;
+}
+/* FIN MENÚ DESPLEGABLE */
